@@ -8,6 +8,7 @@ public class Runge_KuttaMethod {
             double x = x0, y = y0;
             double step = (x1 - x) / countIter;
             equation.setStep(step);
+            equation.Clear();
 
             for (int i = 0; i < countIter; i++)
             {

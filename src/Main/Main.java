@@ -4,6 +4,8 @@ import Equation.Equation;
 import Graphics.MatlabChart;
 import Graphics.SomeChart;
 import NumericalMethods.EulerMethod;
+import NumericalMethods.EulerMethodImproved;
+import NumericalMethods.Euler_KoshiMethod;
 import NumericalMethods.Runge_KuttaMethod;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -36,9 +38,12 @@ public class Main extends Application {
         equation.setT0(100.0);
         equation.setTc(24.0);
         equation.setXStart(0.0);
-        equation.setXFinish(10.0);
+        equation.setXFinish(15.0);
 
-        Runge_KuttaMethod.Solve(equation,50, equation.getXStart(), equation.getXFinish(), equation.getT0());
+        //Euler_KoshiMethod.Solve(equation, 50, equation.getXStart(), equation.getXFinish(), equation.getT0());
+        //EulerMethod.Solve(equation, 50, equation.getXStart(), equation.getXFinish(), equation.getT0());
+        //EulerMethodImproved.Solve(equation, 50, equation.getXStart(), equation.getXFinish(), equation.getT0());
+        Runge_KuttaMethod.Solve(equation, 50, equation.getXStart(), equation.getXFinish(), equation.getT0());
 
         equation.ShowInConsole();
 
@@ -52,7 +57,6 @@ public class Main extends Application {
         ArrayList<String> names = new ArrayList<>();
         names.add("Absolute error");
         names.add("Relative error");
-
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
         XYChart chart1 = chartMatlab.getChart(equation.getX(), errors, names);
