@@ -38,9 +38,16 @@ public class Main extends Application {
         equation.setT0(100.0);
         equation.setTc(24.0);
         equation.setXStart(0.0);
-        equation.setXFinish(10.0);
+        equation.setXFinish(15.0);
 
 //        Runge_KuttaMethod.Solve(equation,50, equation.getXStart(), equation.getXFinish(), equation.getT0());
+
+        //Euler_KoshiMethod.Solve(equation, 50, equation.getXStart(), equation.getXFinish(), equation.getT0());
+        //EulerMethod.Solve(equation, 50, equation.getXStart(), equation.getXFinish(), equation.getT0());
+        //EulerMethodImproved.Solve(equation, 50, equation.getXStart(), equation.getXFinish(), equation.getT0());
+        Runge_KuttaMethod.Solve(equation, 50, equation.getXStart(), equation.getXFinish(), equation.getT0());
+
+        equation.ShowInConsole();
 
         ArrayList<ArrayList<Double>> errors = new ArrayList<>();
   //      errors.add(equation.getRelativeErrors());
@@ -65,7 +72,6 @@ public class Main extends Application {
   //      names.add("EulerMethod relative error");
         names.add("Euler_KoshiMethod relative error");
 //        names.add("EulerMethodImproved relative error");
-
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
         XYChart chart1 = chartMatlab.getChart(equation.getX(), errors, names);

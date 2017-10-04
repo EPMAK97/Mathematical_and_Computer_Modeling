@@ -21,6 +21,14 @@ public class Equation {
 
     public Equation() { }
 
+    public void Clear() {
+        _list.clear();
+        _AbsoluteErrors.clear();
+        _RelativeErrors.clear();
+        _AnaliticalSolution.clear();
+        _PointsX.clear();
+    }
+
     public double MakeFunction(double x, double y) {
         //return x * x - 2 * y;
         return -r * y + r * Tc;
