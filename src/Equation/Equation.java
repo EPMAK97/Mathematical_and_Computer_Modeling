@@ -20,7 +20,8 @@ public class Equation {
     public Equation() { }
 
     public double MakeFunction(double x, double y) {
-        return x * x - 2 * y;
+        //return x * x - 2 * y;
+        return -r * y + r * Tc;
     }
 
     public Point2D.Double GetPosint(int i) {

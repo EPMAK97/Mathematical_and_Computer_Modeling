@@ -28,15 +28,18 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        launch(args);
+        //launch(args);
 
         Equation equation = new Equation();
-        equation.setR(1.0);
-        equation.setT0(100.0);
-        equation.setTc(24.0);
-        equation.setStep((Equation.getT0() - Equation.getTc()) / 50);
+        Equation.setR(1.0);
+        Equation.setT0(100.0);
+        Equation.setTc(24.0);
+        Equation.setStep((Equation.getT0() - Equation.getTc()) / 50);
 
         Runge_KuttaMethod.Solve(equation, Equation.getStep(), 50, Equation.getT0(), Equation.getTc());
+
+        equation.ShowInConsole();
+
         ArrayList<ArrayList<Double>> errors = new ArrayList<>();
         errors.add(equation.getAbsoluteErrors());
         errors.add(equation.getRelativeErrors());
@@ -74,22 +77,22 @@ public class Main extends Application {
 //            new SwingWrapper(chart).displayChart();
 //        }
 
-        ArrayList<XYChart> charts = new ArrayList<>();
-
-        if (Runge_KuttaMethod.Solve(equation, 0.1, 10, 0, 1)) {
-            XYChart chart = QuickChart.getChart("Runge_KuttaMethod", "X", "Y", "y(x)", Equation.getX(), Equation.getY());
-            charts.add(chart);
-        }
-
-        if (Runge_KuttaMethod.Solve(equation, 0.2, 30, 10, 10)) {
-            XYChart chart = QuickChart.getChart("Runge_KuttaMethod", "X", "Y", "y(x)", Equation.getX(), Equation.getY());
-            charts.add(chart);
-        }
-
-        if (EulerMethod.Solve(equation, 0.1, 50, 0, 1)) {
-            XYChart chart = QuickChart.getChart("EulerMethod", "X", "Y", "y(x)", Equation.getX(), Equation.getY());
-            charts.add(chart);
-        }
-        new SwingWrapper(charts).displayChartMatrix();
+//        ArrayList<XYChart> charts = new ArrayList<>();
+//
+//        if (Runge_KuttaMethod.Solve(equation, 0.1, 10, 0, 1)) {
+//            XYChart chart = QuickChart.getChart("Runge_KuttaMethod", "X", "Y", "y(x)", Equation.getX(), Equation.getY());
+//            charts.add(chart);
+//        }
+//
+//        if (Runge_KuttaMethod.Solve(equation, 0.2, 30, 10, 10)) {
+//            XYChart chart = QuickChart.getChart("Runge_KuttaMethod", "X", "Y", "y(x)", Equation.getX(), Equation.getY());
+//            charts.add(chart);
+//        }
+//
+//        if (EulerMethod.Solve(equation, 0.1, 50, 0, 1)) {
+//            XYChart chart = QuickChart.getChart("EulerMethod", "X", "Y", "y(x)", Equation.getX(), Equation.getY());
+//            charts.add(chart);
+//        }
+//        new SwingWrapper(charts).displayChartMatrix();
     }
 }
