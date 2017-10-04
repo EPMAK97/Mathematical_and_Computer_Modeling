@@ -23,7 +23,7 @@ public class Equation {
 
     public double MakeFunction(double x, double y) {
         //return x * x - 2 * y;
-        return -r * y + r * Tc;
+        return -r * y + r * x;
     }
 
     public Point2D.Double GetPoint(int i) {
