@@ -21,7 +21,7 @@ public class Equation {
 
     public double MakeFunction(double x, double y) {
         //return x * x - 2 * y;
-        return -r * y + r * Tc;
+        return -r * y + r * x;
     }
 
     public Point2D.Double GetPosint(int i) {
@@ -69,7 +69,7 @@ public class Equation {
         for (int i = 0; i < _list.size(); i++) {
             _RelativeErrors.add((Math.abs(_AnaliticalSolution.get(i) - _list.get(i).getY())/_AnaliticalSolution.get(i)));
         }
-        return _AnaliticalSolution;
+        return _RelativeErrors;
     }
 
     public void computeAnalyticalSolution() {
