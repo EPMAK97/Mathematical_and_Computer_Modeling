@@ -15,7 +15,7 @@ public class Runge_KuttaMethod {
 
                 equation.SetPoint(x, y);
                 y += step * (k1 + 2 * k2 + 2 * k3 + k4) / 6;
-                x += step;
+                x -= step;
             }
         }
         catch (Exception e) {
