@@ -16,7 +16,7 @@ public class Equation {
     private static Double r;
 
     private static Double step;
-    
+
     public Equation() { }
 
     public double MakeFunction(double x, double y) {
