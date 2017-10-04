@@ -1,12 +1,9 @@
 package Main;
 
 import Equation.Equation;
-<<<<<<< HEAD
 import Graphics.MatlabChart;
 import Graphics.SomeChart;
-=======
 import NumericalMethods.EulerMethod;
->>>>>>> 18c4e4ee6ce1f2675ebf6732d0011cdaf2327677
 import NumericalMethods.Runge_KuttaMethod;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,14 +13,8 @@ import javafx.stage.Stage;
 import org.knowm.xchart.QuickChart;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
-import sun.jvm.hotspot.jdi.ArrayReferenceImpl;
 
 import java.util.ArrayList;
-import java.util.List;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main extends Application {
 
