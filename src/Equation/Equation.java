@@ -66,7 +66,7 @@ public class Equation {
     }
 
     public ArrayList<Double> getRelativeErrors() {
-        if (_list.isEmpty()) return null;
+        if (_list.size() == 0) return null;
         if (_AnaliticalSolution.isEmpty()) computeAnalyticalSolution();
         for (int i = 0; i < _list.size(); i++) {
             _RelativeErrors.add((Math.abs(_AnaliticalSolution.get(i) - _list.get(i).getY())/_AnaliticalSolution.get(i)));
@@ -136,4 +136,5 @@ public class Equation {
     public void setXFinish(Double _xFinish) {
         xFinish = _xFinish;
     }
+
 }

@@ -22,6 +22,9 @@
                </children></AnchorPane>
         </content>
       </TitledPane>
+       <TitledPane animated="false" layoutX="31.0" layoutY="224.0" prefHeight="173.0" prefWidth="176.0" text="Параметры модели">
+
+       </TitledPane>
       <Button layoutX="373.0" layoutY="305.0" mnemonicParsing="false" text="Button" />
    </children>
 </Pane>

@@ -4,6 +4,8 @@ import Equation.Equation;
 import Graphics.MatlabChart;
 import Graphics.SomeChart;
 import NumericalMethods.EulerMethod;
+import NumericalMethods.EulerMethodImproved;
+import NumericalMethods.Euler_KoshiMethod;
 import NumericalMethods.Runge_KuttaMethod;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -38,20 +40,31 @@ public class Main extends Application {
         equation.setXStart(0.0);
         equation.setXFinish(10.0);
 
-        Runge_KuttaMethod.Solve(equation,50, equation.getXStart(), equation.getXFinish(), equation.getT0());
-
-        equation.ShowInConsole();
+//        Runge_KuttaMethod.Solve(equation,50, equation.getXStart(), equation.getXFinish(), equation.getT0());
 
         ArrayList<ArrayList<Double>> errors = new ArrayList<>();
+  //      errors.add(equation.getRelativeErrors());
+
+    //    EulerMethod.Solve(equation,50, equation.getXStart(), equation.getXFinish(), equation.getT0());
+      //  errors.add(equation.getRelativeErrors());
+
+        Euler_KoshiMethod.Solve(equation,50, equation.getXStart(), equation.getXFinish(), equation.getT0());
+        errors.add(equation.getRelativeErrors());
+//
+//        EulerMethodImproved.Solve(equation,50, equation.getXStart(), equation.getXFinish(), equation.getT0());
+//        errors.add(equation.getRelativeErrors());
+        //equation.ShowInConsole();
+
         //equation.computeAnalyticalSolution();
         //errors.add(equation.getY());
 
-        errors.add(equation.getAbsoluteErrors());
-        errors.add(equation.getRelativeErrors());
 
         ArrayList<String> names = new ArrayList<>();
-        names.add("Absolute error");
-        names.add("Relative error");
+        //names.add("Absolute error");
+   //     names.add("Runge-KutteMethod relative error");
+  //      names.add("EulerMethod relative error");
+        names.add("Euler_KoshiMethod relative error");
+//        names.add("EulerMethodImproved relative error");
 
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
