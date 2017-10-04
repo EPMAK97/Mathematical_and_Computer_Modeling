@@ -15,6 +15,7 @@ import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Main extends Application {
 
@@ -31,16 +32,20 @@ public class Main extends Application {
         //launch(args);
 
         Equation equation = new Equation();
-        Equation.setR(1.0);
-        Equation.setT0(100.0);
-        Equation.setTc(24.0);
-        Equation.setStep((Equation.getT0() - Equation.getTc()) / 50);
+        equation.setR(1.0);
+        equation.setT0(100.0);
+        equation.setTc(24.0);
+        equation.setXStart(0.0);
+        equation.setXFinish(10.0);
 
-        Runge_KuttaMethod.Solve(equation, Equation.getStep(), 50, Equation.getT0(), Equation.getTc());
+        Runge_KuttaMethod.Solve(equation,50, equation.getXStart(), equation.getXFinish(), equation.getT0());
 
         equation.ShowInConsole();
 
         ArrayList<ArrayList<Double>> errors = new ArrayList<>();
+        //equation.computeAnalyticalSolution();
+        //errors.add(equation.getY());
+
         errors.add(equation.getAbsoluteErrors());
         errors.add(equation.getRelativeErrors());
 
@@ -50,7 +55,7 @@ public class Main extends Application {
 
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
-        XYChart chart1 = chartMatlab.getChart(equation.getPointsX(), errors, names);
+        XYChart chart1 = chartMatlab.getChart(equation.getX(), errors, names);
         new SwingWrapper<XYChart>(chart1).displayChart();
 
 //        double[] pointsX = new double[10];

@@ -4,18 +4,20 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class Equation {
-    private static ArrayList<Point2D.Double> _list = new ArrayList<>();
-    private static ArrayList<Double> _AbsoluteErrors = new ArrayList<>();
-    private static ArrayList<Double> _RelativeErrors = new ArrayList<>();
-    private static ArrayList<Double> _AnaliticalSolution = new ArrayList<>();
-    private static ArrayList<Double> _PointsX = new ArrayList<>();
+    private ArrayList<Point2D.Double> _list = new ArrayList<>();
+    private ArrayList<Double> _AbsoluteErrors = new ArrayList<>();
+    private ArrayList<Double> _RelativeErrors = new ArrayList<>();
+    private ArrayList<Double> _AnaliticalSolution = new ArrayList<>();
+    private ArrayList<Double> _PointsX = new ArrayList<>();
 
     // Rename please
-    private static Double T0;
-    private static Double Tc;
-    private static Double r;
+    private Double T0;
+    private Double Tc;
+    private Double r;
 
-    private static Double step;
+    private Double xStart;
+    private Double xFinish;
+    private Double step;
 
     public Equation() { }
 
@@ -24,7 +26,7 @@ public class Equation {
         return -r * y + r * Tc;
     }
 
-    public Point2D.Double GetPosint(int i) {
+    public Point2D.Double GetPoint(int i) {
         return _list.get(i);
     }
 
@@ -38,18 +40,18 @@ public class Equation {
         }
     }
 
-    public static double[] getX() {
-        double[] pointsX = new double[_list.size()];
+    public ArrayList<Double> getX() {
+        ArrayList<Double> pointsX = new ArrayList<Double>();
         for (int i = 0; i < _list.size(); i++) {
-            pointsX[i] = _list.get(i).getX();
+            pointsX.add(_list.get(i).getX());
         }
         return pointsX;
     }
 
-    public static double[] getY() {
-        double[] pointsY = new double[_list.size()];
+    public ArrayList<Double> getY() {
+        ArrayList<Double> pointsY = new ArrayList<Double>();
         for (int i = 0; i < _list.size(); i++) {
-            pointsY[i] = _list.get(i).getY();
+            pointsY.add(_list.get(i).getY());
         }
         return pointsY;
     }
@@ -69,7 +71,7 @@ public class Equation {
         for (int i = 0; i < _list.size(); i++) {
             _RelativeErrors.add((Math.abs(_AnaliticalSolution.get(i) - _list.get(i).getY())/_AnaliticalSolution.get(i)));
         }
-        return _AnaliticalSolution;
+        return _RelativeErrors;
     }
 
     public void computeAnalyticalSolution() {
@@ -80,46 +82,58 @@ public class Equation {
     }
 
     public void computePointsX() {
-        double x = T0;
+        double x = xStart;
         for (int i = 0; i < _list.size(); i++) {
             _PointsX.add(x);
             x += step;
         }
     }
 
-    public ArrayList<Double> getPointsX() {
-        return _PointsX;
-    }
-
-    public static Double getT0() {
+    public Double getT0() {
         return T0;
     }
 
-    public static void setT0(Double t0) {
+    public void setT0(Double t0) {
         T0 = t0;
     }
 
-    public static Double getTc() {
+    public Double getTc() {
         return Tc;
     }
 
-    public static void setTc(Double tc) {
+    public void setTc(Double tc) {
         Tc = tc;
     }
 
-    public static Double getR() {
+    public Double getR() {
         return r;
     }
 
-    public static void setR(Double r) {
-        Equation.r = r;
+    public void setR(Double _r) {
+        r = _r;
     }
 
-    public static Double getStep() {
+    public Double getStep() {
         return step;
     }
 
-    public static void setStep(Double step) {
-        Equation.step = step;
+    public void setStep(Double _step) {
+        step = _step;
+    }
+
+    public Double getXStart() {
+        return xStart;
+    }
+
+    public void setXStart(Double _xStart) {
+        xStart = _xStart;
+    }
+
+    public Double getXFinish() {
+        return xFinish;
+    }
+
+    public void setXFinish(Double _xFinish) {
+        xFinish = _xFinish;
     }
 }
