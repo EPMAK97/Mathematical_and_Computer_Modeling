@@ -13,7 +13,7 @@ public class EulerMethod {
             for (int i = 0; i < countIter; i++) {
                 equation.SetPoint(x, y);
                 y += step * equation.MakeFunction(x, y);
-                x -= step;
+                x += step;
             }
         }
         catch (Exception e) {
