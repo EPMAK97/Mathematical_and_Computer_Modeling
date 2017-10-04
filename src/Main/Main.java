@@ -1,6 +1,7 @@
 package Main;
 
 import Equation.Equation;
+import NumericalMethods.EulerMethod;
 import NumericalMethods.Runge_KuttaMethod;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,19 +12,22 @@ import org.knowm.xchart.QuickChart;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(new Scene(root, 600, 675));
         primaryStage.show();
     }
 
 
     public static void main(String[] args) {
-        //launch(args);
+        launch(args);
 
         Equation equation = new Equation();
 
@@ -45,10 +49,22 @@ public class Main extends Application {
 
         //System.out.println(pointsX.length == 0 ? "AAAA" : "BBBB");
 
+        ArrayList<XYChart> charts = new ArrayList<>();
+
         if (Runge_KuttaMethod.Solve(equation, 0.1, 10, 0, 1)) {
             XYChart chart = QuickChart.getChart("Runge_KuttaMethod", "X", "Y", "y(x)", Equation.getX(), Equation.getY());
-            //jFrame.add(new SwingWrapper(chart1).displayChart());
-            new SwingWrapper(chart).displayChart();
+            charts.add(chart);
         }
+
+        if (Runge_KuttaMethod.Solve(equation, 0.2, 30, 10, 10)) {
+            XYChart chart = QuickChart.getChart("Runge_KuttaMethod", "X", "Y", "y(x)", Equation.getX(), Equation.getY());
+            charts.add(chart);
+        }
+
+        if (EulerMethod.Solve(equation, 0.1, 50, 0, 1)) {
+            XYChart chart = QuickChart.getChart("EulerMethod", "X", "Y", "y(x)", Equation.getX(), Equation.getY());
+            charts.add(chart);
+        }
+        new SwingWrapper(charts).displayChartMatrix();
     }
 }
