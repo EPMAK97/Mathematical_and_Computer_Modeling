@@ -11,7 +11,7 @@ public class Euler_KoshiMethod {
                 equation.SetPoint(x, y);
                 y0 = y + step * equation.MakeFunction(x, y);
                 y += (equation.MakeFunction(x, y) + equation.MakeFunction(x + step, y0)) * step / 2;
-                x += step;
+                x -= step;
             }
         }
         catch (Exception e) {
