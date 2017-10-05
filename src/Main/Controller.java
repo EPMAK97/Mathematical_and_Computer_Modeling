@@ -78,7 +78,7 @@ public class Controller {
         if (checkAnalytical.isSelected()) {
             ArrayList<Double> analiticalSolution = equation.getAnalyticalSolution();
             solutions.add(analiticalSolution);
-            names.add("Analitical solution");
+            names.add("Analytical solution");
         }
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
@@ -121,8 +121,9 @@ public class Controller {
         setDataButtonClick();
         JTable table = ResultsTable.GetTable(equation, 10,equation.getXStart(), equation.getXFinish(), equation.getT0());
         JFrame frame = new JFrame("Table");
-        frame.add(new JScrollPane(table));
-        frame.pack();
+        JScrollPane jpane = new JScrollPane(table);
+        frame.add(jpane);
+        frame.setSize(table.getColumnModel().getTotalColumnWidth() + 20, 500);
         frame.setVisible(true);
     }
 }
