@@ -25,7 +25,8 @@ public class MatlabChart implements SomeChart<XYChart> {
         }
 
         chart.getStyler().setYAxisGroupPosition(1, Styler.YAxisPosition.Right);
-        chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideS);
+        chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideN);
+        chart.getStyler().setYAxisDecimalPattern("0.000");
 
         return chart;
     }

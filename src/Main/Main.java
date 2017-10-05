@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.Chart;
 import javafx.stage.Stage;
 import org.knowm.xchart.QuickChart;
 import org.knowm.xchart.SwingWrapper;
@@ -31,34 +32,41 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        //launch(args);
+        launch(args);
 
         Equation equation = new Equation();
         equation.setR(1.0);
         equation.setT0(100.0);
         equation.setTc(24.0);
         equation.setXStart(0.0);
-        equation.setXFinish(15.0);
+        equation.setXFinish(2.0);
 
-//        Runge_KuttaMethod.Solve(equation,50, equation.getXStart(), equation.getXFinish(), equation.getT0());
+        //Runge_KuttaMethod.Solve(equation,50, equation.getXStart(), equation.getXFinish(), equation.getT0());
 
         //Euler_KoshiMethod.Solve(equation, 50, equation.getXStart(), equation.getXFinish(), equation.getT0());
         //EulerMethod.Solve(equation, 50, equation.getXStart(), equation.getXFinish(), equation.getT0());
         //EulerMethodImproved.Solve(equation, 50, equation.getXStart(), equation.getXFinish(), equation.getT0());
-        Runge_KuttaMethod.Solve(equation, 50, equation.getXStart(), equation.getXFinish(), equation.getT0());
 
-        equation.ShowInConsole();
+        //Runge_KuttaMethod.Solve(equation, 10, equation.getXStart(), equation.getXFinish(), 0.1);
+        //equation.ShowInConsole();
 
-        ArrayList<ArrayList<Double>> errors = new ArrayList<>();
-  //      errors.add(equation.getRelativeErrors());
+        //ArrayList<ArrayList<Double>> errors = new ArrayList<>();
 
-    //    EulerMethod.Solve(equation,50, equation.getXStart(), equation.getXFinish(), equation.getT0());
-      //  errors.add(equation.getRelativeErrors());
+        //errors.add(equation.getRelativeErrors());
+       // errors.add(equation.getAnaliticalSolution());
 
-        Euler_KoshiMethod.Solve(equation,50, equation.getXStart(), equation.getXFinish(), equation.getT0());
-        errors.add(equation.getRelativeErrors());
+        //ArrayList<Double> err = equation.getAnaliticalSolution();
+//        for (Double d : err)
+//            System.out.println(d);
+        //equation.ShowInConsole();
 //
-//        EulerMethodImproved.Solve(equation,50, equation.getXStart(), equation.getXFinish(), equation.getT0());
+//        EulerMethod.Solve(equation,10, equation.getXStart(), equation.getXFinish(), 1.0);
+//        errors.add(equation.getRelativeErrors());
+//
+//        Euler_KoshiMethod.Solve(equation,10, equation.getXStart(), equation.getXFinish(), 1.0);
+//        errors.add(equation.getRelativeErrors());
+//
+//        EulerMethodImproved.Solve(equation,10, equation.getXStart(), equation.getXFinish(), 1.0);
 //        errors.add(equation.getRelativeErrors());
         //equation.ShowInConsole();
 
@@ -66,16 +74,16 @@ public class Main extends Application {
         //errors.add(equation.getY());
 
 
-        ArrayList<String> names = new ArrayList<>();
+        //ArrayList<String> names = new ArrayList<>();
         //names.add("Absolute error");
-   //     names.add("Runge-KutteMethod relative error");
-  //      names.add("EulerMethod relative error");
-        names.add("Euler_KoshiMethod relative error");
+//           names.add("Runge-KutteMethod relative error");
+//        names.add("EulerMethod relative error");
+//        names.add("Euler_KoshiMethod relative error");
 //        names.add("EulerMethodImproved relative error");
 
-        SomeChart<XYChart> chartMatlab = new MatlabChart();
-        XYChart chart1 = chartMatlab.getChart(equation.getX(), errors, names);
-        new SwingWrapper<XYChart>(chart1).displayChart();
+        //SomeChart<XYChart> chartMatlab = new MatlabChart();
+        //XYChart chart1 = chartMatlab.getChart(equation.getX(), errors, names);
+        //new SwingWrapper<XYChart>(chart1).displayChart();
 
 //        double[] pointsX = new double[10];
 //        double[] pointsY = new double[10];

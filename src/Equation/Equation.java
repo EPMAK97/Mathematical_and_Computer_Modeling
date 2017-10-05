@@ -14,6 +14,7 @@ public class Equation {
     private Double T0;
     private Double Tc;
     private Double r;
+    private int N;
 
     private Double xStart;
     private Double xFinish;
@@ -22,16 +23,17 @@ public class Equation {
     public Equation() { }
 
     public void Clear() {
-        _list.clear();
-        _AbsoluteErrors.clear();
-        _RelativeErrors.clear();
-        _AnaliticalSolution.clear();
-        _PointsX.clear();
+        _list = new ArrayList<>();
+        _AbsoluteErrors = new ArrayList<>();
+        _RelativeErrors = new ArrayList<>();
+        _AnaliticalSolution = new ArrayList<>();
+        _PointsX = new ArrayList<>();
     }
 
     public double MakeFunction(double x, double y) {
         //return x * x - 2 * y;
         return -r * y + r * Tc;
+        //return Math.exp(Math.pow(Math.cos(x), 2)) + 1.5 * Math.sin(y) - 2.3 / (Math.pow(x, 2.0) + 0.2);
     }
 
     public Point2D.Double GetPoint(int i) {
@@ -77,7 +79,7 @@ public class Equation {
         if (_list.size() == 0) return null;
         if (_AnaliticalSolution.isEmpty()) computeAnalyticalSolution();
         for (int i = 0; i < _list.size(); i++) {
-            _RelativeErrors.add((Math.abs(_AnaliticalSolution.get(i) - _list.get(i).getY())/_AnaliticalSolution.get(i)));
+            _RelativeErrors.add((Math.abs(_AnaliticalSolution.get(i) - _list.get(i).getY()/_AnaliticalSolution.get(i))));
         }
         return _RelativeErrors;
     }
@@ -86,6 +88,8 @@ public class Equation {
         if (_PointsX.isEmpty()) computePointsX();
         for (int i = 0; i < _list.size(); i++) {
             _AnaliticalSolution.add(Tc + (T0 - Tc) * Math.exp(-r * _PointsX.get(i)));
+            //double x = _PointsX.get(i);
+            //_AnaliticalSolution.add(Math.exp(-2 * x)*3.0/4.0 + x*x*1.0/2.0 - 1.0/2.0*x + 1.0/4.0);
         }
     }
 
@@ -145,4 +149,11 @@ public class Equation {
         xFinish = _xFinish;
     }
 
+    public ArrayList<Double> getAnaliticalSolution() {
+        return _AnaliticalSolution;
+    }
+
+    public int getN() { return N; }
+
+    public void setN(int n) { N = n; }
 }
