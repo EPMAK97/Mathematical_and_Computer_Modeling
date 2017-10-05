@@ -44,6 +44,7 @@ public class Controller {
             equation.setXStart(Double.parseDouble(textX0.getText()));
             equation.setXFinish(Double.parseDouble(textX.getText()));
             equation.setN(Integer.parseInt(textCountIteration.getText()));
+            equation.setStep((equation.getXFinish() - equation.getXStart()) / equation.getN());
 
         } catch (NumberFormatException e) {
 
@@ -55,9 +56,38 @@ public class Controller {
     }
 
     public void getSolveGraphButtonClick() {
+        // ALERT COPY-PASTE (DIS IS BAD(actually code is bad, we need one loop, but we've no time))
+        setDataButtonClick();
+        ArrayList<ArrayList<Double>> solutions = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
+        if (checkEuler.isSelected()) {
+            EulerMethod.Solve(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getT0());
+            solutions.add(equation.getY());
+            names.add("Euler method");
+        }
+        if (checkEulerImproved.isSelected()) {
+            EulerMethodImproved.Solve(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getT0());
+            solutions.add(equation.getY());
+            names.add("Euler improved method");
+        }
+        if (checkRungeKutta.isSelected()) {
+            Runge_KuttaMethod.Solve(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getT0());
+            solutions.add(equation.getY());
+            names.add("Runge-Kutte method");
+        }
+        if (checkAnalytical.isSelected()) {
+            ArrayList<Double> analiticalSolution = equation.getAnalyticalSolution();
+            solutions.add(analiticalSolution);
+            names.add("Analitical solution");
+        }
+
+        SomeChart<XYChart> chartMatlab = new MatlabChart();
+        XYChart chart1 = chartMatlab.getChart(equation.getX(), solutions, names);
+        new SwingWrapper<>(chart1).displayChart();
     }
 
     public void getErrorsButtonClick() {
+        setDataButtonClick();
         ArrayList<ArrayList<Double>> errors = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
         if (checkEuler.isSelected()) {
@@ -81,11 +111,6 @@ public class Controller {
             names.add("Runge-Kutte relative error");
             names.add("Runge-Kutte absolute error");
         }
-        if (checkAnalytical.isSelected()) {
-            ArrayList<Double> analiticalSolution = equation.getAnaliticalSolution();
-            errors.add(analiticalSolution);
-            names.add("Analitical solution");
-        }
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
         XYChart chart1 = chartMatlab.getChart(equation.getX(), errors, names);
@@ -93,6 +118,7 @@ public class Controller {
     }
 
     public void getTableButtonClick() {
+        setDataButtonClick();
         JTable table = ResultsTable.GetTable(equation, 10,equation.getXStart(), equation.getXFinish(), equation.getT0());
         JFrame frame = new JFrame("Table");
         frame.add(new JScrollPane(table));

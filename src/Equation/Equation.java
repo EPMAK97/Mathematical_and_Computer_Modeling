@@ -49,6 +49,7 @@ public class Equation {
     }
 
     public ArrayList<Double> getX() {
+        if (_list.isEmpty()) return computePointsX();
         ArrayList<Double> pointsX = new ArrayList<Double>();
         for (int i = 0; i < _list.size(); i++) {
             pointsX.add(_list.get(i).getX());
@@ -83,19 +84,22 @@ public class Equation {
     }
 
     public ArrayList<Double> getAnalyticalSolution() {
+        if (!_AnaliticalSolution.isEmpty()) return _AnaliticalSolution;
         if (_PointsX.isEmpty()) computePointsX();
-        for (int i = 0; i < _list.size(); i++) {
+        for (int i = 0; i < N; i++) {
             _AnaliticalSolution.add(Tc + (T0 - Tc) * Math.exp(-r * _PointsX.get(i)));
         }
         return _AnaliticalSolution;
     }
 
-    public void computePointsX() {
+    public ArrayList<Double> computePointsX() {
+        _PointsX.clear();
         double x = xStart;
-        for (int i = 0; i < _list.size(); i++) {
+        for (int i = 0; i < N; i++) {
             _PointsX.add(x);
             x += step;
         }
+        return _PointsX;
     }
 
     public Double getT0() {
@@ -144,10 +148,6 @@ public class Equation {
 
     public void setXFinish(Double _xFinish) {
         xFinish = _xFinish;
-    }
-
-    public ArrayList<Double> getAnaliticalSolution() {
-        return _AnaliticalSolution;
     }
 
     public int getN() { return N; }
