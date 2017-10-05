@@ -10,7 +10,7 @@ import javax.swing.*;
 public class ResultsTable {
     public static JTable GetTable(Equation equation, int countIter, double x0, double x1, double y0) {
         String[] columns = new String[] {
-                "k", "t", "T_a", "T_E1", "error_E1", "T_E2", "error_E2", "T_RK", "error_RK"
+                "k", "time", "T_analytical", "T_Euler_1", "error_Euler_1", "T_Euler_2", "error_Euler_2", "T_Runge-Kutte", "error_Runge-Kutte"
         };
 
         EulerMethod.Solve(equation, countIter, x0, x1, y0);
