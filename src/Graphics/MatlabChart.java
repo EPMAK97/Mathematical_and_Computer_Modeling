@@ -12,12 +12,14 @@ public class MatlabChart implements SomeChart<XYChart> {
     @Override
     public XYChart getChart(ArrayList<Double> pointsX, ArrayList<ArrayList<Double>> pointsY, ArrayList<String> names) {
         // Create Chart
-        XYChart chart = new XYChartBuilder().width(800).height(600).theme(Styler.ChartTheme.Matlab).title("Matlab Theme").xAxisTitle("X").yAxisTitle("Y").build();
+        XYChart chart = new XYChartBuilder().width(800).height(600).theme(Styler.ChartTheme.Matlab).title("Relative errors").xAxisTitle("X").yAxisTitle("Y").build();
 
         // Customize Chart
         chart.getStyler().setPlotGridLinesVisible(false);
         chart.getStyler().setXAxisTickMarkSpacingHint(100);
         chart.getStyler().setToolTipsEnabled(true);
+        //chart.getStyler().setYAxisLogarithmic(true);
+        //chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideN);
 
         for (int i = 0; i < pointsY.size(); i++) {
             XYSeries series = chart.addSeries(names.get(i), pointsX, pointsY.get(i));
@@ -25,7 +27,7 @@ public class MatlabChart implements SomeChart<XYChart> {
         }
 
         chart.getStyler().setYAxisGroupPosition(1, Styler.YAxisPosition.Right);
-        chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideS);
+        chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideN);
 
         return chart;
     }

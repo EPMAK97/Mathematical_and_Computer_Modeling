@@ -22,16 +22,17 @@ public class Equation {
     public Equation() { }
 
     public void Clear() {
-        _list.clear();
-        _AbsoluteErrors.clear();
-        _RelativeErrors.clear();
-        _AnaliticalSolution.clear();
-        _PointsX.clear();
+        _list = new ArrayList<>();
+        _AbsoluteErrors = new ArrayList<>();
+        _RelativeErrors = new ArrayList<>();
+        _AnaliticalSolution = new ArrayList<>();
+        _PointsX = new ArrayList<>();
     }
 
     public double MakeFunction(double x, double y) {
         //return x * x - 2 * y;
         return -r * y + r * Tc;
+        //return Math.exp(Math.cos(x) * Math.cos(x)) + 1.5 * Math.sin(y) - 2.3 / (x * x + 0.2);
     }
 
     public Point2D.Double GetPoint(int i) {
@@ -66,7 +67,7 @@ public class Equation {
 
     public ArrayList<Double> getAbsoluteErrors() {
         if (_list.isEmpty()) return null;
-        if (_AnaliticalSolution.isEmpty()) computeAnalyticalSolution();
+        if (_AnaliticalSolution.isEmpty()) getAnalyticalSolution();
         for (int i = 0; i < _list.size(); i++) {
             _AbsoluteErrors.add((Math.abs(_AnaliticalSolution.get(i) - _list.get(i).getY())));
         }
@@ -75,18 +76,19 @@ public class Equation {
 
     public ArrayList<Double> getRelativeErrors() {
         if (_list.size() == 0) return null;
-        if (_AnaliticalSolution.isEmpty()) computeAnalyticalSolution();
+        if (_AnaliticalSolution.isEmpty()) getAnalyticalSolution();
         for (int i = 0; i < _list.size(); i++) {
-            _RelativeErrors.add((Math.abs(_AnaliticalSolution.get(i) - _list.get(i).getY())/_AnaliticalSolution.get(i)));
+            _RelativeErrors.add(Math.abs((_AnaliticalSolution.get(i) - _list.get(i).getY())/_AnaliticalSolution.get(i)));
         }
         return _RelativeErrors;
     }
 
-    public void computeAnalyticalSolution() {
+    public ArrayList<Double> getAnalyticalSolution() {
         if (_PointsX.isEmpty()) computePointsX();
         for (int i = 0; i < _list.size(); i++) {
             _AnaliticalSolution.add(Tc + (T0 - Tc) * Math.exp(-r * _PointsX.get(i)));
         }
+        return _AnaliticalSolution;
     }
 
     public void computePointsX() {

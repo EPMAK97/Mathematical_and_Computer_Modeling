@@ -7,15 +7,19 @@ import NumericalMethods.EulerMethod;
 import NumericalMethods.EulerMethodImproved;
 import NumericalMethods.Euler_KoshiMethod;
 import NumericalMethods.Runge_KuttaMethod;
+import ResultsTable.ResultsTable;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import org.knowm.xchart.QuickChart;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 
+import javax.swing.*;
+import javax.swing.table.TableCellEditor;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -31,92 +35,42 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        //launch(args);
+        launch(args);
 
         Equation equation = new Equation();
         equation.setR(1.0);
         equation.setT0(100.0);
-        equation.setTc(24.0);
-        equation.setXStart(0.0);
+        equation.setTc(20.0);
+        equation.setXStart(0.1);
         equation.setXFinish(15.0);
 
-//        Runge_KuttaMethod.Solve(equation,50, equation.getXStart(), equation.getXFinish(), equation.getT0());
-
-        //Euler_KoshiMethod.Solve(equation, 50, equation.getXStart(), equation.getXFinish(), equation.getT0());
-        //EulerMethod.Solve(equation, 50, equation.getXStart(), equation.getXFinish(), equation.getT0());
-        //EulerMethodImproved.Solve(equation, 50, equation.getXStart(), equation.getXFinish(), equation.getT0());
-        Runge_KuttaMethod.Solve(equation, 50, equation.getXStart(), equation.getXFinish(), equation.getT0());
-
-        equation.ShowInConsole();
+        JTable table = ResultsTable.GetTable(equation, 10,equation.getXStart(), equation.getXFinish(), equation.getT0());
+        JFrame frame = new JFrame("Table");
+        frame.add(new JScrollPane(table));
+        frame.pack();
+        frame.setVisible(true);
 
         ArrayList<ArrayList<Double>> errors = new ArrayList<>();
-  //      errors.add(equation.getRelativeErrors());
-
-    //    EulerMethod.Solve(equation,50, equation.getXStart(), equation.getXFinish(), equation.getT0());
-      //  errors.add(equation.getRelativeErrors());
-
-        Euler_KoshiMethod.Solve(equation,50, equation.getXStart(), equation.getXFinish(), equation.getT0());
-        errors.add(equation.getRelativeErrors());
-//
-//        EulerMethodImproved.Solve(equation,50, equation.getXStart(), equation.getXFinish(), equation.getT0());
-//        errors.add(equation.getRelativeErrors());
-        //equation.ShowInConsole();
-
-        //equation.computeAnalyticalSolution();
-        //errors.add(equation.getY());
-
-
         ArrayList<String> names = new ArrayList<>();
-        //names.add("Absolute error");
-   //     names.add("Runge-KutteMethod relative error");
-  //      names.add("EulerMethod relative error");
-        names.add("Euler_KoshiMethod relative error");
-//        names.add("EulerMethodImproved relative error");
+
+        EulerMethodImproved.Solve(equation,50, equation.getXStart(), equation.getXFinish(), equation.getT0());
+        //errors.add(equation.getRelativeErrors());
+        //names.add("Runge_Kutta");
+//
+        //EulerMethodImproved.Solve(equation, 40, equation.getXStart(), equation.getXFinish(), equation.getT0());
+        //errors.add(equation.getRelativeErrors());
+        //names.add("Euler_Improved");
+//
+        //Euler_KoshiMethod.Solve(equation, 40, equation.getXStart(), equation.getXFinish(), equation.getT0());
+        //errors.add(equation.getRelativeErrors());
+        //names.add("Euler_Koshi");
+//
+        //EulerMethod.Solve(equation, 40, equation.getXStart(), equation.getXFinish(), equation.getT0());
+        //errors.add(equation.getRelativeErrors());
+        //names.add("Euler");
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
         XYChart chart1 = chartMatlab.getChart(equation.getX(), errors, names);
         new SwingWrapper<XYChart>(chart1).displayChart();
-
-//        double[] pointsX = new double[10];
-//        double[] pointsY = new double[10];
-
-//        double step = 0.1;
-//        for (int i = 0; i < 10; i++, step += 0.1) {
-//            pointsX[i] = step;
-//            System.out.println(pointsX[i]);
-//            pointsY[i] = 3/4 * Math.expm1(- 2 * step)
-//                    + 1 / 2 * step * step - 1 / 2 * step + 1 / 4;
-//            System.out.println(pointsY[i]);
-//
-//        }
-
-        //XYChart chart1 = QuickChart.getChart("Runge_KuttaMethod", "X", "Y", "y(x)", pointsX, pointsY);
-        //new SwingWrapper(chart1).displayChart();
-
-        //System.out.println(pointsX.length == 0 ? "AAAA" : "BBBB");
-//
-//        if (Runge_KuttaMethod.Solve(equation, 0.1, 10, 0, 1)) {
-//            XYChart chart = QuickChart.getChart("Runge_KuttaMethod", "X", "Y", "y(x)", Equation.getX(), Equation.getY());
-//            //jFrame.add(new SwingWrapper(chart1).displayChart());
-//            new SwingWrapper(chart).displayChart();
-//        }
-
-//        ArrayList<XYChart> charts = new ArrayList<>();
-//
-//        if (Runge_KuttaMethod.Solve(equation, 0.1, 10, 0, 1)) {
-//            XYChart chart = QuickChart.getChart("Runge_KuttaMethod", "X", "Y", "y(x)", Equation.getX(), Equation.getY());
-//            charts.add(chart);
-//        }
-//
-//        if (Runge_KuttaMethod.Solve(equation, 0.2, 30, 10, 10)) {
-//            XYChart chart = QuickChart.getChart("Runge_KuttaMethod", "X", "Y", "y(x)", Equation.getX(), Equation.getY());
-//            charts.add(chart);
-//        }
-//
-//        if (EulerMethod.Solve(equation, 0.1, 50, 0, 1)) {
-//            XYChart chart = QuickChart.getChart("EulerMethod", "X", "Y", "y(x)", Equation.getX(), Equation.getY());
-//            charts.add(chart);
-//        }
-//        new SwingWrapper(charts).displayChartMatrix();
     }
 }
