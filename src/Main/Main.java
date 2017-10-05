@@ -43,16 +43,10 @@ public class Main extends Application {
         equation.setXStart(0.0);
         equation.setXFinish(2.0);
 
-        JTable table = ResultsTable.GetTable(equation, 10,equation.getXStart(), equation.getXFinish(), equation.getT0());
-        JFrame frame = new JFrame("Table");
-        frame.add(new JScrollPane(table));
-        frame.pack();
-        frame.setVisible(true);
-
-        ArrayList<ArrayList<Double>> errors = new ArrayList<>();
-        ArrayList<String> names = new ArrayList<>();
-
-        EulerMethodImproved.Solve(equation,50, equation.getXStart(), equation.getXFinish(), equation.getT0());
+        //ArrayList<ArrayList<Double>> errors = new ArrayList<>();
+        //ArrayList<String> names = new ArrayList<>();
+//
+        //EulerMethodImproved.Solve(equation,50, equation.getXStart(), equation.getXFinish(), equation.getT0());
         //errors.add(equation.getRelativeErrors());
         //names.add("Runge_Kutta");
 //
@@ -68,8 +62,8 @@ public class Main extends Application {
         //errors.add(equation.getRelativeErrors());
         //names.add("Euler");
 
-        SomeChart<XYChart> chartMatlab = new MatlabChart();
-        XYChart chart1 = chartMatlab.getChart(equation.getX(), errors, names);
-        new SwingWrapper<XYChart>(chart1).displayChart();
+        //SomeChart<XYChart> chartMatlab = new MatlabChart();
+        //XYChart chart1 = chartMatlab.getChart(equation.getX(), errors, names);
+        //new SwingWrapper<XYChart>(chart1).displayChart();
     }
 }
