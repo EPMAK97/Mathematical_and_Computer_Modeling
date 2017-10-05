@@ -10,6 +10,7 @@ import ResultsTable.ResultsTable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 
@@ -52,7 +53,6 @@ public class Controller {
 
             System.out.println("WRONG DATA");
         }
-        System.out.println(equation.getR());
     }
 
     public void getSolveGraphButtonClick() {

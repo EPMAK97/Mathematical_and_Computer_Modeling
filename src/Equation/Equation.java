@@ -10,7 +10,6 @@ public class Equation {
     private ArrayList<Double> _AnaliticalSolution = new ArrayList<>();
     private ArrayList<Double> _PointsX = new ArrayList<>();
 
-    // Rename please
     private Double T0;
     private Double Tc;
     private Double r;
