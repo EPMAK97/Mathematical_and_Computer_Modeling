@@ -12,7 +12,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import org.knowm.xchart.QuickChart;
 import org.knowm.xchart.SwingWrapper;
@@ -40,9 +39,9 @@ public class Main extends Application {
         Equation equation = new Equation();
         equation.setR(1.0);
         equation.setT0(100.0);
-        equation.setTc(20.0);
-        equation.setXStart(0.1);
-        equation.setXFinish(15.0);
+        equation.setTc(24.0);
+        equation.setXStart(0.0);
+        equation.setXFinish(2.0);
 
         JTable table = ResultsTable.GetTable(equation, 10,equation.getXStart(), equation.getXFinish(), equation.getT0());
         JFrame frame = new JFrame("Table");

@@ -12,15 +12,14 @@ public class Runge_KuttaMethod {
 
             for (int i = 0; i < countIter; i++)
             {
+                equation.SetPoint(x, y);
                 double k1 = equation.MakeFunction(x, y);
                 double k2 = equation.MakeFunction(x + step / 2, y + step * k1 / 2);
                 double k3 = equation.MakeFunction(x + step / 2, y + step * k2 / 2);
                 double k4 = equation.MakeFunction(x + step, y + step * k3);
 
-                //equation.SetPoint(x, y);
                 y += step * (k1 + 2 * k2 + 2 * k3 + k4) / 6;
                 x += step;
-                equation.SetPoint(x, y);
             }
         }
         catch (Exception e) {

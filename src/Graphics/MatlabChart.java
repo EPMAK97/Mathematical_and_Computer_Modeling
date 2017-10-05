@@ -19,7 +19,6 @@ public class MatlabChart implements SomeChart<XYChart> {
         chart.getStyler().setXAxisTickMarkSpacingHint(100);
         chart.getStyler().setToolTipsEnabled(true);
         //chart.getStyler().setYAxisLogarithmic(true);
-        //chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideN);
 
         for (int i = 0; i < pointsY.size(); i++) {
             XYSeries series = chart.addSeries(names.get(i), pointsX, pointsY.get(i));
@@ -28,6 +27,7 @@ public class MatlabChart implements SomeChart<XYChart> {
 
         chart.getStyler().setYAxisGroupPosition(1, Styler.YAxisPosition.Right);
         chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideN);
+        chart.getStyler().setYAxisDecimalPattern("0.000");
 
         return chart;
     }
