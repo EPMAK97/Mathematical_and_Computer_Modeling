@@ -28,7 +28,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 600, 675));
+        primaryStage.setScene(new Scene(root, 450, 400));
         primaryStage.show();
     }
 
@@ -36,12 +36,12 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
 
-        Equation equation = new Equation();
-        equation.setR(1.0);
-        equation.setT0(100.0);
-        equation.setTc(24.0);
-        equation.setXStart(0.0);
-        equation.setXFinish(2.0);
+//        Equation equation = new Equation();
+//        equation.setR(1.0);
+//        equation.setT0(100.0);
+//        equation.setTc(24.0);
+//        equation.setXStart(0.0);
+//        equation.setXFinish(2.0);
 
         //ArrayList<ArrayList<Double>> errors = new ArrayList<>();
         //ArrayList<String> names = new ArrayList<>();

@@ -7,6 +7,7 @@ import NumericalMethods.EulerMethod;
 import NumericalMethods.EulerMethodImproved;
 import NumericalMethods.Runge_KuttaMethod;
 import ResultsTable.ResultsTable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
@@ -47,12 +48,12 @@ public class Controller {
             equation.setStep((equation.getXFinish() - equation.getXStart()) / equation.getN());
 
         } catch (NumberFormatException e) {
-
-            // Надо добавить окно которое выводит сообщения об ошибках на форму1!!!!!
-
-            System.out.println("WRONG DATA");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Введены некорректные данные, пожалуйста, проверьте");
+            alert.showAndWait();
         }
-        System.out.println(equation.getR());
     }
 
     public void getSolveGraphButtonClick() {
