@@ -6,12 +6,14 @@ import Graphics.SomeChart;
 import NumericalMethods.EulerMethod;
 import NumericalMethods.EulerMethodImproved;
 import NumericalMethods.Runge_KuttaMethod;
+import ResultsTable.ResultsTable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class Controller {
@@ -85,13 +87,16 @@ public class Controller {
             names.add("Analitical solution");
         }
 
-
         SomeChart<XYChart> chartMatlab = new MatlabChart();
         XYChart chart1 = chartMatlab.getChart(equation.getX(), errors, names);
         new SwingWrapper<>(chart1).displayChart();
     }
 
     public void getTableButtonClick() {
-
+        JTable table = ResultsTable.GetTable(equation, 10,equation.getXStart(), equation.getXFinish(), equation.getT0());
+        JFrame frame = new JFrame("Table");
+        frame.add(new JScrollPane(table));
+        frame.pack();
+        frame.setVisible(true);
     }
 }
