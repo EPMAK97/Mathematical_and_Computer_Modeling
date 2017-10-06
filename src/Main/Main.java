@@ -17,6 +17,7 @@ import org.knowm.xchart.QuickChart;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 
+import javax.security.auth.login.LoginContext;
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
 import java.util.ArrayList;
@@ -27,8 +28,10 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 450, 400));
+        primaryStage.setTitle("Математическое и компьютерное моделирование");
+        Scene scene = new Scene(root, 450, 400);
+        scene.getStylesheets().add("Form.css");
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
