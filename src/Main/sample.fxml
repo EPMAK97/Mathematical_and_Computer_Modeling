@@ -10,26 +10,26 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main.Controller">
    <children>
-      <TitledPane animated="false" layoutX="30.0" layoutY="24.0" prefHeight="280.0" prefWidth="170.0" text="Параметры модели">
+      <TitledPane animated="false" layoutX="30.0" layoutY="24.0" prefHeight="280.0" prefWidth="295.0" text="Параметры модели">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="178.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="254.0" prefWidth="291.0">
                <children>
-                  <Label layoutX="10.0" layoutY="14.0" text="T0" />
-                  <TextField fx:id="textT0" layoutX="28.0" layoutY="10.0" prefHeight="25.0" prefWidth="106.0" text="100" />
-                  <Label layoutX="10.0" layoutY="52.0" text="Tc" />
-                  <TextField fx:id="textTc" layoutX="28.0" layoutY="48.0" prefHeight="25.0" prefWidth="106.0" text="24" />
-                  <TextField fx:id="textR" layoutX="29.0" layoutY="88.0" prefWidth="105.0" text="1" />
-                   <Label layoutX="17.0" layoutY="92.0" text="r" />
-                   <TextField fx:id="textCountIteration" layoutX="29.0" layoutY="128.0" prefWidth="105.0" text="10" />
-                   <Label layoutX="16.0" layoutY="132.0" text="N" />
-                   <TextField fx:id="textX0" layoutX="29.0" layoutY="168.0" prefWidth="105.0" text="0" />
-                   <Label layoutX="13.0" layoutY="172.0" text="t0" />
-                   <TextField fx:id="textX" layoutX="29.0" layoutY="208.0" prefWidth="105.0" text="10" />
-                   <Label layoutX="16.0" layoutY="212.0" text="t" />
+                  <Label layoutX="17.0" layoutY="18.0" text="Начальная температура" />
+                  <TextField fx:id="textT0" layoutX="167.0" layoutY="14.0" prefHeight="25.0" prefWidth="106.0" text="100" />
+                  <Label layoutX="17.0" layoutY="56.0" text="Температура окр. среды" />
+                  <TextField fx:id="textTc" layoutX="167.0" layoutY="52.0" prefHeight="25.0" prefWidth="106.0" text="24" />
+                  <TextField fx:id="textR" layoutX="168.0" layoutY="92.0" prefWidth="105.0" text="1" />
+                   <Label layoutX="17.0" layoutY="96.0" text="Коэффициент остывания" />
+                   <TextField fx:id="textCountIteration" layoutX="168.0" layoutY="132.0" prefWidth="105.0" text="10" />
+                   <Label layoutX="17.0" layoutY="136.0" text="Число шагов" />
+                   <TextField fx:id="textX0" layoutX="168.0" layoutY="172.0" prefWidth="105.0" text="0" />
+                   <Label layoutX="17.0" layoutY="176.0" text="Начальное время" />
+                   <TextField fx:id="textX" layoutX="168.0" layoutY="212.0" prefWidth="105.0" text="10" />
+                   <Label layoutX="17.0" layoutY="216.0" text="Конечное время" />
                </children></AnchorPane>
         </content>
       </TitledPane>
-       <TitledPane animated="false" layoutX="200.0" layoutY="24.0" prefHeight="280.0" prefWidth="220.0" text="Методы решения">
+       <TitledPane animated="false" layoutX="325.0" layoutY="24.0" prefHeight="280.0" prefWidth="220.0" text="Методы решения">
            <content>
                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="178.0">
                    <children>
@@ -40,9 +40,9 @@
                    </children></AnchorPane>
            </content>
        </TitledPane>
-       <Button fx:id="getSolveGraph" layoutX="57.0" layoutY="316.0" mnemonicParsing="false" onAction="#getSolveGraphButtonClick" prefHeight="25.0" prefWidth="116.0" text="График решения" />
-       <Button fx:id="getErrorsGraph" layoutX="212.0" layoutY="349.0" mnemonicParsing="false" onAction="#getRelErrorsButtonClick" text="График относительных ошибок  " textAlignment="CENTER" />
-       <Button fx:id="getTable" alignment="CENTER" contentDisplay="CENTER" layoutX="57.0" layoutY="349.0" mnemonicParsing="false" onAction="#getTableButtonClick" prefHeight="25.0" prefWidth="116.0" text="Таблица             " textAlignment="CENTER" />
-      <Button fx:id="getErrorsGraph1" layoutX="212.0" layoutY="316.0" mnemonicParsing="false" onAction="#getAbsErrorsButtonClick" prefHeight="25.0" prefWidth="196.0" text="График абсолютных ошибок  " textAlignment="CENTER" />
+       <Button fx:id="getSolveGraph" layoutX="30.0" layoutY="312.0" mnemonicParsing="false" onAction="#getSolveGraphButtonClick" prefHeight="25.0" prefWidth="116.0" text="График решения" />
+       <Button fx:id="getErrorsGraph" layoutX="164.0" layoutY="345.0" mnemonicParsing="false" onAction="#getRelErrorsButtonClick" text="График относительных ошибок  " textAlignment="CENTER" />
+       <Button fx:id="getTable" alignment="CENTER" contentDisplay="CENTER" layoutX="30.0" layoutY="345.0" mnemonicParsing="false" onAction="#getTableButtonClick" prefHeight="25.0" prefWidth="116.0" text="Таблица             " textAlignment="CENTER" />
+      <Button fx:id="getErrorsGraph1" layoutX="164.0" layoutY="312.0" mnemonicParsing="false" onAction="#getAbsErrorsButtonClick" prefHeight="25.0" prefWidth="196.0" text="График абсолютных ошибок  " textAlignment="CENTER" />
    </children>
 </Pane>

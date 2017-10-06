@@ -1,6 +1,7 @@
 package Main;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,8 +13,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Mathematical and Computer Modeling");
-        primaryStage.setScene(new Scene(root, 450, 400));
+        primaryStage.setScene(new Scene(root, 580, 400));
         primaryStage.show();
+        primaryStage.setOnCloseRequest(e -> Platform.exit());
     }
 
     public static void main(String[] args) {
