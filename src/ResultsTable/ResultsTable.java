@@ -19,26 +19,36 @@ public class ResultsTable {
         String formatErr = "%.8e";
 
         int sz = equation.getX().size();
-        Object[][] data = new Object[sz][columns.length];
+        Object[][] data = new Object[sz + 2][columns.length];
+
+        Double sum = 0.0;
         for (int i = 0; i < sz; ++i) {
             data[i][0] = i;
             data[i][1] = String.format("%.3f", x0 + i * equation.getStep());
             data[i][2] = String.format(formatSol, equation.getAnalyticalSolution().get(i));
             data[i][3] = String.format(formatSol, equation.getY().get(i));
             data[i][4] = String.format(formatErr, equation.getAbsoluteErrors().get(i));
+            sum += equation.getAbsoluteErrors().get(i);
         }
+        data[sz + 1][4] = String.format(formatErr, sum / sz);
 
         EulerMethodImproved.Solve(equation, countIter, x0, x1, y0);
+        sum = 0.0;
         for (int i = 0; i < sz; ++i) {
             data[i][5] = String.format(formatSol, equation.getY().get(i));
             data[i][6] = String.format(formatErr, equation.getAbsoluteErrors().get(i));
+            sum += equation.getAbsoluteErrors().get(i);
         }
+        data[sz + 1][6] = String.format(formatErr, sum / sz);
 
         Runge_KuttaMethod.Solve(equation, countIter, x0, x1, y0);
+        sum = 0.0;
         for (int i = 0; i < sz; ++i) {
             data[i][7] = String.format(formatSol, equation.getY().get(i));
             data[i][8] = String.format(formatErr, equation.getAbsoluteErrors().get(i));
+            sum += equation.getAbsoluteErrors().get(i);
         }
+        data[sz + 1][8] = String.format(formatErr, sum / sz);
 
         JTable table = new JTable(data, columns);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);

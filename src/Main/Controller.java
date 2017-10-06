@@ -144,7 +144,7 @@ public class Controller {
 
     public void getTableButtonClick() {
         if (!setData()) return;
-        JTable table = ResultsTable.GetTable(equation, 10,equation.getXStart(), equation.getXFinish(), equation.getT0());
+        JTable table = ResultsTable.GetTable(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getT0());
         JFrame frame = new JFrame("Table");
         frame.add(new JScrollPane(table));
         frame.setSize(table.getColumnModel().getTotalColumnWidth() + 20, 500);

@@ -14,10 +14,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("Математическое и компьютерное моделирование");
-        Scene scene = new Scene(root, 450, 400);
-        scene.getStylesheets().add("Form.css");
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Mathematical and Computer Modeling");
         primaryStage.setScene(new Scene(root, 580, 400));
         primaryStage.show();
         primaryStage.setOnCloseRequest(e -> Platform.exit());

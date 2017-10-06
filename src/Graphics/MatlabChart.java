@@ -21,14 +21,18 @@ public class MatlabChart implements SomeChart<XYChart> {
         chart.getStyler().setToolTipsEnabled(true);
         //chart.getStyler().setYAxisLogarithmic(true);
 
+        ArrayList<Double> px = new ArrayList<>(pointsX);
+        px.remove(0);
         for (int i = 0; i < pointsY.size(); i++) {
-            XYSeries series = chart.addSeries(names.get(i), pointsX, pointsY.get(i));
+            ArrayList<Double> py = new ArrayList<>(pointsY.get(i));
+            py.remove(0);
+            XYSeries series = chart.addSeries(names.get(i), px, py);
             series.setMarker(SeriesMarkers.NONE);
         }
 
         chart.getStyler().setYAxisGroupPosition(1, Styler.YAxisPosition.Right);
         chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideN);
-        chart.getStyler().setYAxisDecimalPattern("0.0000");
+        //chart.getStyler().setYAxisDecimalPattern("0.0000");
 
         return chart;
     }

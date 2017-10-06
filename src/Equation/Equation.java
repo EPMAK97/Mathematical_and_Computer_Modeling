@@ -85,7 +85,7 @@ public class Equation {
     public ArrayList<Double> getAnalyticalSolution() {
         if (!_AnaliticalSolution.isEmpty()) return _AnaliticalSolution;
         if (_PointsX.isEmpty()) computePointsX();
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i <= N; i++) {
             _AnaliticalSolution.add(Tc + (T0 - Tc) * Math.exp(-r * _PointsX.get(i)));
         }
         return _AnaliticalSolution;
@@ -94,7 +94,7 @@ public class Equation {
     public ArrayList<Double> computePointsX() {
         _PointsX.clear();
         double x = xStart;
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i <= N; i++) {
             _PointsX.add(x);
             x += step;
         }

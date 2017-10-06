@@ -9,10 +9,10 @@ public class Runge_KuttaMethod {
             double step = (x1 - x) / countIter;
             equation.setStep(step);
             equation.Clear();
+            equation.SetPoint(x, y);
 
             for (int i = 0; i < countIter; i++)
             {
-                equation.SetPoint(x, y);
                 double k1 = equation.MakeFunction(x, y);
                 double k2 = equation.MakeFunction(x + step / 2, y + step * k1 / 2);
                 double k3 = equation.MakeFunction(x + step / 2, y + step * k2 / 2);
@@ -20,6 +20,7 @@ public class Runge_KuttaMethod {
 
                 y += step * (k1 + 2 * k2 + 2 * k3 + k4) / 6;
                 x += step;
+                equation.SetPoint(x, y);
             }
         }
         catch (Exception e) {
