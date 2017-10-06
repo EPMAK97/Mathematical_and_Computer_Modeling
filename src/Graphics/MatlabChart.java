@@ -6,7 +6,6 @@ import org.knowm.xchart.XYSeries;
 import org.knowm.xchart.style.Styler;
 import org.knowm.xchart.style.markers.SeriesMarkers;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
 public class MatlabChart implements SomeChart<XYChart> {

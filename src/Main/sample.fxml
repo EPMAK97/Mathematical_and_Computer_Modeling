@@ -5,12 +5,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main.Controller">
    <children>
-      <TitledPane animated="false" layoutX="30.0" layoutY="24.0" prefHeight="280.0" prefWidth="295.0" text="Параметры модели">
+      <TitledPane animated="false" layoutX="30.0" layoutY="24.0" prefHeight="275.0" prefWidth="295.0" text="Параметры модели">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="254.0" prefWidth="291.0">
                <children>
@@ -29,7 +30,7 @@
                </children></AnchorPane>
         </content>
       </TitledPane>
-       <TitledPane animated="false" layoutX="325.0" layoutY="24.0" prefHeight="280.0" prefWidth="220.0" text="Методы решения">
+       <TitledPane animated="false" layoutX="325.0" layoutY="24.0" prefHeight="275.0" prefWidth="220.0" text="Методы решения">
            <content>
                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="178.0">
                    <children>
@@ -43,6 +44,11 @@
        <Button fx:id="getSolveGraph" layoutX="30.0" layoutY="312.0" mnemonicParsing="false" onAction="#getSolveGraphButtonClick" prefHeight="25.0" prefWidth="116.0" text="График решения" />
        <Button fx:id="getErrorsGraph" layoutX="164.0" layoutY="345.0" mnemonicParsing="false" onAction="#getRelErrorsButtonClick" text="График относительных ошибок  " textAlignment="CENTER" />
        <Button fx:id="getTable" alignment="CENTER" contentDisplay="CENTER" layoutX="30.0" layoutY="345.0" mnemonicParsing="false" onAction="#getTableButtonClick" prefHeight="25.0" prefWidth="116.0" text="Таблица             " textAlignment="CENTER" />
-      <Button fx:id="getErrorsGraph1" layoutX="164.0" layoutY="312.0" mnemonicParsing="false" onAction="#getAbsErrorsButtonClick" prefHeight="25.0" prefWidth="196.0" text="График абсолютных ошибок  " textAlignment="CENTER" />
+       <Button fx:id="getErrorsGraph1" layoutX="164.0" layoutY="312.0" mnemonicParsing="false" onAction="#getAbsErrorsButtonClick" prefHeight="25.0" prefWidth="196.0" text="График абсолютных ошибок  " textAlignment="CENTER" />
+       <Button fx:id="getInfo" layoutX="382.0" layoutY="312.0" mnemonicParsing="false" onAction="#getInfoClick" prefHeight="25.0" prefWidth="163.0" text="Информация о модели" textAlignment="CENTER" />
+      <Pane fx:id="isClickedInfoPane" layoutX="30.0" layoutY="24.0" prefHeight="280.0" prefWidth="515" visible="false">
+         <children>
+            <ImageView fx:id="iv1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+         </children></Pane>
    </children>
 </Pane>

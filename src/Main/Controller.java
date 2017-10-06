@@ -11,6 +11,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 
@@ -20,10 +23,10 @@ import java.util.ArrayList;
 public class Controller {
     public Equation equation = new Equation();
 
-    public Button setData;
     public Button getSolveGraph;
     public Button getErrorsGraph;
     public Button getTable;
+    public Button getInfo;
 
     public TextField textT0;
     public TextField textR;
@@ -36,6 +39,9 @@ public class Controller {
     public CheckBox checkEulerImproved;
     public CheckBox checkRungeKutta;
     public CheckBox checkAnalytical;
+
+    public ImageView iv1;
+    public Pane isClickedInfoPane;
 
     public boolean setData() {
         try {
@@ -149,5 +155,17 @@ public class Controller {
         frame.add(new JScrollPane(table));
         frame.setSize(table.getColumnModel().getTotalColumnWidth() + 20, 500);
         frame.setVisible(true);
+    }
+
+    public void getInfoClick() {
+        if (isClickedInfoPane.isVisible()) {
+            isClickedInfoPane.setVisible(false);
+        } else
+            isClickedInfoPane.setVisible(true);
+
+        Image image = new Image("info1.png");
+        iv1.setFitHeight(350);
+        iv1.setFitWidth(515);
+        iv1.setImage(image);
     }
 }
