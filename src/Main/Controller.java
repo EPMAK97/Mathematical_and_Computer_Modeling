@@ -37,7 +37,7 @@ public class Controller {
     public CheckBox checkRungeKutta;
     public CheckBox checkAnalytical;
 
-    public void setDataButtonClick() {
+    public boolean setData() {
         try {
             equation.setT0(Double.parseDouble(textT0.getText()));
             equation.setTc(Double.parseDouble(textTc.getText()));
@@ -51,14 +51,16 @@ public class Controller {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Error");
             alert.setHeaderText(null);
-            alert.setContentText("Введены некорректные данные, пожалуйста, проверьте");
+            alert.setContentText("Введены некорректные данные");
             alert.showAndWait();
+            return false;
         }
+        return true;
     }
 
     public void getSolveGraphButtonClick() {
         // ALERT COPY-PASTE (DIS IS BAD(actually code is bad, we need one loop, but we've no time))
-        setDataButtonClick();
+        if (!setData()) return;
         ArrayList<ArrayList<Double>> solutions = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
         if (checkEuler.isSelected()) {
@@ -79,51 +81,73 @@ public class Controller {
         if (checkAnalytical.isSelected()) {
             ArrayList<Double> analiticalSolution = equation.getAnalyticalSolution();
             solutions.add(analiticalSolution);
-            names.add("Analitical solution");
+            names.add("Analytical solution");
         }
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
         XYChart chart1 = chartMatlab.getChart(equation.getX(), solutions, names);
-        new SwingWrapper<>(chart1).displayChart();
+        chart1.setTitle("Solutions");
+        new SwingWrapper<>(chart1).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }
 
-    public void getErrorsButtonClick() {
-        setDataButtonClick();
+    public void getAbsErrorsButtonClick() {
+        if (!setData()) return;
         ArrayList<ArrayList<Double>> errors = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
         if (checkEuler.isSelected()) {
             EulerMethod.Solve(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getT0());
-            errors.add(equation.getRelativeErrors());
             errors.add(equation.getAbsoluteErrors());
-            names.add("Euler relative error");
             names.add("Euler absolute error");
         }
         if (checkEulerImproved.isSelected()) {
             EulerMethodImproved.Solve(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getT0());
-            errors.add(equation.getRelativeErrors());
             errors.add(equation.getAbsoluteErrors());
-            names.add("Euler improved relative error");
             names.add("Euler improved absolute error");
         }
         if (checkRungeKutta.isSelected()) {
             Runge_KuttaMethod.Solve(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getT0());
-            errors.add(equation.getRelativeErrors());
             errors.add(equation.getAbsoluteErrors());
-            names.add("Runge-Kutte relative error");
             names.add("Runge-Kutte absolute error");
         }
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
         XYChart chart1 = chartMatlab.getChart(equation.getX(), errors, names);
-        new SwingWrapper<>(chart1).displayChart();
+        chart1.setTitle("Absolute errors");
+        new SwingWrapper<>(chart1).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+    }
+
+    public void getRelErrorsButtonClick() {
+        if (!setData()) return;
+        ArrayList<ArrayList<Double>> errors = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
+        if (checkEuler.isSelected()) {
+            EulerMethod.Solve(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getT0());
+            errors.add(equation.getRelativeErrors());
+            names.add("Euler relative error");
+        }
+        if (checkEulerImproved.isSelected()) {
+            EulerMethodImproved.Solve(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getT0());
+            errors.add(equation.getRelativeErrors());
+            names.add("Euler improved relative error");
+        }
+        if (checkRungeKutta.isSelected()) {
+            Runge_KuttaMethod.Solve(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getT0());
+            errors.add(equation.getRelativeErrors());
+            names.add("Runge-Kutte relative error");
+        }
+
+        SomeChart<XYChart> chartMatlab = new MatlabChart();
+        XYChart chart1 = chartMatlab.getChart(equation.getX(), errors, names);
+        chart1.setTitle("Relative errors");
+        new SwingWrapper<>(chart1).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }
 
     public void getTableButtonClick() {
-        setDataButtonClick();
+        if (!setData()) return;
         JTable table = ResultsTable.GetTable(equation, 10,equation.getXStart(), equation.getXFinish(), equation.getT0());
         JFrame frame = new JFrame("Table");
         frame.add(new JScrollPane(table));
-        frame.pack();
+        frame.setSize(table.getColumnModel().getTotalColumnWidth() + 20, 500);
         frame.setVisible(true);
     }
 }

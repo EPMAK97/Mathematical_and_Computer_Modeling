@@ -40,9 +40,9 @@
                    </children></AnchorPane>
            </content>
        </TitledPane>
-       <Button fx:id="setData" layoutX="55.0" layoutY="305.0" mnemonicParsing="false" onAction="#setDataButtonClick" text="Внести данные " />
-       <Button fx:id="getSolveGraph" layoutX="245" layoutY="305.0" mnemonicParsing="false" onAction="#getSolveGraphButtonClick" text="График решения" />
-       <Button fx:id="getErrorsGraph" layoutX="245" layoutY="335.0" mnemonicParsing="false" onAction="#getErrorsButtonClick" text="График ошибок  " />
-       <Button fx:id="getTable" layoutX="55" layoutY="335.0" mnemonicParsing="false" onAction="#getTableButtonClick" text="Таблица             " />
+       <Button fx:id="getSolveGraph" layoutX="57.0" layoutY="316.0" mnemonicParsing="false" onAction="#getSolveGraphButtonClick" prefHeight="25.0" prefWidth="116.0" text="График решения" />
+       <Button fx:id="getErrorsGraph" layoutX="212.0" layoutY="349.0" mnemonicParsing="false" onAction="#getRelErrorsButtonClick" text="График относительных ошибок  " textAlignment="CENTER" />
+       <Button fx:id="getTable" alignment="CENTER" contentDisplay="CENTER" layoutX="57.0" layoutY="349.0" mnemonicParsing="false" onAction="#getTableButtonClick" prefHeight="25.0" prefWidth="116.0" text="Таблица             " textAlignment="CENTER" />
+      <Button fx:id="getErrorsGraph1" layoutX="212.0" layoutY="316.0" mnemonicParsing="false" onAction="#getAbsErrorsButtonClick" prefHeight="25.0" prefWidth="196.0" text="График абсолютных ошибок  " textAlignment="CENTER" />
    </children>
 </Pane>
