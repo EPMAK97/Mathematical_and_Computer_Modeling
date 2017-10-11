@@ -53,16 +53,19 @@ public class Adam_BashforthMethod {
             }
             for (int i = 0; i + order - 1 < countIter; i++) {
                 x[order] = x0 + step * (i + order);
+                Double insideBrackets = 0.0;
                 if (order == 2) {
-                    y[order] = y[order-1] + step * computeBrackets(f, x, y, 2, new Double[] {3.0 / 2.0, -1.0 / 2.0});
+                    insideBrackets = computeBrackets(f, x, y, 2, new Double[] {3.0 / 2.0, -1.0 / 2.0});
                 }
                 else if (order == 3) {
-                    y[order] = y[order-1] + step * computeBrackets(f, x, y, 3, new Double[] {23.0 / 12.0, -4.0 / 3.0, 5.0 / 12.0});
+                    insideBrackets = computeBrackets(f, x, y, 3, new Double[] {23.0 / 12.0, -4.0 / 3.0, 5.0 / 12.0});
                 }
                 else {
-                    y[order] = y[order-1] + step * computeBrackets(f, x, y, 4, new Double[] {55.0 / 24.0, -59.0 / 24.0, 37.0 / 24.0, - 3.0 / 8.0});
+                    insideBrackets = computeBrackets(f, x, y, 4, new Double[] {55.0 / 24.0, -59.0 / 24.0, 37.0 / 24.0, - 3.0 / 8.0});
                 }
+                y[order] = y[order-1] + step * insideBrackets;
                 equation.addPoint(x[order], y[order]);
+
                 for (int j = 0; j < order; ++j) {
                     x[j] = x[j + 1];
                     y[j] = y[j + 1];
