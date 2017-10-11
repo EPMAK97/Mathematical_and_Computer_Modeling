@@ -19,6 +19,7 @@ import org.knowm.xchart.XYChart;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Controller {
     public Equation equation = new Equation();
@@ -41,7 +42,7 @@ public class Controller {
     public CheckBox checkAnalytical;
 
     public ImageView iv1;
-    public Pane isClickedInfoPane;
+    public Pane infoPane;
 
     public boolean setData() {
         try {
@@ -92,6 +93,38 @@ public class Controller {
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
         XYChart chart1 = chartMatlab.getChart(equation.getX(), solutions, names);
+        chart1.setTitle("Solutions");
+        new SwingWrapper<>(chart1).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+    }
+
+    public void getExperimentButtonClick() {
+        textT0.setText("83");
+        textTc.setText("22");
+        textR.setText("0.04");
+        textCountIteration.setText("15");
+        textX0.setText("0");
+        textX.setText("15");
+
+        if (!setData()) return;
+        ArrayList<ArrayList<Double>> solutions = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
+
+        ArrayList<Double> analiticalSolution = equation.getAnalyticalSolution();
+        solutions.add(analiticalSolution);
+        names.add("Analytical solution");
+
+        ArrayList<Double> true_values = new ArrayList<>(Arrays.asList(
+                83.0, 77.7, 75.1,73.0,
+                71.1, 69.4, 67.8, 66.4,
+                64.7, 63.4, 62.1, 61.0,
+                59.9, 58.7, 57.8, 56.6
+        ));
+
+        solutions.add(true_values);
+        names.add("Experiment values");
+
+        SomeChart<XYChart> chartMatlab = new MatlabChart();
+        XYChart chart1 = chartMatlab.getChart(equation.computePointsX(), solutions, names);
         chart1.setTitle("Solutions");
         new SwingWrapper<>(chart1).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }
@@ -158,11 +191,7 @@ public class Controller {
     }
 
     public void getInfoClick() {
-        if (isClickedInfoPane.isVisible()) {
-            isClickedInfoPane.setVisible(false);
-        } else
-            isClickedInfoPane.setVisible(true);
-
+        infoPane.setVisible(!infoPane.isVisible());
         Image image = new Image("info1.png");
         iv1.setFitHeight(350);
         iv1.setFitWidth(515);

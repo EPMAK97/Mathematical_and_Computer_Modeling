@@ -57,5 +57,5 @@ public class ResultsTable {
             table.getColumnModel().getColumn(i).setMinWidth(120);
         }
         return table;
-    }
 }
+    }
