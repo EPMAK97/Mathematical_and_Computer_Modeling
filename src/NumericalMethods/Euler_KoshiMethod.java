@@ -10,13 +10,13 @@ public class Euler_KoshiMethod {
             double step = (x1 - x) / countIter;
             equation.setStep(step);
             equation.Clear();
-            equation.SetPoint(x, y);
+            equation.addPoint(x, y);
 
             for (int i = 0; i < countIter; i++) {
-                y0 = y + step * equation.MakeFunction(x, y);
-                y += (equation.MakeFunction(x, y) + equation.MakeFunction(x + step, y0)) * step / 2;
+                y0 = y + step * equation.computeFunction(x, y);
+                y += (equation.computeFunction(x, y) + equation.computeFunction(x + step, y0)) * step / 2;
                 x += step;
-                equation.SetPoint(x, y);
+                equation.addPoint(x, y);
             }
         }
         catch (Exception e) {

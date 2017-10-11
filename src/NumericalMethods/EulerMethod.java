@@ -10,12 +10,12 @@ public class EulerMethod {
             double step = (x1 - x) / countIter;
             equation.setStep(step);
             equation.Clear();
-            equation.SetPoint(x, y);
+            equation.addPoint(x, y);
 
             for (int i = 0; i < countIter; i++) {
-                y += step * equation.MakeFunction(x, y);
+                y += step * equation.computeFunction(x, y);
                 x += step;
-                equation.SetPoint(x, y);
+                equation.addPoint(x, y);
             }
         }
         catch (Exception e) {

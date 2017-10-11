@@ -7,7 +7,7 @@ public class Equation {
     private ArrayList<Point2D.Double> _list = new ArrayList<>();
     private ArrayList<Double> _AbsoluteErrors = new ArrayList<>();
     private ArrayList<Double> _RelativeErrors = new ArrayList<>();
-    private ArrayList<Double> _AnaliticalSolution = new ArrayList<>();
+    private ArrayList<Double> _AnalyticalSolution = new ArrayList<>();
     private ArrayList<Double> _PointsX = new ArrayList<>();
 
     private Double T0;
@@ -25,19 +25,20 @@ public class Equation {
         _list = new ArrayList<>();
         _AbsoluteErrors = new ArrayList<>();
         _RelativeErrors = new ArrayList<>();
-        _AnaliticalSolution = new ArrayList<>();
+        _AnalyticalSolution = new ArrayList<>();
         _PointsX = new ArrayList<>();
     }
 
-    public double MakeFunction(double x, double y) {
-        return -r * y + r * Tc;
+    public double computeFunction(double x, double y) {
+        return y + 2;
+        //return -r * y + r * Tc;
     }
 
     public Point2D.Double GetPoint(int i) {
         return _list.get(i);
     }
 
-    public void SetPoint(double x, double y) {
+    public void addPoint(double x, double y) {
         _list.add(new Point2D.Double(x, y));
     }
 
@@ -66,29 +67,30 @@ public class Equation {
 
     public ArrayList<Double> getAbsoluteErrors() {
         if (_list.isEmpty()) return null;
-        if (_AnaliticalSolution.isEmpty()) getAnalyticalSolution();
+        if (_AnalyticalSolution.isEmpty()) getAnalyticalSolution();
         for (int i = 0; i < _list.size(); i++) {
-            _AbsoluteErrors.add((Math.abs(_AnaliticalSolution.get(i) - _list.get(i).getY())));
+            _AbsoluteErrors.add((Math.abs(_AnalyticalSolution.get(i) - _list.get(i).getY())));
         }
         return _AbsoluteErrors;
     }
 
     public ArrayList<Double> getRelativeErrors() {
         if (_list.size() == 0) return null;
-        if (_AnaliticalSolution.isEmpty()) getAnalyticalSolution();
+        if (_AnalyticalSolution.isEmpty()) getAnalyticalSolution();
         for (int i = 0; i < _list.size(); i++) {
-            _RelativeErrors.add(Math.abs((_AnaliticalSolution.get(i) - _list.get(i).getY()) / _AnaliticalSolution.get(i)));
+            _RelativeErrors.add(Math.abs((_AnalyticalSolution.get(i) - _list.get(i).getY()) / _AnalyticalSolution.get(i)));
         }
         return _RelativeErrors;
     }
 
     public ArrayList<Double> getAnalyticalSolution() {
-        if (!_AnaliticalSolution.isEmpty()) return _AnaliticalSolution;
+        if (!_AnalyticalSolution.isEmpty()) return _AnalyticalSolution;
         if (_PointsX.isEmpty()) computePointsX();
         for (int i = 0; i <= N; i++) {
-            _AnaliticalSolution.add(Tc + (T0 - Tc) * Math.exp(-r * _PointsX.get(i)));
+            _AnalyticalSolution.add((T0 + 2.0) / Math.exp(xStart) * Math.exp(_PointsX.get(i)) - 2.0);
+            //_AnalyticalSolution.add(Tc + (T0 - Tc) * Math.exp(-r * _PointsX.get(i)));
         }
-        return _AnaliticalSolution;
+        return _AnalyticalSolution;
     }
 
     public ArrayList<Double> computePointsX() {

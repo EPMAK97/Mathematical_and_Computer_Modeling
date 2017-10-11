@@ -1,12 +1,20 @@
 package Main;
 
+import Graphics.MatlabChart;
+import Graphics.SomeChart;
+import NumericalMethods.Adam_BashforthMethod;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.knowm.xchart.SwingWrapper;
+import org.knowm.xchart.XYChart;
+import Equation.Equation;
 
+import javax.swing.*;
+import java.util.ArrayList;
 
 
 public class Main extends Application {
@@ -22,13 +30,47 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        launch(args);
+        //launch(args);
+        //
+        //try {
+        //    System.out.println(Experiment.Experiment.GetBestR());
+        //}
+        //catch (Exception e){
+        //    System.out.println(e.toString());
+        //}
 
-        try {
-            System.out.println(Experiment.Experiment.GetBestR());
+        Double x0 = 0.0;
+        Double x1 = 4.0;
+        Double y0 = 0.0;
+        Integer N = 10;
+
+        Equation equation = new Equation();
+        equation.setXStart(x0);
+        equation.setXFinish(x1);
+        equation.setT0(y0);
+        equation.setN(N);
+
+        ArrayList<ArrayList<Double>> solutions = new ArrayList<>();
+        ArrayList<ArrayList<Double>> errors = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
+
+        for (int i = 1; i <= 4; ++i) {
+            Adam_BashforthMethod.Solve(equation, i, N, x0, x1, y0);
+            solutions.add(equation.getY());
+            names.add(String.format("Adam-Bashforth %d order", i));
+            errors.add(equation.getAbsoluteErrors());
         }
-        catch (Exception e){
-            System.out.println(e.toString());
-        }
+
+        solutions.add(equation.getAnalyticalSolution());
+        names.add("Analytical solution");
+
+        SomeChart<XYChart> chartMatlab = new MatlabChart();
+        XYChart chartSolutions = chartMatlab.getChart(equation.getX(), solutions, names);
+        chartSolutions.setTitle("Adam-Bashforth Method");
+        new SwingWrapper<>(chartSolutions).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+
+        XYChart chartErrors = chartMatlab.getChart(equation.getX(), errors, names);
+        chartErrors.setTitle("Absolute errors");
+        new SwingWrapper<>(chartErrors).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }
 }

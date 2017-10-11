@@ -86,8 +86,8 @@ public class Controller {
             names.add("Runge-Kutte method");
         }
         if (checkAnalytical.isSelected()) {
-            ArrayList<Double> analiticalSolution = equation.getAnalyticalSolution();
-            solutions.add(analiticalSolution);
+            ArrayList<Double> analyticalSolution = equation.getAnalyticalSolution();
+            solutions.add(analyticalSolution);
             names.add("Analytical solution");
         }
 
@@ -109,8 +109,8 @@ public class Controller {
         ArrayList<ArrayList<Double>> solutions = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
 
-        ArrayList<Double> analiticalSolution = equation.getAnalyticalSolution();
-        solutions.add(analiticalSolution);
+        ArrayList<Double> analyticalSolution = equation.getAnalyticalSolution();
+        solutions.add(analyticalSolution);
         names.add("Analytical solution");
 
         ArrayList<Double> true_values = new ArrayList<>(Arrays.asList(
