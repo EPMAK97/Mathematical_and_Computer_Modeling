@@ -17,7 +17,6 @@ public class Equation {
 
     private Double xStart;
     private Double xFinish;
-    private Double step;
 
     public Equation() { }
 
@@ -30,7 +29,10 @@ public class Equation {
     }
 
     public double computeFunction(double x, double y) {
-        return y + 2;
+        return 1.0 / 2.0 * y + x;
+
+        //return -Math.pow(x, 2.0) + y + 4;
+        //return y + 2;
         //return -r * y + r * Tc;
     }
 
@@ -87,7 +89,9 @@ public class Equation {
         if (!_AnalyticalSolution.isEmpty()) return _AnalyticalSolution;
         if (_PointsX.isEmpty()) computePointsX();
         for (int i = 0; i <= N; i++) {
-            _AnalyticalSolution.add((T0 + 2.0) / Math.exp(xStart) * Math.exp(_PointsX.get(i)) - 2.0);
+            _AnalyticalSolution.add(-2.0 * (_PointsX.get(i) + 2.0) + 4 * Math.exp(1.0 / 2.0 * _PointsX.get(i)));
+            //_AnalyticalSolution.add((T0 - Math.pow(xStart, 2.0) + 2 * xStart - 6) / Math.exp(-xStart));
+            //_AnalyticalSolution.add((T0 + 2.0) / Math.exp(xStart) * Math.exp(_PointsX.get(i)) - 2.0);
             //_AnalyticalSolution.add(Tc + (T0 - Tc) * Math.exp(-r * _PointsX.get(i)));
         }
         return _AnalyticalSolution;
@@ -98,7 +102,7 @@ public class Equation {
         double x = xStart;
         for (int i = 0; i <= N; i++) {
             _PointsX.add(x);
-            x += step;
+            x += getStep();
         }
         return _PointsX;
     }
@@ -128,11 +132,7 @@ public class Equation {
     }
 
     public Double getStep() {
-        return step;
-    }
-
-    public void setStep(Double _step) {
-        step = _step;
+        return (xFinish - xStart) / N;
     }
 
     public Double getXStart() {

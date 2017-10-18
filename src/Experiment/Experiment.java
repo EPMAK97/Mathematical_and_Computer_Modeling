@@ -12,7 +12,6 @@ public class Experiment {
         equation.setN(15);
         equation.setXStart(0.0);
         equation.setXFinish(15.0);
-        equation.setStep((equation.getXFinish() - equation.getXStart()) / equation.getN());
 
         ArrayList<Double> true_values = new ArrayList<>(Arrays.asList(
                 83.0, 77.7, 75.1,73.0,

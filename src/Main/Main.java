@@ -3,6 +3,7 @@ package Main;
 import Graphics.MatlabChart;
 import Graphics.SomeChart;
 import NumericalMethods.Adam_BashforthMethod;
+import NumericalMethods.Adam_MoultonMethod;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -40,9 +41,9 @@ public class Main extends Application {
         //}
 
         Double x0 = 0.0;
-        Double x1 = 4.0;
+        Double x1 = 5.0;
         Double y0 = 0.0;
-        Integer N = 10;
+        Integer N = 20;
 
         Equation equation = new Equation();
         equation.setXStart(x0);
@@ -54,15 +55,20 @@ public class Main extends Application {
         ArrayList<ArrayList<Double>> errors = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
 
-        for (int i = 1; i <= 4; ++i) {
+        for (int i = 2; i <= 4; ++i) {
             Adam_BashforthMethod.Solve(equation, i, N, x0, x1, y0);
             solutions.add(equation.getY());
             names.add(String.format("Adam-Bashforth %d order", i));
             errors.add(equation.getAbsoluteErrors());
+
+            Adam_MoultonMethod.Solve(equation, i, N, x0, x1, y0);
+            solutions.add(equation.getY());
+            names.add(String.format("Adam-Moulton %d order", i));
+            errors.add(equation.getAbsoluteErrors());
         }
 
-        solutions.add(equation.getAnalyticalSolution());
-        names.add("Analytical solution");
+        //solutions.add(equation.getAnalyticalSolution());
+        //names.add("Analytical solution");
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
         XYChart chartSolutions = chartMatlab.getChart(equation.getX(), solutions, names);

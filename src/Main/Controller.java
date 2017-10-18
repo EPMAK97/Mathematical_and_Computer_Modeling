@@ -52,7 +52,6 @@ public class Controller {
             equation.setXStart(Double.parseDouble(textX0.getText()));
             equation.setXFinish(Double.parseDouble(textX.getText()));
             equation.setN(Integer.parseInt(textCountIteration.getText()));
-            equation.setStep((equation.getXFinish() - equation.getXStart()) / equation.getN());
 
         } catch (NumberFormatException e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);

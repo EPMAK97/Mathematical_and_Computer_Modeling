@@ -2,21 +2,17 @@ package NumericalMethods;
 
 import Equation.Equation;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.function.Function;
-
-public class Adam_BashforthMethod {
+public class Adam_MoultonMethod {
     public interface TwoParameterFunction<A, B, C> {
         public C apply(A a, B b);
     }
 
     private static Double computeBrackets(TwoParameterFunction<Double, Double, Double> f,
-                                          Double[] x, Double[] y, Integer cnt, Double[] coefficients)
+                                          Double[] x, Double[] y, Integer cnt, Integer shift, Double[] coefficients)
     {
         Double res = 0.0;
         for (int i = cnt - 1; i >= 0; --i) {
-            res += coefficients[cnt - 1 - i] * f.apply(x[i], y[i]);
+            res += coefficients[cnt - 1 - i] * f.apply(x[i + shift], y[i + shift]);
         }
 
         return res;
@@ -45,6 +41,13 @@ public class Adam_BashforthMethod {
                     {55.0 / 24.0, -59.0 / 24.0, 37.0 / 24.0, - 3.0 / 8.0},
             };
 
+            Double[][] Adam_MoultonCoefficients = new Double[][] {
+                    {1.0},
+                    {1.0 / 2.0, 1.0 / 2.0},
+                    {5.0 / 12.0, 2.0 / 3.0, -1.0 / 12.0},
+                    {3.0 / 8.0, 19.0 / 24.0, -5.0 / 24.0, 1.0 / 24.0},
+            };
+
             // compute start points
             Runge_KuttaMethod.Solve(equation, order - 1, x0, x0 + (order - 1) * step, y0);
             TwoParameterFunction <Double, Double, Double> f = (_x, _y)-> equation.computeFunction(_x, _y);
@@ -55,7 +58,10 @@ public class Adam_BashforthMethod {
             }
             for (int i = 0; i + order - 1 < countIter; i++) {
                 x[order] = x0 + step * (i + order);
-                y[order] = y[order-1] + step * computeBrackets(f, x, y, order, Adam_BashforthCoefficients[order - 1]);
+                // predicted value of y[order]
+                y[order] = y[order-1] + step * computeBrackets(f, x, y, order, 0, Adam_BashforthCoefficients[order - 1]);
+                // corrected value of y[order]
+                y[order] = y[order-1] + step * computeBrackets(f, x, y, order, 1, Adam_MoultonCoefficients[order - 1]);
                 equation.addPoint(x[order], y[order]);
 
                 for (int j = 0; j < order; ++j) {
@@ -64,7 +70,7 @@ public class Adam_BashforthMethod {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Adam_BashforthMethod fail: " + e.toString());
+            System.out.println("Adam_MoultonMethod fail: " + e.toString());
             return false;
         }
         return true;
