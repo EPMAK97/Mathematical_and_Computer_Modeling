@@ -1,4 +1,4 @@
-package Main;
+package GUI;
 
 import Equation.CoffeeCoolingProcess;
 import Graphics.MatlabChart;
@@ -21,7 +21,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Controller {
+public class CoffeeCoolingModelController {
 
     public CoffeeCoolingProcess coffeeCoolingProcess = new CoffeeCoolingProcess();
 

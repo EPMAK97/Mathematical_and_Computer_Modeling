@@ -1,6 +1,6 @@
 package Main;
 
-import Equation.Equation;
+import Equation.CoffeeCoolingProcess;
 import Graphics.MatlabChart;
 import Graphics.SomeChart;
 import NumericalMethods.Adam_BashforthMethod;
@@ -13,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
-import Equation.CoffeeCoolingProcess;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../GUI/CoffeeCooling.fxml"));
         primaryStage.setTitle("Математическое и компьютерное моделирование");
         Scene scene = new Scene(root, 580, 400);
         primaryStage.setScene(scene);
