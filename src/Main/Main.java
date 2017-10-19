@@ -1,5 +1,6 @@
 package Main;
 
+import Equation.Equation;
 import Graphics.MatlabChart;
 import Graphics.SomeChart;
 import NumericalMethods.Adam_BashforthMethod;
@@ -12,7 +13,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
-import Equation.Equation;
+import Equation.CoffeeCoolingProcess;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -45,37 +46,34 @@ public class Main extends Application {
         Double y0 = 0.0;
         Integer N = 20;
 
-        Equation equation = new Equation();
-        equation.setXStart(x0);
-        equation.setXFinish(x1);
-        equation.setT0(y0);
-        equation.setN(N);
+        CoffeeCoolingProcess coffeeCoolingProcess = new CoffeeCoolingProcess();
+        coffeeCoolingProcess.setXStart(x0);
+        coffeeCoolingProcess.setXFinish(x1);
+        coffeeCoolingProcess.setT0(y0);
+        coffeeCoolingProcess.setN(N);
 
         ArrayList<ArrayList<Double>> solutions = new ArrayList<>();
         ArrayList<ArrayList<Double>> errors = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
 
         for (int i = 2; i <= 4; ++i) {
-            Adam_BashforthMethod.Solve(equation, i, N, x0, x1, y0);
-            solutions.add(equation.getY());
+            Adam_BashforthMethod.Solve(coffeeCoolingProcess, i, N, x0, x1, y0);
+            solutions.add(coffeeCoolingProcess.getY());
             names.add(String.format("Adam-Bashforth %d order", i));
-            errors.add(equation.getAbsoluteErrors());
+            errors.add(coffeeCoolingProcess.getAbsoluteErrors());
 
-            Adam_MoultonMethod.Solve(equation, i, N, x0, x1, y0);
-            solutions.add(equation.getY());
+            Adam_MoultonMethod.Solve(coffeeCoolingProcess, i, N, x0, x1, y0);
+            solutions.add(coffeeCoolingProcess.getY());
             names.add(String.format("Adam-Moulton %d order", i));
-            errors.add(equation.getAbsoluteErrors());
+            errors.add(coffeeCoolingProcess.getAbsoluteErrors());
         }
 
-        //solutions.add(equation.getAnalyticalSolution());
-        //names.add("Analytical solution");
-
         SomeChart<XYChart> chartMatlab = new MatlabChart();
-        XYChart chartSolutions = chartMatlab.getChart(equation.getX(), solutions, names);
+        XYChart chartSolutions = chartMatlab.getChart(coffeeCoolingProcess.getX(), solutions, names);
         chartSolutions.setTitle("Adam-Bashforth Method");
         new SwingWrapper<>(chartSolutions).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
-        XYChart chartErrors = chartMatlab.getChart(equation.getX(), errors, names);
+        XYChart chartErrors = chartMatlab.getChart(coffeeCoolingProcess.getX(), errors, names);
         chartErrors.setTitle("Absolute errors");
         new SwingWrapper<>(chartErrors).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }

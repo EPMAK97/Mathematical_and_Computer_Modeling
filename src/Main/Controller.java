@@ -1,6 +1,6 @@
 package Main;
 
-import Equation.Equation;
+import Equation.CoffeeCoolingProcess;
 import Graphics.MatlabChart;
 import Graphics.SomeChart;
 import NumericalMethods.EulerMethod;
@@ -22,7 +22,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Controller {
-    public Equation equation = new Equation();
+
+    public CoffeeCoolingProcess coffeeCoolingProcess = new CoffeeCoolingProcess();
 
     public Button getSolveGraph;
     public Button getErrorsGraph;
@@ -46,12 +47,12 @@ public class Controller {
 
     public boolean setData() {
         try {
-            equation.setT0(Double.parseDouble(textT0.getText()));
-            equation.setTc(Double.parseDouble(textTc.getText()));
-            equation.setR(Double.parseDouble(textR.getText()));
-            equation.setXStart(Double.parseDouble(textX0.getText()));
-            equation.setXFinish(Double.parseDouble(textX.getText()));
-            equation.setN(Integer.parseInt(textCountIteration.getText()));
+            coffeeCoolingProcess.setT0(Double.parseDouble(textT0.getText()));
+            coffeeCoolingProcess.setTc(Double.parseDouble(textTc.getText()));
+            coffeeCoolingProcess.setR(Double.parseDouble(textR.getText()));
+            coffeeCoolingProcess.setXStart(Double.parseDouble(textX0.getText()));
+            coffeeCoolingProcess.setXFinish(Double.parseDouble(textX.getText()));
+            coffeeCoolingProcess.setN(Integer.parseInt(textCountIteration.getText()));
 
         } catch (NumberFormatException e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -70,28 +71,28 @@ public class Controller {
         ArrayList<ArrayList<Double>> solutions = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
         if (checkEuler.isSelected()) {
-            EulerMethod.Solve(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getT0());
-            solutions.add(equation.getY());
+            EulerMethod.Solve(coffeeCoolingProcess, coffeeCoolingProcess.getN(), coffeeCoolingProcess.getXStart(), coffeeCoolingProcess.getXFinish(), coffeeCoolingProcess.getT0());
+            solutions.add(coffeeCoolingProcess.getY());
             names.add("Euler method");
         }
         if (checkEulerImproved.isSelected()) {
-            EulerMethodImproved.Solve(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getT0());
-            solutions.add(equation.getY());
+            EulerMethodImproved.Solve(coffeeCoolingProcess, coffeeCoolingProcess.getN(), coffeeCoolingProcess.getXStart(), coffeeCoolingProcess.getXFinish(), coffeeCoolingProcess.getT0());
+            solutions.add(coffeeCoolingProcess.getY());
             names.add("Euler improved method");
         }
         if (checkRungeKutta.isSelected()) {
-            Runge_KuttaMethod.Solve(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getT0());
-            solutions.add(equation.getY());
+            Runge_KuttaMethod.Solve(coffeeCoolingProcess, coffeeCoolingProcess.getN(), coffeeCoolingProcess.getXStart(), coffeeCoolingProcess.getXFinish(), coffeeCoolingProcess.getT0());
+            solutions.add(coffeeCoolingProcess.getY());
             names.add("Runge-Kutte method");
         }
         if (checkAnalytical.isSelected()) {
-            ArrayList<Double> analyticalSolution = equation.getAnalyticalSolution();
+            ArrayList<Double> analyticalSolution = coffeeCoolingProcess.getAnalyticalSolution();
             solutions.add(analyticalSolution);
             names.add("Analytical solution");
         }
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
-        XYChart chart1 = chartMatlab.getChart(equation.getX(), solutions, names);
+        XYChart chart1 = chartMatlab.getChart(coffeeCoolingProcess.getX(), solutions, names);
         chart1.setTitle("Solutions");
         new SwingWrapper<>(chart1).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }
@@ -108,7 +109,7 @@ public class Controller {
         ArrayList<ArrayList<Double>> solutions = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
 
-        ArrayList<Double> analyticalSolution = equation.getAnalyticalSolution();
+        ArrayList<Double> analyticalSolution = coffeeCoolingProcess.getAnalyticalSolution();
         solutions.add(analyticalSolution);
         names.add("Analytical solution");
 
@@ -123,7 +124,7 @@ public class Controller {
         names.add("Experiment values");
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
-        XYChart chart1 = chartMatlab.getChart(equation.computePointsX(), solutions, names);
+        XYChart chart1 = chartMatlab.getChart(coffeeCoolingProcess.computePointsX(), solutions, names);
         chart1.setTitle("Solutions");
         new SwingWrapper<>(chart1).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }
@@ -133,23 +134,23 @@ public class Controller {
         ArrayList<ArrayList<Double>> errors = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
         if (checkEuler.isSelected()) {
-            EulerMethod.Solve(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getT0());
-            errors.add(equation.getAbsoluteErrors());
+            EulerMethod.Solve(coffeeCoolingProcess, coffeeCoolingProcess.getN(), coffeeCoolingProcess.getXStart(), coffeeCoolingProcess.getXFinish(), coffeeCoolingProcess.getT0());
+            errors.add(coffeeCoolingProcess.getAbsoluteErrors());
             names.add("Euler absolute error");
         }
         if (checkEulerImproved.isSelected()) {
-            EulerMethodImproved.Solve(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getT0());
-            errors.add(equation.getAbsoluteErrors());
+            EulerMethodImproved.Solve(coffeeCoolingProcess, coffeeCoolingProcess.getN(), coffeeCoolingProcess.getXStart(), coffeeCoolingProcess.getXFinish(), coffeeCoolingProcess.getT0());
+            errors.add(coffeeCoolingProcess.getAbsoluteErrors());
             names.add("Euler improved absolute error");
         }
         if (checkRungeKutta.isSelected()) {
-            Runge_KuttaMethod.Solve(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getT0());
-            errors.add(equation.getAbsoluteErrors());
+            Runge_KuttaMethod.Solve(coffeeCoolingProcess, coffeeCoolingProcess.getN(), coffeeCoolingProcess.getXStart(), coffeeCoolingProcess.getXFinish(), coffeeCoolingProcess.getT0());
+            errors.add(coffeeCoolingProcess.getAbsoluteErrors());
             names.add("Runge-Kutte absolute error");
         }
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
-        XYChart chart1 = chartMatlab.getChart(equation.getX(), errors, names);
+        XYChart chart1 = chartMatlab.getChart(coffeeCoolingProcess.getX(), errors, names);
         chart1.setTitle("Absolute errors");
         new SwingWrapper<>(chart1).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }
@@ -159,30 +160,30 @@ public class Controller {
         ArrayList<ArrayList<Double>> errors = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
         if (checkEuler.isSelected()) {
-            EulerMethod.Solve(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getT0());
-            errors.add(equation.getRelativeErrors());
+            EulerMethod.Solve(coffeeCoolingProcess, coffeeCoolingProcess.getN(), coffeeCoolingProcess.getXStart(), coffeeCoolingProcess.getXFinish(), coffeeCoolingProcess.getT0());
+            errors.add(coffeeCoolingProcess.getRelativeErrors());
             names.add("Euler relative error");
         }
         if (checkEulerImproved.isSelected()) {
-            EulerMethodImproved.Solve(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getT0());
-            errors.add(equation.getRelativeErrors());
+            EulerMethodImproved.Solve(coffeeCoolingProcess, coffeeCoolingProcess.getN(), coffeeCoolingProcess.getXStart(), coffeeCoolingProcess.getXFinish(), coffeeCoolingProcess.getT0());
+            errors.add(coffeeCoolingProcess.getRelativeErrors());
             names.add("Euler improved relative error");
         }
         if (checkRungeKutta.isSelected()) {
-            Runge_KuttaMethod.Solve(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getT0());
-            errors.add(equation.getRelativeErrors());
+            Runge_KuttaMethod.Solve(coffeeCoolingProcess, coffeeCoolingProcess.getN(), coffeeCoolingProcess.getXStart(), coffeeCoolingProcess.getXFinish(), coffeeCoolingProcess.getT0());
+            errors.add(coffeeCoolingProcess.getRelativeErrors());
             names.add("Runge-Kutte relative error");
         }
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
-        XYChart chart1 = chartMatlab.getChart(equation.getX(), errors, names);
+        XYChart chart1 = chartMatlab.getChart(coffeeCoolingProcess.getX(), errors, names);
         chart1.setTitle("Relative errors");
         new SwingWrapper<>(chart1).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }
 
     public void getTableButtonClick() {
         if (!setData()) return;
-        JTable table = ResultsTable.GetTable(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getT0());
+        JTable table = ResultsTable.GetTable(coffeeCoolingProcess, coffeeCoolingProcess.getN(), coffeeCoolingProcess.getXStart(), coffeeCoolingProcess.getXFinish(), coffeeCoolingProcess.getT0());
         JFrame frame = new JFrame("Table");
         frame.add(new JScrollPane(table));
         frame.setSize(table.getColumnModel().getTotalColumnWidth() + 20, 500);
