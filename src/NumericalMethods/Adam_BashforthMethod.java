@@ -1,6 +1,6 @@
 package NumericalMethods;
 
-import Equation.CoffeeCoolingProcess;
+import Equation.Equation;
 
 public class Adam_BashforthMethod {
     public interface TwoParameterFunction<A, B, C> {
@@ -18,7 +18,7 @@ public class Adam_BashforthMethod {
         return res;
     }
 
-    public static Boolean Solve(CoffeeCoolingProcess coffeeCoolingProcess, int order, int countIter, double x0, double x1, double y0) {
+    public static Boolean Solve(Equation equation, int order, int countIter, double x0, double x1, double y0) {
         try {
             if (countIter < order) {
                 throw new Exception("The number of iterations can't be less then order");
@@ -31,8 +31,8 @@ public class Adam_BashforthMethod {
             Double[] x = new Double[order + 1];
             Double[] y = new Double[order + 1];
             Double step = (x1 - x0) / countIter;
-            coffeeCoolingProcess.Clear();
-            coffeeCoolingProcess.addPoint(x0, y0);
+            equation.Clear();
+            equation.addPoint(x0, y0);
 
             Double[][] Adam_BashforthCoefficients = new Double[][] {
                     {1.0},
@@ -42,17 +42,17 @@ public class Adam_BashforthMethod {
             };
 
             // compute start points
-            Runge_KuttaMethod.Solve(coffeeCoolingProcess, order - 1, x0, x0 + (order - 1) * step, y0);
-            TwoParameterFunction <Double, Double, Double> f = (_x, _y)-> coffeeCoolingProcess.computeFunction(_x, _y);
+            Runge_KuttaMethod.Solve(equation, order - 1, x0, x0 + (order - 1) * step, y0);
+            TwoParameterFunction <Double, Double, Double> f = (_x, _y)-> equation.computeFunction(_x, _y);
 
             for (int i = 0; i < order; ++i) {
-                x[i] = coffeeCoolingProcess.getX().get(i);
-                y[i] = coffeeCoolingProcess.getY().get(i);
+                x[i] = equation.getX().get(i);
+                y[i] = equation.getY().get(i);
             }
             for (int i = 0; i + order - 1 < countIter; i++) {
                 x[order] = x0 + step * (i + order);
                 y[order] = y[order-1] + step * computeBrackets(f, x, y, order, Adam_BashforthCoefficients[order - 1]);
-                coffeeCoolingProcess.addPoint(x[order], y[order]);
+                equation.addPoint(x[order], y[order]);
 
                 for (int j = 0; j < order; ++j) {
                     x[j] = x[j + 1];

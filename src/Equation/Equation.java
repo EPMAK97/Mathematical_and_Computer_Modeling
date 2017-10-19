@@ -21,11 +21,11 @@ public abstract class Equation {
     }
 
     public void Clear() {
-        _NumericalSolution.clear();
-        _AbsoluteErrors.clear();
-        _RelativeErrors.clear();
-        _AnalyticalSolution.clear();
-        _PointsX.clear();
+        _NumericalSolution  = new ArrayList<>();
+        _AbsoluteErrors     = new ArrayList<>();
+        _RelativeErrors     = new ArrayList<>();
+        _AnalyticalSolution = new ArrayList<>();
+        _PointsX            = new ArrayList<>();
     }
 
     public abstract double computeFunction(double x, double y);
