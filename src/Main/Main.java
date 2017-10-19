@@ -22,14 +22,5 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
-        //
-        //try {
-        //    System.out.println(Experiment.Experiment.GetBestR());
-        //}
-        //catch (Exception e){
-        //    System.out.println(e.toString());
-        //}
-
-
     }
 }
