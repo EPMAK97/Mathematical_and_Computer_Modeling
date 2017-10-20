@@ -33,11 +33,11 @@
             <Label layoutX="339.0" layoutY="134.0" text="Масса тела" />
             <Label layoutX="338.0" layoutY="178.0" text="Радиус тела" />
             <TextField fx:id="densityBody" editable="false" layoutX="471.0" layoutY="45.0" prefHeight="27.0" prefWidth="106.0" disable="true"/>
-            <TextField fx:id="densityMedium" editable="false" layoutX="471.0" layoutY="87.0" prefHeight="27.0" prefWidth="106.0" disable="true"/>
+            <TextField fx:id="densityEnvironment" editable="false" layoutX="471.0" layoutY="87.0" prefHeight="27.0" prefWidth="106.0" disable="true"/>
             <TextField fx:id="massBody" editable="false" layoutX="471.0" layoutY="129.0" disable="true" prefHeight="27.0" prefWidth="106.0" />
             <TextField fx:id="radiusBody" editable="false" layoutX="471.0" layoutY="173.0" disable="true" prefHeight="27.0" prefWidth="106.0" />
             <ComboBox fx:id="materialBody" layoutX="449.0" layoutY="304.0" onAction="#setMaterialBody" prefWidth="150.0" />
-            <ComboBox fx:id="medium" layoutX="289.0" layoutY="304.0" onAction="#setMedium" prefHeight="27.0" prefWidth="150.0" />
+            <ComboBox fx:id="environment" layoutX="289.0" layoutY="304.0" onAction="#setEnvironment" prefHeight="27.0" prefWidth="150.0" />
             <Label layoutX="339.0" layoutY="278.0" text="Среда" />
             <Label layoutX="471.0" layoutY="278.0" text="Материал тела" />
             <Button fx:id="compute" layoutX="479.0" layoutY="362.0" mnemonicParsing="false" onAction="#computeFromParameters" text="Рассчитать" />
