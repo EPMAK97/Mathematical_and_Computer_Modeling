@@ -106,7 +106,6 @@ public class FallingBodiesController implements Initializable {
     }
 
 
-
     public void checkBoxSelectedF_A() {
         // Сила Архимеда
 
@@ -124,24 +123,35 @@ public class FallingBodiesController implements Initializable {
         // Считать все и посчитать
     }
 
-    public void clickDensityBody() {
+    public void clickF_A() {
+        densityBody.setDisable(!F_A.isSelected());
+        densityMedium.setDisable(!F_A.isSelected());
         densityBody.setEditable(F_A.isSelected());
         densityMedium.setEditable(F_A.isSelected());
     }
 
-    public void clickMassBody() {
-        massBody.setEditable(F_C1.isSelected() || F_C2.isSelected());
-        radiusBody.setEditable(F_C1.isSelected() || F_C2.isSelected());
+    public void selectableF_C() {
+        boolean selectable = F_C1.isSelected() || F_C2.isSelected();
+
+        massBody.setDisable(!selectable);
+        massBody.setEditable(selectable);
+
+        radiusBody.setDisable(!selectable);
+        radiusBody.setEditable(selectable);
+
+        massBody.setDisable(!selectable);
+        massBody.setEditable(selectable);
+
+        radiusBody.setDisable(!selectable);
+        radiusBody.setEditable(selectable);
     }
 
-    public void clickRadiusBody() {
-        massBody.setEditable(F_C1.isSelected() || F_C2.isSelected());
-        radiusBody.setEditable(F_C1.isSelected() || F_C2.isSelected());
+    public void clickF_C1() {
+        selectableF_C();
     }
 
-    public void clickCrossSEctionBody() {
-        massBody.setEditable(F_C1.isSelected() || F_C2.isSelected());
-        radiusBody.setEditable(F_C1.isSelected() || F_C2.isSelected());
+    public void clickF_C2() {
+        selectableF_C();
     }
 
 }
