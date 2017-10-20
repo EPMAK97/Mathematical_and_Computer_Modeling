@@ -12,10 +12,11 @@ public class ObjectFallingProcess extends Equation {
     private static final Double g_0 = 9.81;
     private static final Double PlanetR = 6.4e6;
 
-    private Double k_buoyant;
-    private Double k_linear;
-    private Double k_square;
+    private Double k_buoyant = 0.0;
+    private Double k_linear = 0.0;
+    private Double k_square = 0.0;
     private Double mass;
+    private Double radius;
 
     private Integer CConstGrav, CGrav;
     private Integer CBuoyant;
@@ -34,11 +35,11 @@ public class ObjectFallingProcess extends Equation {
     }
 
     private Double LinearResistance(Double v) {
-        return k_linear * v / mass;
+        return -k_linear * v / mass;
     }
 
     private Double SquareResistance(Double v) {
-        return k_square * Math.pow(v, 2) / mass;
+        return -k_square * v * Math.abs(v) / mass;
     }
 
     public ObjectFallingProcess() {
@@ -92,6 +93,10 @@ public class ObjectFallingProcess extends Equation {
 
     public void setMass(Double _mass) {
         mass = _mass;
+    }
+
+    public void setRadius(Double _radius) {
+        radius = _radius;
     }
 
     public Double getV0() {

@@ -1,12 +1,20 @@
 package GUI;
 
+import Equation.ObjectFallingProcess;
+import Graphics.MatlabChart;
+import Graphics.SomeChart;
+import NumericalMethods.Euler_KromerMethod;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import org.knowm.xchart.SwingWrapper;
+import org.knowm.xchart.XYChart;
 
+import javax.swing.*;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
@@ -16,7 +24,6 @@ public class FallingBodiesController implements Initializable {
     public TextField startTime;
     public TextField finishTime;
     public TextField numberCounts;
-    public TextField stepCounts;
 
     public TextField densityBody;
     public TextField densityEnvironment;
@@ -32,8 +39,10 @@ public class FallingBodiesController implements Initializable {
     public CheckBox F_A;
     public CheckBox F_C1;
     public CheckBox F_C2;
+    public CheckBox checkBoxConstGravity;
 
     private static HashMap<String, Double> materialDensity;
+    private static HashMap<String, Double> environmentViscosity;
 
     static {
         materialDensity = new HashMap<String, Double>() {{
@@ -48,7 +57,7 @@ public class FallingBodiesController implements Initializable {
            put("Дерево", 500.0);
            put("Стекло", 1200.0);
            put("Резина", 900.0);
-           put("Камни",  2200.0);
+           put("Камень",  2200.0);
            put("Сталь",  7800.0);
            put("Алюминий", 2700.0);
            put("Свинец",   11300.0);
@@ -57,12 +66,24 @@ public class FallingBodiesController implements Initializable {
            put("Вакуум", 0.0);
            put("Материальная точка", 0.0);
         }};
+
+        environmentViscosity = new HashMap<String, Double>() {{
+            put("Вакуум",   0.0);
+            put("Воздух",   1812.0);
+            put("Водород",  880.0);
+            put("Вода",     1.0);
+            put("Гелий",    1946.0);
+            put("Глицерин", 1480.0);
+            put("Оливковое масло", 84.0);
+            put("Поливинилхлорид", 2.0);
+        }};
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        environment.getItems().setAll("Вакуум",
+        environment.getItems().setAll(
+                "Вакуум",
                 "Воздух",
                 "Водород",
                 "Вода",
@@ -71,16 +92,32 @@ public class FallingBodiesController implements Initializable {
                 "Оливковое масло",
                 "Поливинилхлорид");
 
-        materialBody.getItems().setAll("Материальная точка",
+        materialBody.getItems().setAll(
+                "Материальная точка",
                 "Дерево",
                 "Стекло",
                 "Резина",
-                "Камни",
+                "Камень",
                 "Сталь",
                 "Алюминий",
                 "Свинец",
                 "Серебро",
                 "Золото");
+
+        heightBody.setText("100");
+        speedBody.setText("30");
+        startTime.setText("0");
+        finishTime.setText("10");
+        numberCounts.setText("20");
+
+        environment.setValue("Воздух");
+        setEnvironment();
+
+        materialBody.setValue("Камень");
+        setMaterialBody();
+
+        massBody.setText("1.0");
+        radiusBody.setText("1.0");
     }
 
     public void setDensityEnvironment(String s) {
@@ -118,8 +155,68 @@ public class FallingBodiesController implements Initializable {
         // Сила с квадратичной зависимостью
     }
 
+    private void setCoefficients(ObjectFallingProcess equation) {
+        Integer constGravity = 1;
+        Integer variableGravity = 0;
+        if (checkBoxConstGravity.isSelected()) {
+            constGravity = 0;
+            variableGravity = 1;
+        }
+
+        Integer buoyantForce = 0;
+        if (F_A.isSelected()) {
+            buoyantForce = 1;
+            equation.setBuoyantCoeff(1.0 - Double.parseDouble(densityBody.getText()) / Double.parseDouble(densityEnvironment.getText()));
+        }
+
+        Integer linearAcc = 0, squareAcc = 0;
+        if (F_C1.isSelected()) {
+            linearAcc = 1;
+            Double vz = 1.0;
+            Double p = Double.parseDouble(densityEnvironment.getText());
+            Double R = Double.parseDouble(radiusBody.getText());
+            Double k_1 = 6.0 * Math.PI * vz * p * R;
+            equation.setLinearResistanceCoeff(k_1);
+        }
+        if (F_C2.isSelected()) {
+            squareAcc = 1;
+            Double p = Double.parseDouble(densityEnvironment.getText());
+            Double R = Double.parseDouble(radiusBody.getText());
+            Double k_2 = p * Math.PI * Math.pow(R, 2.0);
+        }
+
+        equation.setCoefficients(constGravity, variableGravity, buoyantForce, linearAcc, squareAcc);
+    }
+
+    private void setParameters(ObjectFallingProcess equation) {
+        equation.setY0(Double.parseDouble(heightBody.getText()));
+        equation.setV0(Double.parseDouble(speedBody.getText()));
+        equation.setXStart(Double.parseDouble(startTime.getText()));
+        equation.setXFinish(Double.parseDouble(finishTime.getText()));
+        equation.setN(Integer.parseInt(numberCounts.getText()));
+
+        equation.setMass(Double.parseDouble(massBody.getText()));
+        equation.setRadius(Double.parseDouble(radiusBody.getText()));
+    }
+
     public void computeFromParameters() {
         // Считать все и посчитать
+        ObjectFallingProcess equation = new ObjectFallingProcess();
+        setCoefficients(equation);
+        setParameters(equation);
+
+        ArrayList<ArrayList<Double>> solutions = new ArrayList();
+        ArrayList<String> names = new ArrayList();
+
+        Euler_KromerMethod.Solve(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getY0());
+        solutions.add(equation.getY());
+        names.add("Test");
+
+        SomeChart<XYChart> chartMatlab = new MatlabChart();
+        XYChart chartSolutions = chartMatlab.getChart(equation.getX(), solutions, names);
+        chartSolutions.setTitle("Test");
+        new SwingWrapper(chartSolutions).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+
     }
 
     public void clickF_A() {
@@ -152,5 +249,4 @@ public class FallingBodiesController implements Initializable {
     public void clickF_C2() {
         selectableF_C();
     }
-
 }

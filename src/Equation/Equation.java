@@ -99,6 +99,14 @@ public abstract class Equation {
         return _PointsX;
     }
 
+    public Double getY0() {
+        return y0;
+    }
+
+    public void setY0(Double _y0) {
+        y0 = _y0;
+    }
+
     public Double get_PointsX(int i) { return _PointsX.get(i); }
 
     public Double getStep() {
