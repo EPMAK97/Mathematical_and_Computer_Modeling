@@ -12,7 +12,7 @@ public class ObjectFallingProcess extends Equation {
     private static final Double g_0 = 9.81;
     private static final Double PlanetR = 6.4e6;
 
-    private Double k_a;
+    private Double k_buoyant;
     private Double k_linear;
     private Double k_square;
     private Double mass;
@@ -30,7 +30,7 @@ public class ObjectFallingProcess extends Equation {
     }
 
     private Double BuoyantForce() {
-        return k_a * g_0;
+        return k_buoyant * g_0;
     }
 
     private Double LinearResistance(Double v) {
@@ -68,6 +68,30 @@ public class ObjectFallingProcess extends Equation {
     public double computeAnalyticalSolution(int i) {
         return 0;
         //return  -2.0 * (get_PointsX(i) + 2.0) + 4 * Math.exp(1.0 / 2.0 * get_PointsX(i));
+    }
+
+    public void setCoefficients(Integer constGrav, Integer grav, Integer buoyant, Integer linear, Integer square) {
+        CConstGrav = constGrav;
+        CGrav = grav;
+        CBuoyant = buoyant;
+        CLinearAcc = linear;
+        CSquareAcc = square;
+    }
+
+    public void setBuoyantCoeff(Double coeff) {
+        k_buoyant = coeff;
+    }
+
+    public void setLinearResistanceCoeff(Double coeff) {
+        k_linear = coeff;
+    }
+
+    public void setSquareResistanceCoeff(Double coeff) {
+        k_square = coeff;
+    }
+
+    public void setMass(Double _mass) {
+        mass = _mass;
     }
 
     public Double getV0() {

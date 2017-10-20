@@ -19,12 +19,12 @@ public class FallingBodiesController implements Initializable {
     public TextField stepCounts;
 
     public TextField densityBody;
-    public TextField densityMedium;
+    public TextField densityEnvironment;
     public TextField massBody;
     public TextField crossSectionBody;
     public TextField radiusBody;
 
-    public ComboBox<String> medium;
+    public ComboBox<String> environment;
     public ComboBox<String> materialBody;
 
     public Button compute;
@@ -62,7 +62,7 @@ public class FallingBodiesController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        medium.getItems().setAll("Вакуум",
+        environment.getItems().setAll("Вакуум",
                 "Воздух",
                 "Водород",
                 "Вода",
@@ -83,8 +83,8 @@ public class FallingBodiesController implements Initializable {
                 "Золото");
     }
 
-    public void setDensityMedium(String s) {
-        densityMedium.setText(s);
+    public void setDensityEnvironment(String s) {
+        densityEnvironment.setText(s);
     }
 
     public void setDensityBody(String s) {
@@ -94,18 +94,16 @@ public class FallingBodiesController implements Initializable {
     public void setMaterialBody() {
         if (materialBody.getValue() != null) {
             if (materialDensity.containsKey(materialBody.getValue()))
-                setDensityMedium(String.valueOf(materialDensity.get(materialBody.getValue())));
+                setDensityBody(String.valueOf(materialDensity.get(materialBody.getValue())));
         }
     }
 
-    public void setMedium() {
-        if (medium.getValue() != null) {
-            if (materialDensity.containsKey(medium.getValue()))
-                setDensityBody(String.valueOf(materialDensity.get(medium.getValue())));
+    public void setEnvironment() {
+        if (environment.getValue() != null) {
+            if (materialDensity.containsKey(environment.getValue()))
+                setDensityEnvironment(String.valueOf(materialDensity.get(environment.getValue())));
         }
     }
-
-
 
     public void checkBoxSelectedF_A() {
         // Сила Архимеда
@@ -126,7 +124,7 @@ public class FallingBodiesController implements Initializable {
 
     public void clickDensityBody() {
         densityBody.setEditable(F_A.isSelected());
-        densityMedium.setEditable(F_A.isSelected());
+        densityEnvironment.setEditable(F_A.isSelected());
     }
 
     public void clickMassBody() {
