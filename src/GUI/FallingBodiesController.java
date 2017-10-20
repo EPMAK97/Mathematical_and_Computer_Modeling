@@ -2,6 +2,7 @@ package GUI;
 
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
@@ -20,13 +21,17 @@ public class FallingBodiesController implements Initializable {
     public TextField densityBody;
     public TextField densityMedium;
     public TextField massBody;
-    public TextField volumeBody;
+    public TextField crossSectionBody;
     public TextField radiusBody;
 
     public ComboBox<String> medium;
     public ComboBox<String> materialBody;
 
     public Button compute;
+
+    public CheckBox F_A;
+    public CheckBox F_C1;
+    public CheckBox F_C2;
 
     private static HashMap<String, Double> materialDensity;
 
@@ -49,13 +54,16 @@ public class FallingBodiesController implements Initializable {
            put("Свинец",   11300.0);
            put("Серебро",  10600.0);
            put("Золото",   19300.0);
+           put("Вакуум", 0.0);
+           put("Материальная точка", 0.0);
         }};
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        medium.getItems().setAll("Воздух",
+        medium.getItems().setAll("Вакуум",
+                "Воздух",
                 "Водород",
                 "Вода",
                 "Гелий",
@@ -63,7 +71,8 @@ public class FallingBodiesController implements Initializable {
                 "Оливковое масло",
                 "Поливинилхлорид");
 
-        materialBody.getItems().setAll("Дерево",
+        materialBody.getItems().setAll("Материальная точка",
+                "Дерево",
                 "Стекло",
                 "Резина",
                 "Камни",
@@ -72,7 +81,6 @@ public class FallingBodiesController implements Initializable {
                 "Свинец",
                 "Серебро",
                 "Золото");
-
     }
 
     public void setDensityMedium(String s) {
@@ -97,8 +105,11 @@ public class FallingBodiesController implements Initializable {
         }
     }
 
+
+
     public void checkBoxSelectedF_A() {
         // Сила Архимеда
+
     }
 
     public void checkBoxSelectedF_C1() {
@@ -111,6 +122,26 @@ public class FallingBodiesController implements Initializable {
 
     public void computeFromParameters() {
         // Считать все и посчитать
+    }
+
+    public void clickDensityBody() {
+        densityBody.setEditable(F_A.isSelected());
+        densityMedium.setEditable(F_A.isSelected());
+    }
+
+    public void clickMassBody() {
+        massBody.setEditable(F_C1.isSelected() || F_C2.isSelected());
+        radiusBody.setEditable(F_C1.isSelected() || F_C2.isSelected());
+    }
+
+    public void clickRadiusBody() {
+        massBody.setEditable(F_C1.isSelected() || F_C2.isSelected());
+        radiusBody.setEditable(F_C1.isSelected() || F_C2.isSelected());
+    }
+
+    public void clickCrossSEctionBody() {
+        massBody.setEditable(F_C1.isSelected() || F_C2.isSelected());
+        radiusBody.setEditable(F_C1.isSelected() || F_C2.isSelected());
     }
 
 }
