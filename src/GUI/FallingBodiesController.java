@@ -34,7 +34,6 @@ public class FallingBodiesController implements Initializable {
     public ComboBox<String> environment;
     public ComboBox<String> materialBody;
 
-    public Button compute;
     public SplitMenuButton menuButton;
 
     public CheckBox F_A;
@@ -50,8 +49,10 @@ public class FallingBodiesController implements Initializable {
     private static HashMap<String, Double> materialDensity;
     private static HashMap<String, Double> environmentViscosity;
 
-    private static ArrayList<ObjectFallingProcess> processes;
     private ObservableList<ObjectFallingProcess> data = FXCollections.observableArrayList();
+
+    private enum PlotType {PT_COORDINATE, PT_VELOCITY, PT_ACCELERATION};
+    private static HashMap<PlotType, String> plotTypePlotName;
 
     static {
         materialDensity = new HashMap<String, Double>() {{
@@ -93,9 +94,12 @@ public class FallingBodiesController implements Initializable {
             entry.setValue(entry.getValue() * 1e-6);
         }
 
-        processes = new ArrayList<>();
+        plotTypePlotName = new HashMap<PlotType, String>() {{
+            put(PlotType.PT_COORDINATE, "Координаты");
+            put(PlotType.PT_VELOCITY, "Скорость");
+            put(PlotType.PT_ACCELERATION, "Ускорение");
+        }};
     }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -134,17 +138,14 @@ public class FallingBodiesController implements Initializable {
         materialBody.setValue("Дерево");
         setMaterialBody();
 
-        //massBody.setText("1.0");
         radiusBody.setText("1.0");
 
         // Здесь добавить рисовку Y и скорости и еще чего нибудь, вот так
         ObservableList<MenuItem> items = menuButton.getItems();
-        items.get(0).setOnAction(a -> {
-            System.out.println("AAAA"); // добавить функцию рисовки
-        });
-        items.get(1).setOnAction(a -> {
-            System.out.println("BBB"); // добавить функцию рисовки
-        });
+
+        items.get(0).setOnAction(f -> {drawPlot(PlotType.PT_COORDINATE);});
+        items.get(1).setOnAction(f -> {drawPlot(PlotType.PT_VELOCITY);});
+        items.get(2).setOnAction(f -> {drawPlot(PlotType.PT_ACCELERATION);});
     }
 
     public void setDensityEnvironment(String s) {
@@ -233,24 +234,32 @@ public class FallingBodiesController implements Initializable {
         equation.setRadius(Double.parseDouble(radiusBody.getText()));
     }
 
-    public void computeFromParameters() {
-        // Считать все и посчитать
-        ObjectFallingProcess equation = new ObjectFallingProcess();
-        setCoefficients(equation);
-        setParameters(equation);
+    public void drawPlot(PlotType pt) {
+
+        if (data.isEmpty()) return;
 
         ArrayList<ArrayList<Double>> solutions = new ArrayList();
         ArrayList<String> names = new ArrayList();
 
-        Euler_KromerMethod.Solve(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getY0());
-        solutions.add(equation.getY());
-        names.add("Test");
+        for (int i = 0; i < data.size(); ++i) {
+            Euler_KromerMethod.Solve(data.get(i), data.get(i).getN(),
+                    data.get(i).getXStart(), data.get(i).getXFinish(), data.get(i).getY0());
 
-        //processes.add(equation);
+            names.add(String.format("Model № %d", data.get(i).getNumber()));
+            if (pt == PlotType.PT_COORDINATE) {
+                solutions.add(data.get(i).getY());
+            }
+            else if (pt == PlotType.PT_VELOCITY) {
+                solutions.add(data.get(i).getNumericalVelocity());
+            }
+            else if (pt == PlotType.PT_ACCELERATION) {
+                solutions.add(data.get(i).getNumericalAcceleration());
+            }
+        }
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
-        XYChart chartSolutions = chartMatlab.getChart(equation.getX(), solutions, names);
-        chartSolutions.setTitle("Test");
+        XYChart chartSolutions = chartMatlab.getChart(data.get(0).getX(), solutions, names);
+        chartSolutions.setTitle(plotTypePlotName.get(pt));
         new SwingWrapper(chartSolutions).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
     }
@@ -260,12 +269,7 @@ public class FallingBodiesController implements Initializable {
         ObjectFallingProcess equation = new ObjectFallingProcess();
         setCoefficients(equation);
         setParameters(equation);
-        //processes.add(equation);
 
-        //ObservableList tableColumns = table.getColumns();
-
-        //TableColumn tableColumn = (TableColumn)tableColumns.get(1);
-        //tableColumn.setCe
         ObservableList<javafx.scene.control.TableColumn> columns = table.getColumns();
 
         columns.get(0).setCellValueFactory(
@@ -313,8 +317,9 @@ public class FallingBodiesController implements Initializable {
     }
 
     public void deleteFromTable() {
-        Object selectedItem = table.getSelectionModel().getSelectedItem();
-        table.getItems().remove(selectedItem);
+        Integer idx = table.getSelectionModel().getSelectedIndex();
+        data.remove(idx, idx+1);
+        table.setItems(data);
     }
 
 }

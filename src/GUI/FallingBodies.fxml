@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="451.0" prefWidth="919.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.FallingBodiesController">
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="451.0" prefWidth="919.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.FallingBodiesController">
    <children>
       <AnchorPane prefHeight="451.0" prefWidth="824.0">
          <children>
@@ -30,11 +42,11 @@
             <ComboBox fx:id="environment" layoutX="531.0" layoutY="43.0" onAction="#setEnvironment" prefHeight="27.0" prefWidth="150.0" AnchorPane.leftAnchor="531.0" AnchorPane.rightAnchor="242.0" />
             <Label layoutX="586.0" layoutY="17.0" text="Среда" />
             <Label layoutX="719.0" layoutY="17.0" text="Материал тела" />
-            <Button fx:id="compute" layoutX="586.0" layoutY="175.0" mnemonicParsing="false" onAction="#computeFromParameters" prefHeight="59.0" prefWidth="91.0" text="Рассчитать" AnchorPane.bottomAnchor="242.0" AnchorPane.leftAnchor="586.0" AnchorPane.rightAnchor="242.0" AnchorPane.topAnchor="152.0" />
-            <SplitMenuButton fx:id="menuButton" layoutX="585.0" layoutY="222.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="270.0" text="SplitMenuButton" AnchorPane.leftAnchor="585.0" AnchorPane.rightAnchor="66.0" AnchorPane.topAnchor="222.0" >
+            <SplitMenuButton fx:id="menuButton" layoutX="722.0" layoutY="204.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="117.0" text="Отрисовать" AnchorPane.leftAnchor="722.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="204.0">
               <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
-                <MenuItem mnemonicParsing="false" text="Action 2" />
+                <MenuItem mnemonicParsing="false" text="Координата" />
+                <MenuItem mnemonicParsing="false" text="Скорость" />
+                <MenuItem mnemonicParsing="false" text="Ускорение" />
               </items>
             </SplitMenuButton>
             <TableView fx:id="table" layoutX="84.0" layoutY="328.0" prefHeight="174.0" prefWidth="919.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
@@ -54,13 +66,13 @@
               </columns>
             </TableView>
             <Separator layoutX="264.0" layoutY="9.0" orientation="VERTICAL" prefHeight="143.0" prefWidth="13.0" />
-            <Button fx:id="addIntoTable" layoutX="691.0" layoutY="152.0" mnemonicParsing="false" onAction="#addData" text="добавить к сравнению" AnchorPane.bottomAnchor="272.0" AnchorPane.leftAnchor="691.0" AnchorPane.rightAnchor="65.0" AnchorPane.topAnchor="152.0" />
+            <Button fx:id="addIntoTable" layoutX="530.0" layoutY="158.0" mnemonicParsing="false" onAction="#addData" prefHeight="27.0" prefWidth="148.0" text="добавить к сравнению" AnchorPane.bottomAnchor="266.0" AnchorPane.leftAnchor="530.0" AnchorPane.rightAnchor="241.0" AnchorPane.topAnchor="158.0" />
             <Label layoutX="19.0" layoutY="157.0" prefHeight="17.0" prefWidth="181.0" text="Сила сопротивления среды" />
             <Separator layoutX="517.0" layoutY="9.0" orientation="VERTICAL" prefHeight="143.0" prefWidth="7.0" />
             <RadioButton fx:id="F_C1" layoutX="19.0" layoutY="186.0" mnemonicParsing="false" onMouseClicked="#clickRadioButtonF_C1" text="Линейная зависимость" />
             <RadioButton fx:id="F_C2" layoutX="19.0" layoutY="217.0" mnemonicParsing="false" onMouseClicked="#clickRadioButtonF_C2" text="Квадратичная зависимость" />
             <RadioButton fx:id="notF" layoutX="19.0" layoutY="248.0" mnemonicParsing="false" onMouseClicked="#clickRadioButtonNotF" selected="true" text="Нет" />
-            <Button layoutX="691.0" layoutY="182.0" mnemonicParsing="false" onAction="#deleteFromTable" prefHeight="27.0" prefWidth="163.0" text="убрать из сравнения" AnchorPane.bottomAnchor="242.0" />
+            <Button layoutX="691.0" layoutY="158.0" mnemonicParsing="false" onAction="#deleteFromTable" prefHeight="27.0" prefWidth="148.0" text="убрать из сравнения" AnchorPane.bottomAnchor="266.0" />
 
 
          </children>

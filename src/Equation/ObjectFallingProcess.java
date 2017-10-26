@@ -9,8 +9,6 @@ public class ObjectFallingProcess extends Equation {
     private static int modelCounter = 1;
     private int number;
 
-    private SimpleStringProperty model;
-
     private ArrayList<Double> _NumericalVelocity = new ArrayList<>();
     private ArrayList<Double> _NumericalAcceleration = new ArrayList<>();
     private Double V0;
@@ -34,6 +32,13 @@ public class ObjectFallingProcess extends Equation {
     private String F_C1         = "нет";
     private String F_C2         = "нет";
     private String constGravity = "нет";
+
+    @Override
+    public void Clear() {
+        super.Clear();
+        _NumericalVelocity = new ArrayList<>();
+        _NumericalAcceleration = new ArrayList<>();
+    }
 
     private Double ConstantGravityAcceleration() {
         return -g_0;
@@ -125,9 +130,8 @@ public class ObjectFallingProcess extends Equation {
         V0 = _V0;
     }
 
-    public String getNumber() {
-        this.model = new SimpleStringProperty("№" + number);
-        return model.get();
+    public Integer getNumber() {
+        return number;
     }
 
     public String getEnvironment() { return environment; }
