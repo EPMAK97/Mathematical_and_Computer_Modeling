@@ -44,6 +44,8 @@ public class FallingBodiesController implements Initializable {
     private static HashMap<String, Double> materialDensity;
     private static HashMap<String, Double> environmentViscosity;
 
+    private static ArrayList<ObjectFallingProcess> processes;
+
     static {
         materialDensity = new HashMap<String, Double>() {{
            put("Воздух",    1.2);
@@ -77,7 +79,10 @@ public class FallingBodiesController implements Initializable {
             put("Оливковое масло", 84.0);
             put("Поливинилхлорид", 2.0);
         }};
+
+        processes = new ArrayList<>();
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -116,7 +121,7 @@ public class FallingBodiesController implements Initializable {
         materialBody.setValue("Камень");
         setMaterialBody();
 
-        massBody.setText("1.0");
+        //massBody.setText("1.0");
         radiusBody.setText("1.0");
     }
 
@@ -211,6 +216,8 @@ public class FallingBodiesController implements Initializable {
         Euler_KromerMethod.Solve(equation, equation.getN(), equation.getXStart(), equation.getXFinish(), equation.getY0());
         solutions.add(equation.getY());
         names.add("Test");
+
+        processes.add(equation);
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
         XYChart chartSolutions = chartMatlab.getChart(equation.getX(), solutions, names);

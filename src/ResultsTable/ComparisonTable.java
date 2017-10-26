@@ -7,10 +7,10 @@ import NumericalMethods.Runge_KuttaMethod;
 
 import javax.swing.*;
 
-public class ResultsTable {
+public class ComparisonTable {
     public static JTable GetTable(CoffeeCoolingProcess coffeeCoolingProcess, int countIter, double x0, double x1, double y0) {
         String[] columns = new String[] {
-                "k", "time", "T_analytical", "T_Euler_1", "error_Euler_1", "T_Euler_2", "error_Euler_2", "T_Runge-Kutte", "error_Runge-Kutte"
+                "solutions", "BuoyantCoeff", "LinearResistanceCoeff", "T_Euler_1", "error_Euler_1", "T_Euler_2", "error_Euler_2", "T_Runge-Kutte", "error_Runge-Kutte"
         };
 
         EulerMethod.Solve(coffeeCoolingProcess, countIter, x0, x1, y0);
