@@ -18,13 +18,13 @@ public class MatlabChart implements SomeChart<XYChart> {
         chart.getStyler().setPlotGridLinesVisible(false);
         chart.getStyler().setXAxisTickMarkSpacingHint(100);
         chart.getStyler().setToolTipsEnabled(true);
-        //chart.getStyler().setYAxisLogarithmic(true);
+//        chart.getStyler().setYAxisLogarithmic(true);
 
         ArrayList<Double> px = new ArrayList<>(pointsX);
-        //px.remove(0);
+//        px.remove(0);
         for (int i = 0; i < pointsY.size(); i++) {
             ArrayList<Double> py = new ArrayList<>(pointsY.get(i));
-            //py.remove(0);
+//            py.remove(0);
             XYSeries series = chart.addSeries(names.get(i), px, py);
             series.setMarker(SeriesMarkers.NONE);
         }

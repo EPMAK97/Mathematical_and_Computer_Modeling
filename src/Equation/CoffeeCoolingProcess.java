@@ -12,15 +12,18 @@ public class CoffeeCoolingProcess extends Equation {
 
     @Override
     public double computeFunction(double x, double y) {
-        return 1.0 / 2.0 * y + x;
+        //return 1.0 / 2.0 * y + x;
         //return -Math.pow(x, 2.0) + y + 4;
         //return y + 2;
-        //return -r * y + r * Tc;
+        return -r * y + r * Tc;
     }
 
     @Override
     public double computeAnalyticalSolution(int i) {
-        return  -2.0 * (get_PointsX(i) + 2.0) + 4 * Math.exp(1.0 / 2.0 * get_PointsX(i));
+        //Double C_1 = (T0 + 2 * getXStart() + 4) / Math.exp(0.5 * getXStart());
+        //return C_1 * Math.exp(0.5 * get_PointsX(i)) - 2 * get_PointsX(i) - 4;
+        //-2.0 * (get_PointsX(i) + 2.0) + 4 * Math.exp(1.0 / 2.0 * get_PointsX(i));
+        return Tc + (T0 - Tc) * Math.exp(-r * get_PointsX(i));
     }
 
     public Double getT0() {

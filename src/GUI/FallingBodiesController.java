@@ -16,6 +16,7 @@ import javax.swing.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class FallingBodiesController implements Initializable {
@@ -67,16 +68,22 @@ public class FallingBodiesController implements Initializable {
            put("Материальная точка", 0.0);
         }};
 
+        // dynamic viscosity of different environments
         environmentViscosity = new HashMap<String, Double>() {{
             put("Вакуум",   0.0);
-            put("Воздух",   1812.0);
-            put("Водород",  880.0);
-            put("Вода",     1.0);
-            put("Гелий",    1946.0);
-            put("Глицерин", 1480.0);
-            put("Оливковое масло", 84.0);
-            put("Поливинилхлорид", 2.0);
+            put("Воздух",   18.27);
+            put("Водород",  8.76);
+            put("Вода",     1002.0);
+            put("Гелий",    19.0);
+            put("Глицерин", 1480.0 * 1000.0);
+            put("Оливковое масло", 84.0 * 1000.0);
+            put("Поливинилхлорид", 2.0 * 1e6);
         }};
+
+        // convert value to SI
+        for (Map.Entry<String, Double> entry: environmentViscosity.entrySet()) {
+            entry.setValue(entry.getValue() * 1e-6);
+        }
     }
 
     @Override
@@ -110,10 +117,10 @@ public class FallingBodiesController implements Initializable {
         finishTime.setText("10");
         numberCounts.setText("20");
 
-        environment.setValue("Воздух");
+        environment.setValue("Вода");
         setEnvironment();
 
-        materialBody.setValue("Камень");
+        materialBody.setValue("Дерево");
         setMaterialBody();
 
         massBody.setText("1.0");
@@ -166,23 +173,25 @@ public class FallingBodiesController implements Initializable {
         Integer buoyantForce = 0;
         if (F_A.isSelected()) {
             buoyantForce = 1;
-            equation.setBuoyantCoeff(1.0 - Double.parseDouble(densityBody.getText()) / Double.parseDouble(densityEnvironment.getText()));
+            equation.setBuoyantCoeff(Double.parseDouble(densityBody.getText()), Double.parseDouble(densityEnvironment.getText()));
         }
 
         Integer linearAcc = 0, squareAcc = 0;
         if (F_C1.isSelected()) {
             linearAcc = 1;
-            Double vz = 1.0;
-            Double p = Double.parseDouble(densityEnvironment.getText());
+            Double vz = environmentViscosity.get(environment.getValue());
+            Double p_env = Double.parseDouble(densityEnvironment.getText());
+            Double p_body = Double.parseDouble(densityBody.getText());
             Double R = Double.parseDouble(radiusBody.getText());
-            Double k_1 = 6.0 * Math.PI * vz * p * R;
-            equation.setLinearResistanceCoeff(k_1);
+            equation.setLinearResistanceCoeff(vz, p_env, p_body, R);
         }
         if (F_C2.isSelected()) {
             squareAcc = 1;
-            Double p = Double.parseDouble(densityEnvironment.getText());
+            Double vz = environmentViscosity.get(environment.getValue());
+            Double p_env = Double.parseDouble(densityEnvironment.getText());
+            Double p_body = Double.parseDouble(densityBody.getText());
             Double R = Double.parseDouble(radiusBody.getText());
-            Double k_2 = p * Math.PI * Math.pow(R, 2.0);
+            equation.setSquareResistanceCoeff(p_env, p_body, R);
         }
 
         equation.setCoefficients(constGravity, variableGravity, buoyantForce, linearAcc, squareAcc);
@@ -195,7 +204,7 @@ public class FallingBodiesController implements Initializable {
         equation.setXFinish(Double.parseDouble(finishTime.getText()));
         equation.setN(Integer.parseInt(numberCounts.getText()));
 
-        equation.setMass(Double.parseDouble(massBody.getText()));
+//        equation.setMass(Double.parseDouble(massBody.getText()));
         equation.setRadius(Double.parseDouble(radiusBody.getText()));
     }
 

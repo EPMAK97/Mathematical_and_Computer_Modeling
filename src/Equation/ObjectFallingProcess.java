@@ -15,19 +15,18 @@ public class ObjectFallingProcess extends Equation {
     private Double k_buoyant = 0.0;
     private Double k_linear = 0.0;
     private Double k_square = 0.0;
-    private Double mass;
-    private Double radius;
+    private Double radius = 0.0;
 
     private Integer CConstGrav, CGrav;
     private Integer CBuoyant;
     private Integer CLinearAcc, CSquareAcc;
 
     private Double ConstantGravityAcceleration() {
-        return g_0;
+        return -g_0;
     }
 
     private Double GravityAcceleration(Double h) {
-        return g_0 / Math.pow(1 + h / PlanetR, 2.0);
+        return -g_0 / Math.pow(1 + h / PlanetR, 2.0);
     }
 
     private Double BuoyantForce() {
@@ -35,11 +34,11 @@ public class ObjectFallingProcess extends Equation {
     }
 
     private Double LinearResistance(Double v) {
-        return -k_linear * v / mass;
+        return -k_linear * v;
     }
 
     private Double SquareResistance(Double v) {
-        return -k_square * v * Math.abs(v) / mass;
+        return -k_square * v * Math.abs(v);
     }
 
     public ObjectFallingProcess() {
@@ -47,8 +46,8 @@ public class ObjectFallingProcess extends Equation {
     }
 
     public Double computeAcceleration(Double x, Double y, Double v) {
-        return  - CConstGrav * ConstantGravityAcceleration()
-                - CGrav * GravityAcceleration(y)
+        return  + CConstGrav * ConstantGravityAcceleration()
+                + CGrav * GravityAcceleration(y)
                 + CBuoyant * BuoyantForce()
                 + CLinearAcc * LinearResistance(v)
                 + CSquareAcc * SquareResistance(v);
@@ -68,7 +67,6 @@ public class ObjectFallingProcess extends Equation {
     @Override
     public double computeAnalyticalSolution(int i) {
         return 0;
-        //return  -2.0 * (get_PointsX(i) + 2.0) + 4 * Math.exp(1.0 / 2.0 * get_PointsX(i));
     }
 
     public void setCoefficients(Integer constGrav, Integer grav, Integer buoyant, Integer linear, Integer square) {
@@ -79,20 +77,24 @@ public class ObjectFallingProcess extends Equation {
         CSquareAcc = square;
     }
 
-    public void setBuoyantCoeff(Double coeff) {
-        k_buoyant = coeff;
+    public void setBuoyantCoeff(Double densityBody, Double densityEnvironment) {
+        k_buoyant = densityEnvironment / densityBody;
     }
 
-    public void setLinearResistanceCoeff(Double coeff) {
-        k_linear = coeff;
+    public void setLinearResistanceCoeff(Double vz, Double p_env, Double p_body, Double R) {
+        k_linear = 9.0 / 2.0 * (vz * p_env) / (p_body * Math.pow(R, 2.0));
     }
 
-    public void setSquareResistanceCoeff(Double coeff) {
-        k_square = coeff;
+    public void setSquareResistanceCoeff(Double p_env, Double p_body, Double R) {
+        k_square = 3.0 / 4.0 * p_env / (p_body * R);
     }
 
-    public void setMass(Double _mass) {
-        mass = _mass;
+    public ArrayList<Double> getNumericalVelocity() {
+        return new ArrayList<Double> (_NumericalVelocity);
+    }
+
+    public ArrayList<Double> getNumericalAcceleration() {
+        return new ArrayList<Double> (_NumericalAcceleration);
     }
 
     public void setRadius(Double _radius) {
