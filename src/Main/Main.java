@@ -24,7 +24,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("../GUI/FallingBodies.fxml"));
         primaryStage.setTitle("Математическое и компьютерное моделирование");
-        Scene scene = new Scene(root, 630, 451);
+        Scene scene = new Scene(root, 919, 451);
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setOnCloseRequest(e -> Platform.exit());

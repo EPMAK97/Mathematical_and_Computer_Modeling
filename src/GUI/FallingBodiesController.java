@@ -1,14 +1,15 @@
 package GUI;
 
+import Equation.Equation;
 import Equation.ObjectFallingProcess;
 import Graphics.MatlabChart;
 import Graphics.SomeChart;
 import NumericalMethods.Euler_KromerMethod;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 
@@ -28,22 +29,29 @@ public class FallingBodiesController implements Initializable {
 
     public TextField densityBody;
     public TextField densityEnvironment;
-    public TextField massBody;
-    public TextField crossSectionBody;
     public TextField radiusBody;
 
     public ComboBox<String> environment;
     public ComboBox<String> materialBody;
 
     public Button compute;
+    public SplitMenuButton menuButton;
 
     public CheckBox F_A;
-    public CheckBox F_C1;
-    public CheckBox F_C2;
+    //public CheckBox F_C1;
+    //public CheckBox F_C2;
     public CheckBox checkBoxConstGravity;
+    public javafx.scene.control.TableView table;
+
+    public RadioButton F_C1;
+    public RadioButton F_C2;
+    public RadioButton notF;
 
     private static HashMap<String, Double> materialDensity;
     private static HashMap<String, Double> environmentViscosity;
+
+    private static ArrayList<ObjectFallingProcess> processes;
+    private ObservableList<ObjectFallingProcess> data = FXCollections.observableArrayList();
 
     static {
         materialDensity = new HashMap<String, Double>() {{
@@ -84,7 +92,10 @@ public class FallingBodiesController implements Initializable {
         for (Map.Entry<String, Double> entry: environmentViscosity.entrySet()) {
             entry.setValue(entry.getValue() * 1e-6);
         }
+
+        processes = new ArrayList<>();
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -123,8 +134,17 @@ public class FallingBodiesController implements Initializable {
         materialBody.setValue("Дерево");
         setMaterialBody();
 
-        massBody.setText("1.0");
+        //massBody.setText("1.0");
         radiusBody.setText("1.0");
+
+        // Здесь добавить рисовку Y и скорости и еще чего нибудь, вот так
+        ObservableList<MenuItem> items = menuButton.getItems();
+        items.get(0).setOnAction(a -> {
+            System.out.println("AAAA"); // добавить функцию рисовки
+        });
+        items.get(1).setOnAction(a -> {
+            System.out.println("BBB"); // добавить функцию рисовки
+        });
     }
 
     public void setDensityEnvironment(String s) {
@@ -166,18 +186,21 @@ public class FallingBodiesController implements Initializable {
         Integer constGravity = 1;
         Integer variableGravity = 0;
         if (checkBoxConstGravity.isSelected()) {
+            equation.setConstGravity("учтено");
             constGravity = 0;
             variableGravity = 1;
         }
 
         Integer buoyantForce = 0;
         if (F_A.isSelected()) {
+            equation.setF_A("учтено");
             buoyantForce = 1;
             equation.setBuoyantCoeff(Double.parseDouble(densityBody.getText()), Double.parseDouble(densityEnvironment.getText()));
         }
 
         Integer linearAcc = 0, squareAcc = 0;
         if (F_C1.isSelected()) {
+            equation.setF_C1("учтено");
             linearAcc = 1;
             Double vz = environmentViscosity.get(environment.getValue());
             Double p_env = Double.parseDouble(densityEnvironment.getText());
@@ -186,6 +209,7 @@ public class FallingBodiesController implements Initializable {
             equation.setLinearResistanceCoeff(vz, p_env, p_body, R);
         }
         if (F_C2.isSelected()) {
+            equation.setF_C2("учтено");
             squareAcc = 1;
             Double vz = environmentViscosity.get(environment.getValue());
             Double p_env = Double.parseDouble(densityEnvironment.getText());
@@ -204,7 +228,8 @@ public class FallingBodiesController implements Initializable {
         equation.setXFinish(Double.parseDouble(finishTime.getText()));
         equation.setN(Integer.parseInt(numberCounts.getText()));
 
-//        equation.setMass(Double.parseDouble(massBody.getText()));
+        equation.setEnvironment(environment.getValue());
+        equation.setMaterialBody(materialBody.getValue());
         equation.setRadius(Double.parseDouble(radiusBody.getText()));
     }
 
@@ -221,6 +246,8 @@ public class FallingBodiesController implements Initializable {
         solutions.add(equation.getY());
         names.add("Test");
 
+        //processes.add(equation);
+
         SomeChart<XYChart> chartMatlab = new MatlabChart();
         XYChart chartSolutions = chartMatlab.getChart(equation.getX(), solutions, names);
         chartSolutions.setTitle("Test");
@@ -228,34 +255,66 @@ public class FallingBodiesController implements Initializable {
 
     }
 
-    public void clickF_A() {
-        densityBody.setDisable(!F_A.isSelected());
-        densityEnvironment.setDisable(!F_A.isSelected());
-        densityBody.setEditable(F_A.isSelected());
-        densityEnvironment.setEditable(F_A.isSelected());
+    public void addData() {
+        // Считать все и внести в таблицу
+        ObjectFallingProcess equation = new ObjectFallingProcess();
+        setCoefficients(equation);
+        setParameters(equation);
+        //processes.add(equation);
+
+        //ObservableList tableColumns = table.getColumns();
+
+        //TableColumn tableColumn = (TableColumn)tableColumns.get(1);
+        //tableColumn.setCe
+        ObservableList<javafx.scene.control.TableColumn> columns = table.getColumns();
+
+        columns.get(0).setCellValueFactory(
+                new PropertyValueFactory<Equation, String>("number"));
+        columns.get(1).setCellValueFactory(
+                new PropertyValueFactory<Equation, Double>("y0"));
+        columns.get(2).setCellValueFactory(
+                new PropertyValueFactory<Equation, Double>("v0"));
+        columns.get(3).setCellValueFactory(
+                new PropertyValueFactory<Equation, Double>("radius"));
+        columns.get(4).setCellValueFactory(
+                new PropertyValueFactory<Equation, String>("environment"));
+        columns.get(5).setCellValueFactory(
+                new PropertyValueFactory<Equation, String>("materialBody"));
+
+        ObservableList<javafx.scene.control.TableColumn> forceColumns = columns.get(6).getColumns();
+
+        forceColumns.get(0).setCellValueFactory(
+                new PropertyValueFactory<Equation, String>("constGravity"));
+        forceColumns.get(1).setCellValueFactory(
+                new PropertyValueFactory<Equation, String>("F_A"));
+        forceColumns.get(2).setCellValueFactory(
+                new PropertyValueFactory<Equation, String>("F_C1"));
+
+        data.add(equation);
+        table.setItems(data);
     }
 
-    public void selectableF_C() {
-        boolean selectable = F_C1.isSelected() || F_C2.isSelected();
-
-        massBody.setDisable(!selectable);
-        massBody.setEditable(selectable);
-
-        radiusBody.setDisable(!selectable);
-        radiusBody.setEditable(selectable);
-
-        massBody.setDisable(!selectable);
-        massBody.setEditable(selectable);
-
-        radiusBody.setDisable(!selectable);
-        radiusBody.setEditable(selectable);
+    public void clickRadioButtonF_C1() {
+        F_C1.setSelected(true);
+        F_C2.setSelected(false);
+        notF.setSelected(false);
     }
 
-    public void clickF_C1() {
-        selectableF_C();
+    public void clickRadioButtonF_C2() {
+        F_C2.setSelected(true);
+        F_C1.setSelected(false);
+        notF.setSelected(false);
     }
 
-    public void clickF_C2() {
-        selectableF_C();
+    public void clickRadioButtonNotF() {
+        notF.setSelected(true);
+        F_C1.setSelected(false);
+        F_C2.setSelected(false);
     }
+
+    public void deleteFromTable() {
+        Object selectedItem = table.getSelectionModel().getSelectedItem();
+        table.getItems().remove(selectedItem);
+    }
+
 }
