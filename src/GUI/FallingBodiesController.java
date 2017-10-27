@@ -10,6 +10,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 
@@ -45,6 +47,12 @@ public class FallingBodiesController implements Initializable {
     public RadioButton F_C1;
     public RadioButton F_C2;
     public RadioButton notF;
+
+    public AnchorPane paneTable;
+    public AnchorPane paneMainMenu;
+
+    public VBox vboxTable;
+    public TableView summaryTable;
 
     private static HashMap<String, Double> materialDensity;
     private static HashMap<String, Double> environmentViscosity;
@@ -146,6 +154,7 @@ public class FallingBodiesController implements Initializable {
         items.get(0).setOnAction(f -> {drawPlot(PlotType.PT_COORDINATE);});
         items.get(1).setOnAction(f -> {drawPlot(PlotType.PT_VELOCITY);});
         items.get(2).setOnAction(f -> {drawPlot(PlotType.PT_ACCELERATION);});
+        items.get(3).setOnAction(f -> {createSummaryTable();});
     }
 
     public void setDensityEnvironment(String s) {
@@ -318,8 +327,29 @@ public class FallingBodiesController implements Initializable {
 
     public void deleteFromTable() {
         Integer idx = table.getSelectionModel().getSelectedIndex();
-        data.remove(idx, idx+1);
-        table.setItems(data);
+        if (idx >= 0) {
+            data.remove(idx, idx + 1);
+            table.setItems(data);
+        }
     }
 
+    public void createSummaryTable() {
+        if (data.isEmpty()) return;
+
+        ObservableList<javafx.scene.control.TableColumn> columns = summaryTable.getColumns();
+
+        columns.get(0).setCellValueFactory(new PropertyValueFactory<Equation, Integer>("number"));
+        //TableColumn k = new TableColumn("velocity");
+        //k.setMinWidth(100);
+//        k.setCellValueFactory(new PropertyValueFactory<Equation, Double>("velocity"));
+        summaryTable.setItems(data);
+
+        paneMainMenu.setVisible(false);
+        vboxTable.setVisible(true);
+    }
+
+    public void backToMainMenuClickButton() {
+        paneMainMenu.setVisible(true);
+        vboxTable.setVisible(false);
+    }
 }

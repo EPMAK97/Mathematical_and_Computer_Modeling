@@ -1,7 +1,5 @@
 package Equation;
 
-import javafx.beans.property.SimpleStringProperty;
-
 import java.util.ArrayList;
 
 public class ObjectFallingProcess extends Equation {
@@ -32,6 +30,7 @@ public class ObjectFallingProcess extends Equation {
     private String F_C1         = "нет";
     private String F_C2         = "нет";
     private String constGravity = "нет";
+    private Double velocity;
 
     @Override
     public void Clear() {
@@ -130,9 +129,7 @@ public class ObjectFallingProcess extends Equation {
         V0 = _V0;
     }
 
-    public Integer getNumber() {
-        return number;
-    }
+    public Integer getNumber() { return number; }
 
     public String getEnvironment() { return environment; }
 
@@ -161,4 +158,9 @@ public class ObjectFallingProcess extends Equation {
 
     public String getConstGravity() { return constGravity; }
 
+    public Double getVelocity() {
+        if (_NumericalVelocity.isEmpty())
+            computePointsX();
+        return getNumericalVelocity().get(0);
+    }
 }
