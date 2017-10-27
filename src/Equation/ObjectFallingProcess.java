@@ -104,7 +104,7 @@ public class ObjectFallingProcess extends Equation {
     }
 
     public void setSquareResistanceCoeff(Double p_env, Double p_body, Double R) {
-        k_square = 3.0 / 4.0 * p_env / (p_body * R);
+        k_square = 3.0 / 16.0 * p_env / (p_body * R);
     }
 
     public ArrayList<Double> getNumericalVelocity() {

@@ -100,7 +100,7 @@ public class FallingBodiesController implements Initializable {
 
         // convert value to SI
         for (Map.Entry<String, Double> entry: environmentViscosity.entrySet()) {
-            entry.setValue(entry.getValue() * 1e-6);
+            entry.setValue(entry.getValue() * 1e-4);
         }
 
         plotTypePlotName = new HashMap<PlotType, String>() {{
@@ -135,16 +135,16 @@ public class FallingBodiesController implements Initializable {
                 "Серебро",
                 "Золото");
 
-        heightBody.setText("100");
-        speedBody.setText("30");
+        heightBody.setText("0");
+        speedBody.setText("0");
         startTime.setText("0");
-        finishTime.setText("10");
-        numberCounts.setText("20");
+        finishTime.setText("20");
+        numberCounts.setText("1000");
 
         environment.setValue("Вода");
         setEnvironment();
 
-        materialBody.setValue("Дерево");
+        materialBody.setValue("Камень");
         setMaterialBody();
 
         radiusBody.setText("1.0");
