@@ -5,6 +5,7 @@ import Equation.ObjectFallingProcess;
 import Graphics.MatlabChart;
 import Graphics.SomeChart;
 import NumericalMethods.Euler_KromerMethod;
+import ResultsTable.ComparisonTable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -336,16 +337,17 @@ public class FallingBodiesController implements Initializable {
     public void createSummaryTable() {
         if (data.isEmpty()) return;
 
-        ObservableList<javafx.scene.control.TableColumn> columns = summaryTable.getColumns();
+        for (int i = 0; i < data.size(); ++i) {
+            Euler_KromerMethod.Solve(data.get(i), data.get(i).getN(),
+                    data.get(i).getXStart(), data.get(i).getXFinish(), data.get(i).getY0());
 
-        columns.get(0).setCellValueFactory(new PropertyValueFactory<Equation, Integer>("number"));
-        //TableColumn k = new TableColumn("velocity");
-        //k.setMinWidth(100);
-//        k.setCellValueFactory(new PropertyValueFactory<Equation, Double>("velocity"));
-        summaryTable.setItems(data);
+        }
 
-        paneMainMenu.setVisible(false);
-        vboxTable.setVisible(true);
+        JTable table = ResultsTable.ComparisonTable.GetTable(new ArrayList<ObjectFallingProcess>(data));
+        JFrame frame = new JFrame("Table");
+        frame.add(new JScrollPane(table));
+        frame.setSize(table.getColumnModel().getTotalColumnWidth() + 20, 500);
+        frame.setVisible(true);
     }
 
     public void backToMainMenuClickButton() {
