@@ -22,7 +22,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("../GUI/FallingBodies.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../GUI/FallingBodies2D.fxml"));
         primaryStage.setTitle("Математическое и компьютерное моделирование");
         Scene scene = new Scene(root, 919, 451);
         primaryStage.setScene(scene);

@@ -7,21 +7,23 @@ import NumericalMethods.EulerMethodImproved;
 import NumericalMethods.Runge_KuttaMethod;
 
 import javax.swing.*;
+import javax.swing.table.TableModel;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ComparisonTable {
     public static JTable GetTable(ArrayList<ObjectFallingProcess> d) {
         ArrayList<String> columns = new ArrayList<>();
-        columns.add("Номер");
-        columns.add("Время");
+        columns.add("Number");
+        columns.add("Time");
 
         for (int i = 0; i < d.size(); ++i) {
             columns.add(String.format("y_%d", i + 1));
             columns.add(String.format("v_%d", i + 1));
             columns.add(String.format("a_%d", i + 1));
         }
-
-        String formatSol = "%.8f";
 
         int rows = d.get(0).getX().size();
         Object[][] data = new Object[rows][d.size() * 3 + 2];
@@ -41,7 +43,30 @@ public class ComparisonTable {
         tmp = columns.toArray(tmp);
 
         JTable table = new JTable(data, tmp);
-        //table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+        try {
+
+            TableModel model = table.getModel();
+            FileWriter csv = new FileWriter(new File("table.csv"));
+
+            for (int i = 0; i < model.getColumnCount(); i++) {
+                csv.write(model.getColumnName(i) + ",");
+            }
+
+            csv.write("\n");
+
+            for (int i = 0; i < model.getRowCount(); i++) {
+                for (int j = 0; j < model.getColumnCount(); j++) {
+                    csv.write(model.getValueAt(i, j).toString() + ",");
+                }
+                csv.write("\n");
+            }
+
+            csv.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return table;
     }
 }

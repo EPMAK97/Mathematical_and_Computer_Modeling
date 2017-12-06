@@ -10,6 +10,7 @@ public class ObjectFallingProcess extends Equation {
     private ArrayList<Double> _NumericalVelocity = new ArrayList<>();
     private ArrayList<Double> _NumericalAcceleration = new ArrayList<>();
     private Double V0;
+    private Double envVelocity;
 
     private static final Double G = 6.67408e-11;
     private static final Double g_0 = 9.81;
@@ -30,7 +31,6 @@ public class ObjectFallingProcess extends Equation {
     private String F_C1         = "нет";
     private String F_C2         = "нет";
     private String constGravity = "нет";
-    private Double velocity;
 
     @Override
     public void Clear() {
@@ -158,9 +158,11 @@ public class ObjectFallingProcess extends Equation {
 
     public String getConstGravity() { return constGravity; }
 
-    public Double getVelocity() {
-        if (_NumericalVelocity.isEmpty())
-            computePointsX();
-        return getNumericalVelocity().get(0);
+    public void setEnvVelocity(Double envVelocity) {
+        this.envVelocity = envVelocity;
+    }
+
+    public Double getEnvVelocity() {
+        return envVelocity;
     }
 }
