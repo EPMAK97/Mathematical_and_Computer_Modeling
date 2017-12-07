@@ -70,6 +70,9 @@ public class CoffeeCoolingModelController {
         if (!setData()) return;
         ArrayList<ArrayList<Double>> solutions = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
+        ArrayList<ArrayList<Double>> px = new ArrayList<>();
+        px.add(coffeeCoolingProcess.getX());
+
         if (checkEuler.isSelected()) {
             EulerMethod.Solve(coffeeCoolingProcess, coffeeCoolingProcess.getN(), coffeeCoolingProcess.getXStart(), coffeeCoolingProcess.getXFinish(), coffeeCoolingProcess.getT0());
             solutions.add(coffeeCoolingProcess.getY());
@@ -92,7 +95,7 @@ public class CoffeeCoolingModelController {
         }
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
-        XYChart chart1 = chartMatlab.getChart(coffeeCoolingProcess.getX(), solutions, names);
+        XYChart chart1 = chartMatlab.getChart(px, solutions, names);
         chart1.setTitle("Solutions");
         new SwingWrapper<>(chart1).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }
@@ -108,6 +111,8 @@ public class CoffeeCoolingModelController {
         if (!setData()) return;
         ArrayList<ArrayList<Double>> solutions = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
+        ArrayList<ArrayList<Double>> px = new ArrayList<>();
+        px.add(coffeeCoolingProcess.computePointsX());
 
         ArrayList<Double> analyticalSolution = coffeeCoolingProcess.getAnalyticalSolution();
         solutions.add(analyticalSolution);
@@ -124,7 +129,7 @@ public class CoffeeCoolingModelController {
         names.add("Experiment values");
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
-        XYChart chart1 = chartMatlab.getChart(coffeeCoolingProcess.computePointsX(), solutions, names);
+        XYChart chart1 = chartMatlab.getChart(px, solutions, names);
         chart1.setTitle("Solutions");
         new SwingWrapper<>(chart1).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }
@@ -133,6 +138,9 @@ public class CoffeeCoolingModelController {
         if (!setData()) return;
         ArrayList<ArrayList<Double>> errors = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
+        ArrayList<ArrayList<Double>> px = new ArrayList<>();
+        px.add(coffeeCoolingProcess.getX());
+
         if (checkEuler.isSelected()) {
             EulerMethod.Solve(coffeeCoolingProcess, coffeeCoolingProcess.getN(), coffeeCoolingProcess.getXStart(), coffeeCoolingProcess.getXFinish(), coffeeCoolingProcess.getT0());
             errors.add(coffeeCoolingProcess.getAbsoluteErrors());
@@ -150,7 +158,7 @@ public class CoffeeCoolingModelController {
         }
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
-        XYChart chart1 = chartMatlab.getChart(coffeeCoolingProcess.getX(), errors, names);
+        XYChart chart1 = chartMatlab.getChart(px, errors, names);
         chart1.setTitle("Absolute errors");
         new SwingWrapper<>(chart1).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }
@@ -159,6 +167,9 @@ public class CoffeeCoolingModelController {
         if (!setData()) return;
         ArrayList<ArrayList<Double>> errors = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
+        ArrayList<ArrayList<Double>> px = new ArrayList<>();
+        px.add(coffeeCoolingProcess.getX());
+
         if (checkEuler.isSelected()) {
             EulerMethod.Solve(coffeeCoolingProcess, coffeeCoolingProcess.getN(), coffeeCoolingProcess.getXStart(), coffeeCoolingProcess.getXFinish(), coffeeCoolingProcess.getT0());
             errors.add(coffeeCoolingProcess.getRelativeErrors());
@@ -176,7 +187,7 @@ public class CoffeeCoolingModelController {
         }
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
-        XYChart chart1 = chartMatlab.getChart(coffeeCoolingProcess.getX(), errors, names);
+        XYChart chart1 = chartMatlab.getChart(px, errors, names);
         chart1.setTitle("Relative errors");
         new SwingWrapper<>(chart1).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }

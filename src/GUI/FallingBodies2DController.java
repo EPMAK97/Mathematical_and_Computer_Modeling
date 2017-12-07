@@ -5,7 +5,10 @@ import Equation.ObjectFalling2DProcess;
 import Graphics.MatlabChart;
 import Graphics.SomeChart;
 import NumericalMethods.Euler_Kromer2DMethod;
-import ResultsTable.ComparisonTable;
+import ResultsTable.FallingBodies2DTable;
+import Graphics.SwingWorkerRealTime;
+
+import com.sun.xml.internal.fastinfoset.util.StringArray;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -142,7 +145,7 @@ public class FallingBodies2DController implements Initializable {
 
         startTime.setText("0");
         finishTime.setText("20");
-        numberCounts.setText("1000");
+        numberCounts.setText("200");
 
         environment.setValue("Вода");
         setEnvironment();
@@ -260,16 +263,47 @@ public class FallingBodies2DController implements Initializable {
         equation.setRadius(1.0);
     }
 
+    private void animateXY() {
+        ArrayList<ArrayList<Double>> py = new ArrayList();
+        ArrayList<ArrayList<Double>> px = new ArrayList();
+        ArrayList<String> names = new ArrayList();
+
+        // empty chart (yeah it's stupid but fuck it, i'm tired, i want to complete this lab and go to sleep)
+        SomeChart<XYChart> chartMatlab = new MatlabChart();
+        XYChart chartSolutions = chartMatlab.getChart(px, py, names);
+
+        for (int i = 0; i < data.size(); ++i) {
+            Euler_Kromer2DMethod.Solve(data.get(i));
+            px.add(data.get(i).getX());
+            py.add(data.get(i).getY());
+            names.add(String.format("Model № %d", data.get(i).getNumber()));
+        }
+
+        try {
+            SwingWorkerRealTime.main(chartSolutions, names, px, py);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void drawPlot(PlotType pt) {
 
         if (data.isEmpty()) return;
 
+        if (pt == PlotType.PT_COORDINATES_XY) {
+            animateXY();
+            return;
+        }
+
         ArrayList<ArrayList<Double>> solutions = new ArrayList();
+        ArrayList<ArrayList<Double>> px = new ArrayList();
         ArrayList<String> names = new ArrayList();
 
         for (int i = 0; i < data.size(); ++i) {
             Euler_Kromer2DMethod.Solve(data.get(i));
 
+            px.add(data.get(i).getTime());
             names.add(String.format("Model № %d", data.get(i).getNumber()));
             if (pt == PlotType.PT_COORDINATE_X) {
                 solutions.add(data.get(i).getX());
@@ -283,13 +317,10 @@ public class FallingBodies2DController implements Initializable {
             else if (pt == PlotType.PT_VELOCITY_Y) {
                 solutions.add(data.get(i).getNumericalVelocityY());
             }
-            else if (pt == PlotType.PT_COORDINATES_XY) {
-                //solutions.add(data.get(i).getNumericalAcceleration());
-            }
         }
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
-        XYChart chartSolutions = chartMatlab.getChart(data.get(0).getTime(), solutions, names);
+        XYChart chartSolutions = chartMatlab.getChart(px, solutions, names);
         chartSolutions.setTitle(plotTypePlotName.get(pt));
         new SwingWrapper(chartSolutions).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }
@@ -304,12 +335,21 @@ public class FallingBodies2DController implements Initializable {
 
         columns.get(0).setCellValueFactory(
                 new PropertyValueFactory<Equation, String>("number"));
-        columns.get(1).setCellValueFactory(
-                new PropertyValueFactory<Equation, Double>("y0"));
-        columns.get(2).setCellValueFactory(
-                new PropertyValueFactory<Equation, Double>("v0"));
+
+        ObservableList<TableColumn> coordinateColumns = columns.get(1).getColumns();
+        coordinateColumns.get(0).setCellValueFactory(
+                new PropertyValueFactory<Equation, Double>("X0"));
+        coordinateColumns.get(1).setCellValueFactory(
+                new PropertyValueFactory<Equation, Double>("Y0"));
+
+        ObservableList<TableColumn> velocityColumns = columns.get(2).getColumns();
+        velocityColumns.get(0).setCellValueFactory(
+                new PropertyValueFactory<Equation, Double>("V0_X"));
+        velocityColumns.get(1).setCellValueFactory(
+                new PropertyValueFactory<Equation, Double>("V0_Y"));
+
         columns.get(3).setCellValueFactory(
-                new PropertyValueFactory<Equation, Double>("radius"));
+                new PropertyValueFactory<Equation, Double>("envVelocityX"));
         columns.get(4).setCellValueFactory(
                 new PropertyValueFactory<Equation, String>("environment"));
         columns.get(5).setCellValueFactory(
@@ -361,11 +401,11 @@ public class FallingBodies2DController implements Initializable {
             Euler_Kromer2DMethod.Solve(data.get(i));
         }
 
-        //JTable table = ComparisonTable.GetTable(new ArrayList<ObjectFalling2DProcess>(data));
-        //JFrame frame = new JFrame("Table");
-        //frame.add(new JScrollPane(table));
-        //frame.setSize(table.getColumnModel().getTotalColumnWidth() + 20, 500);
-        //frame.setVisible(true);
+        JTable table = FallingBodies2DTable.GetTable(new ArrayList<ObjectFalling2DProcess>(data));
+        JFrame frame = new JFrame("Table");
+        frame.add(new JScrollPane(table));
+        frame.setSize(table.getColumnModel().getTotalColumnWidth() + 20, 500);
+        frame.setVisible(true);
     }
 
     public void backToMainMenuClickButton() {

@@ -5,7 +5,7 @@ import Equation.ObjectFallingProcess;
 import Graphics.MatlabChart;
 import Graphics.SomeChart;
 import NumericalMethods.Euler_KromerMethod;
-import ResultsTable.ComparisonTable;
+import ResultsTable.FallingBodiesTable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -250,11 +250,13 @@ public class FallingBodiesController implements Initializable {
 
         ArrayList<ArrayList<Double>> solutions = new ArrayList();
         ArrayList<String> names = new ArrayList();
+        ArrayList<ArrayList<Double>> px = new ArrayList<>();
 
         for (int i = 0; i < data.size(); ++i) {
             Euler_KromerMethod.Solve(data.get(i), data.get(i).getN(),
                     data.get(i).getXStart(), data.get(i).getXFinish(), data.get(i).getY0());
 
+            px.add(data.get(i).getX());
             names.add(String.format("Model № %d", data.get(i).getNumber()));
             if (pt == PlotType.PT_COORDINATE) {
                 solutions.add(data.get(i).getY());
@@ -268,7 +270,7 @@ public class FallingBodiesController implements Initializable {
         }
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
-        XYChart chartSolutions = chartMatlab.getChart(data.get(0).getX(), solutions, names);
+        XYChart chartSolutions = chartMatlab.getChart(px, solutions, names);
         chartSolutions.setTitle(plotTypePlotName.get(pt));
         new SwingWrapper(chartSolutions).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
@@ -343,7 +345,7 @@ public class FallingBodiesController implements Initializable {
 
         }
 
-        JTable table = ResultsTable.ComparisonTable.GetTable(new ArrayList<ObjectFallingProcess>(data));
+        JTable table = FallingBodiesTable.GetTable(new ArrayList<ObjectFallingProcess>(data));
         JFrame frame = new JFrame("Table");
         frame.add(new JScrollPane(table));
         frame.setSize(table.getColumnModel().getTotalColumnWidth() + 20, 500);

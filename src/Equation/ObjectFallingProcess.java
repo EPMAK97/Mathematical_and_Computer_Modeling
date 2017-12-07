@@ -52,11 +52,11 @@ public class ObjectFallingProcess extends Equation {
     }
 
     private Double LinearResistance(Double v) {
-        return -k_linear * v;
+        return -k_linear * (v - envVelocity);
     }
 
     private Double SquareResistance(Double v) {
-        return -k_square * v * Math.abs(v);
+        return -k_square * (v - envVelocity) * Math.abs(v - envVelocity);
     }
 
     public ObjectFallingProcess() {

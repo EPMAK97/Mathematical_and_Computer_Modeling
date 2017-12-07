@@ -75,6 +75,8 @@ public class ObjectFalling2DProcess {
     }
     public Double getV0_Y() { return processY.getV0(); }
 
+    public Double getEnvVelocityX() { return processX.getEnvVelocity(); }
+
     public Double getXStart() {
         return processX.getXStart();
     }

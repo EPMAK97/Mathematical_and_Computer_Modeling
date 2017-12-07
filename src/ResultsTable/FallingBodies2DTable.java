@@ -1,10 +1,6 @@
 package ResultsTable;
 
-import Equation.CoffeeCoolingProcess;
-import Equation.ObjectFallingProcess;
-import NumericalMethods.EulerMethod;
-import NumericalMethods.EulerMethodImproved;
-import NumericalMethods.Runge_KuttaMethod;
+import Equation.ObjectFalling2DProcess;
 
 import javax.swing.*;
 import javax.swing.table.TableModel;
@@ -13,29 +9,31 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ComparisonTable {
-    public static JTable GetTable(ArrayList<ObjectFallingProcess> d) {
+public class FallingBodies2DTable {
+    public static JTable GetTable(ArrayList<ObjectFalling2DProcess> d) {
         ArrayList<String> columns = new ArrayList<>();
         columns.add("Number");
         columns.add("Time");
 
         for (int i = 0; i < d.size(); ++i) {
+            columns.add(String.format("x_%d", i + 1));
             columns.add(String.format("y_%d", i + 1));
-            columns.add(String.format("v_%d", i + 1));
-            columns.add(String.format("a_%d", i + 1));
+            columns.add(String.format("Vx_%d", i + 1));
+            columns.add(String.format("Vy_%d", i + 1));
         }
 
         int rows = d.get(0).getX().size();
-        Object[][] data = new Object[rows][d.size() * 3 + 2];
+        Object[][] data = new Object[rows][d.size() * 4 + 2];
 
         for (int i = 0; i < rows; ++i) {
             data[i][0] = i;
-            data[i][1] = String.format("%.3f", d.get(0).getX().get(i));
+            data[i][1] = String.format("%.3f", d.get(0).getTime().get(i));
 
             for (int j = 0; j < d.size(); ++j) {
-                data[i][2 + 3 * j] = String.format("%.3f", d.get(j).getY().get(i));
-                data[i][3 + 3 * j] = String.format("%.3f", d.get(j).getNumericalVelocity().get(i));
-                data[i][4 + 3 * j] = String.format("%.3f", d.get(j).getNumericalAcceleration().get(i));
+                data[i][2 + 4 * j] = String.format("%.3f", d.get(j).getX().get(i));
+                data[i][3 + 4 * j] = String.format("%.3f", d.get(j).getY().get(i));
+                data[i][4 + 4 * j] = String.format("%.3f", d.get(j).getNumericalVelocityX().get(i));
+                data[i][5 + 4 * j] = String.format("%.3f", d.get(j).getNumericalVelocityY().get(i));
             }
         }
 

@@ -45,17 +45,25 @@
             <SplitMenuButton fx:id="menuButton" layoutX="691.0" layoutY="204.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="148.0" text="Отрисовать" AnchorPane.leftAnchor="691.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="204.0" />
             <TableView fx:id="table" layoutX="84.0" layoutY="328.0" prefHeight="174.0" prefWidth="919.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
               <columns>
-                  <TableColumn prefWidth="66.0" text="Модель" />
-                  <TableColumn prefWidth="64.0" text="Высота" />
-                  <TableColumn prefWidth="71.0" text="Скорость" />
-                  <TableColumn prefWidth="73.0" text="Радиус" />
-                  <TableColumn prefWidth="117.0" text="Среда" />
-                  <TableColumn prefWidth="184.0" text="Материал тела" />
-                  <TableColumn prefWidth="281.0" text="Сила">
+                  <TableColumn prefWidth="54.0" text="Модель" />
+                  <TableColumn prefWidth="178.0" text="Координаты">
                      <columns>
-                        <TableColumn prefWidth="75.0" text="Тяжести" />
-                        <TableColumn prefWidth="109.0" text="Архимеда" />
-                        <TableColumn prefWidth="159.0" text="Сопротивления среды" />
+                        <TableColumn prefWidth="83.0" text="X" />
+                        <TableColumn prefWidth="83.0" text="Y" />
+                     </columns></TableColumn>
+                  <TableColumn prefWidth="94.0" text="Скорость">
+                     <columns>
+                        <TableColumn prefWidth="83.0" text="X" />
+                        <TableColumn prefWidth="83.0" text="Y" />
+                     </columns></TableColumn>
+                  <TableColumn prefWidth="116.0" text="Скор. движ. среды" />
+                  <TableColumn prefWidth="74.0" text="Среда" />
+                  <TableColumn prefWidth="94.0" text="Материал тела" />
+                  <TableColumn prefWidth="326.0" text="Сила">
+                     <columns>
+                        <TableColumn prefWidth="64.0" text="Тяжести" />
+                        <TableColumn prefWidth="70.0" text="Архимеда" />
+                        <TableColumn prefWidth="100.0" text="Сопр. среды" />
                      </columns></TableColumn>
               </columns>
             </TableView>
