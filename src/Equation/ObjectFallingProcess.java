@@ -100,11 +100,13 @@ public class ObjectFallingProcess extends Equation {
     }
 
     public void setLinearResistanceCoeff(Double vz, Double p_env, Double p_body, Double R) {
-        k_linear = 9.0 / 2.0 * (vz * p_env) / (p_body * Math.pow(R, 2.0));
+        //k_linear = 9.0 / 2.0 * (vz * p_env) / (p_body * Math.pow(R, 2.0));
+        k_linear = 9.0 / 2.0 * (vz * p_env) / (p_body) * Math.pow(R, 2.0);
     }
 
     public void setSquareResistanceCoeff(Double p_env, Double p_body, Double R) {
-        k_square = 3.0 / 16.0 * p_env / (p_body * R);
+        //k_square = 3.0 / 16.0 * p_env / (p_body * R);
+        k_square = 3.0 / 16.0 * p_env / (p_body) * R;
     }
 
     public ArrayList<Double> getNumericalVelocity() {

@@ -26,6 +26,7 @@ public class Euler_Kromer2DMethod {
                 y += step * vy;
                 t += step;
                 equation.addPoint(t, x, y, vx, vy);
+                if (y < 0) break;
             }
         } catch (Exception e) {
             System.out.println("Euler_KromerMethod fail");

@@ -27,7 +27,8 @@ public class SwingWorkerRealTime {
         this.chart = chart;
         chart.getStyler().setPlotGridLinesVisible(false);
         plotsCnt = px.size();
-        ticksPeriod = px.get(0).size();
+        ticksPeriod = 0;
+        for (int i = 0; i < plotsCnt; ++i) ticksPeriod = Math.max(ticksPeriod, px.get(i).size());
 
         pointsX = px;
         pointsY = py;
@@ -76,11 +77,14 @@ public class SwingWorkerRealTime {
                         curPointsY.get(i).clear();
                     }
                     curCounter = 0;
+                    Thread.sleep(200);
                 }
 
                 for (int i = 0; i < plotsCnt; ++i) {
-                    curPointsX.get(i).add(pointsX.get(i).get(curCounter));
-                    curPointsY.get(i).add(pointsY.get(i).get(curCounter));
+                    if (curCounter < pointsX.get(i).size()) {
+                        curPointsX.get(i).add(pointsX.get(i).get(curCounter));
+                        curPointsY.get(i).add(pointsY.get(i).get(curCounter));
+                    }
                 }
 
                 ++curCounter;

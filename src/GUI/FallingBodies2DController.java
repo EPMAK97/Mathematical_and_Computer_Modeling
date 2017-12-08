@@ -37,6 +37,7 @@ public class FallingBodies2DController implements Initializable {
     public TextField finishTime;
     public TextField numberCounts;
 
+    public TextField bodyRadius;
     public TextField densityBody;
     public TextField densityEnvironment;
 
@@ -110,11 +111,11 @@ public class FallingBodies2DController implements Initializable {
         }
 
         plotTypePlotName = new HashMap<PlotType, String>() {{
-            put(PlotType.PT_COORDINATE_X, "Координата X");
-            put(PlotType.PT_COORDINATE_Y, "Координата Y");
-            put(PlotType.PT_VELOCITY_X, "Скорость X");
-            put(PlotType.PT_VELOCITY_Y, "Скорость Y");
-            put(PlotType.PT_COORDINATES_XY, "Координаты X Y");
+            put(PlotType.PT_COORDINATE_X, "Координата X(t)");
+            put(PlotType.PT_COORDINATE_Y, "Координата Y(t)");
+            put(PlotType.PT_VELOCITY_X, "Скорость X(t)");
+            put(PlotType.PT_VELOCITY_Y, "Скорость Y(t)");
+            put(PlotType.PT_COORDINATES_XY, "Координата Y(X)");
         }};
     }
 
@@ -233,7 +234,7 @@ public class FallingBodies2DController implements Initializable {
             Double vz = environmentViscosity.get(environment.getValue());
             Double p_env = Double.parseDouble(densityEnvironment.getText());
             Double p_body = Double.parseDouble(densityBody.getText());
-            Double R = 1.0;
+            Double R = Double.parseDouble(bodyRadius.getText());
             equation.setLinearResistanceCoeff(vz, p_env, p_body, R);
         }
         if (F_C2.isSelected()) {
@@ -242,7 +243,7 @@ public class FallingBodies2DController implements Initializable {
             Double vz = environmentViscosity.get(environment.getValue());
             Double p_env = Double.parseDouble(densityEnvironment.getText());
             Double p_body = Double.parseDouble(densityBody.getText());
-            Double R = 1.0;
+            Double R = Double.parseDouble(bodyRadius.getText());;
             equation.setSquareResistanceCoeff(p_env, p_body, R);
         }
 
@@ -253,6 +254,7 @@ public class FallingBodies2DController implements Initializable {
         equation.setCoordinates(Double.parseDouble(bodyX.getText()), Double.parseDouble(bodyY.getText()));
         equation.setVelocity(Double.parseDouble(bodyVelocity.getText()), Double.parseDouble(bodyVelocityAngle.getText()));
         equation.setEnvVelocity(Double.parseDouble(envVelocityX.getText()));
+        equation.setRadius(Double.parseDouble(bodyRadius.getText()));
 
         equation.setXStart(Double.parseDouble(startTime.getText()));
         equation.setXFinish(Double.parseDouble(finishTime.getText()));
@@ -260,7 +262,6 @@ public class FallingBodies2DController implements Initializable {
 
         equation.setEnvironment(environment.getValue());
         equation.setMaterialBody(materialBody.getValue());
-        equation.setRadius(1.0);
     }
 
     private void animateXY() {
@@ -271,6 +272,7 @@ public class FallingBodies2DController implements Initializable {
         // empty chart (yeah it's stupid but fuck it, i'm tired, i want to complete this lab and go to sleep)
         SomeChart<XYChart> chartMatlab = new MatlabChart();
         XYChart chartSolutions = chartMatlab.getChart(px, py, names);
+        chartSolutions.setTitle(plotTypePlotName.get(PlotType.PT_COORDINATES_XY));
 
         for (int i = 0; i < data.size(); ++i) {
             Euler_Kromer2DMethod.Solve(data.get(i));

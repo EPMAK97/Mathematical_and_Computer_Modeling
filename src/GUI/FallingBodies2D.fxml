@@ -30,8 +30,8 @@
              <Label layoutX="19.0" layoutY="31.0" prefHeight="17.0" prefWidth="117.0" text="Начальное время" />
              <Label layoutX="19.0" layoutY="74.0" text="Конечное время" />
              <Label layoutX="19.0" layoutY="116.0" prefHeight="17.0" prefWidth="102.0" text="Число отсчетов" />
-            <CheckBox fx:id="checkBoxConstGravity" layoutX="255.0" layoutY="217.0" mnemonicParsing="false" text="Постоянное ускорение свободного падения" AnchorPane.leftAnchor="255.0" />
-            <CheckBox fx:id="F_A" layoutX="254.0" layoutY="186.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="137.0" text="Сила Архимеда" AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="527.0" />
+            <CheckBox fx:id="checkBoxConstGravity" layoutX="251.0" layoutY="248.0" mnemonicParsing="false" text="Постоянное ускорение свободного падения" AnchorPane.leftAnchor="251.0" />
+            <CheckBox fx:id="F_A" layoutX="251.0" layoutY="217.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="137.0" text="Сила Архимеда" AnchorPane.leftAnchor="251.0" AnchorPane.rightAnchor="531.0" />
             <!--<CheckBox fx:id="F_C1" layoutX="19.0" layoutY="226.0" mnemonicParsing="false" text="Линейная зависимость" />-->
             <!--<CheckBox fx:id="F_C2" layoutX="19.0" layoutY="247.0" mnemonicParsing="false" text="Квадратичная зависимость" />-->
             <Label layoutX="556.0" layoutY="88.0" text="Плотность тела" AnchorPane.leftAnchor="561.0" />
@@ -67,10 +67,10 @@
                      </columns></TableColumn>
               </columns>
             </TableView>
-            <Separator layoutX="264.0" layoutY="9.0" orientation="VERTICAL" prefHeight="151.0" prefWidth="13.0" />
+            <Separator layoutX="264.0" layoutY="9.0" orientation="VERTICAL" prefHeight="192.0" prefWidth="6.0" />
             <Button fx:id="addIntoTable" layoutX="530.0" layoutY="158.0" mnemonicParsing="false" onAction="#addData" prefHeight="27.0" prefWidth="148.0" text="добавить к сравнению" AnchorPane.bottomAnchor="266.0" AnchorPane.leftAnchor="530.0" AnchorPane.rightAnchor="241.0" AnchorPane.topAnchor="158.0" />
             <Label layoutX="19.0" layoutY="157.0" prefHeight="17.0" prefWidth="181.0" text="Сила сопротивления среды" />
-            <Separator layoutX="517.0" layoutY="9.0" orientation="VERTICAL" prefHeight="151.0" prefWidth="6.0" />
+            <Separator layoutX="519.0" layoutY="9.0" orientation="VERTICAL" prefHeight="192.0" prefWidth="4.0" />
             <RadioButton fx:id="F_C1" layoutX="19.0" layoutY="186.0" mnemonicParsing="false" onMouseClicked="#clickRadioButtonF_C1" text="Линейная зависимость" />
             <RadioButton fx:id="F_C2" layoutX="19.0" layoutY="217.0" mnemonicParsing="false" onMouseClicked="#clickRadioButtonF_C2" text="Квадратичная зависимость" />
             <RadioButton fx:id="notF" layoutX="19.0" layoutY="248.0" mnemonicParsing="false" onMouseClicked="#clickRadioButtonNotF" selected="true" text="Нет" />
@@ -80,6 +80,8 @@
             <TextField fx:id="envVelocityX" layoutX="394.0" layoutY="140.0" prefHeight="27.0" prefWidth="106.0" text="0" />
             <Label layoutX="276.0" layoutY="145.0" prefHeight="17.0" prefWidth="108.0" text="Скор. движ. среды" />
             <Label layoutX="278.0" layoutY="113.0" prefHeight="17.0" prefWidth="125.0" text="Угол бросания" />
+            <TextField fx:id="bodyRadius" layoutX="394.0" layoutY="173.0" prefHeight="27.0" prefWidth="106.0" text="0.01" />
+            <Label layoutX="276.0" layoutY="175.0" prefHeight="17.0" prefWidth="108.0" text="Радиус тела" />
 
 
          </children>

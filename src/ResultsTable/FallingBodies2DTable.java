@@ -22,18 +22,32 @@ public class FallingBodies2DTable {
             columns.add(String.format("Vy_%d", i + 1));
         }
 
-        int rows = d.get(0).getX().size();
+        int rows = 0, maxRowIdx = 0;
+        for (int i = 0; i < d.size(); ++i) {
+            if (rows < d.get(i).getX().size()) {
+                rows = d.get(i).getX().size();
+                maxRowIdx = i;
+            }
+        }
         Object[][] data = new Object[rows][d.size() * 4 + 2];
 
         for (int i = 0; i < rows; ++i) {
             data[i][0] = i;
-            data[i][1] = String.format("%.3f", d.get(0).getTime().get(i));
+            data[i][1] = String.format("%.3f", d.get(maxRowIdx).getTime().get(i));
 
             for (int j = 0; j < d.size(); ++j) {
-                data[i][2 + 4 * j] = String.format("%.3f", d.get(j).getX().get(i));
-                data[i][3 + 4 * j] = String.format("%.3f", d.get(j).getY().get(i));
-                data[i][4 + 4 * j] = String.format("%.3f", d.get(j).getNumericalVelocityX().get(i));
-                data[i][5 + 4 * j] = String.format("%.3f", d.get(j).getNumericalVelocityY().get(i));
+                if (i >= d.get(j).getX().size()) {
+                    data[i][2 + 4 * j] = "";
+                    data[i][3 + 4 * j] = "";
+                    data[i][4 + 4 * j] = "";
+                    data[i][5 + 4 * j] = "";
+                }
+                else {
+                    data[i][2 + 4 * j] = String.format("%.3f", d.get(j).getX().get(i));
+                    data[i][3 + 4 * j] = String.format("%.3f", d.get(j).getY().get(i));
+                    data[i][4 + 4 * j] = String.format("%.3f", d.get(j).getNumericalVelocityX().get(i));
+                    data[i][5 + 4 * j] = String.format("%.3f", d.get(j).getNumericalVelocityY().get(i));
+                }
             }
         }
 
