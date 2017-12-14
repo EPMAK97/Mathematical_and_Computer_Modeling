@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.chart.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
@@ -86,6 +87,7 @@
                   </Tab>
               </tabs>
             </TabPane>
+            <FlowPane fx:id="flowpaneOscillatorAnimation" layoutX="21.0" layoutY="161.0" prefHeight="154.0" prefWidth="289.0" />
          </children></AnchorPane>
    </children>
 </VBox>

@@ -10,15 +10,23 @@ import Models.Oscillator_1D;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingNode;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.knowm.xchart.SwingWrapper;
+import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
 
 import javax.swing.*;
+import java.awt.*;
 import java.net.URL;
 import java.util.*;
 
@@ -60,6 +68,8 @@ public class Oscillator_1DController implements Initializable {
     public Tab tabAnimationEnergy;
     public Tab tabAnimationPhasePortret;
 
+    public FlowPane flowpaneOscillatorAnimation;
+
     private enum PlotType {PT_COORDINATE, PT_VELOCITY, PT_ENERGY, PT_PHASE_PORTRET};
     private static HashMap<PlotType, String> plotTypePlotName;
 
@@ -91,11 +101,11 @@ public class Oscillator_1DController implements Initializable {
     public void drawPlot(PlotType pt) {
 
 //        if () return;
-//
-//        ArrayList<ArrayList<Double>> solutions = new ArrayList();
-//        ArrayList<String> names = new ArrayList();
-//        ArrayList<ArrayList<Double>> px = new ArrayList<>();
-//
+
+        ArrayList<ArrayList<Double>> solutions = new ArrayList();
+        ArrayList<String> names = new ArrayList();
+        ArrayList<ArrayList<Double>> px = new ArrayList<>();
+
 //        for (int i = 0; i < data.size(); ++i) {
 //            Euler_KromerMethod.Solve(data.get(i), data.get(i).getN(),
 //                    data.get(i).getXStart(), data.get(i).getXFinish(), data.get(i).getY0());
@@ -112,12 +122,19 @@ public class Oscillator_1DController implements Initializable {
 //                solutions.add(data.get(i).getNumericalAcceleration());
 //            }
 //        }
-//
-//        SomeChart<XYChart> chartMatlab = new MatlabChart();
-//        XYChart chartSolutions = chartMatlab.getChart(px, solutions, names);
-//        chartSolutions.setTitle(plotTypePlotName.get(pt));
-//        new SwingWrapper(chartSolutions).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
+        px.add(new ArrayList<Double>(){{add(1.0); add(2.0); add(3.0);}});
+        solutions.add(new ArrayList<Double>(){{add(10.0); add(2.0); add(6.0);}});
+        names.add("Example");
+
+        SomeChart<XYChart> chartMatlab = new MatlabChart();
+        XYChart chartSolutions = chartMatlab.getSizedChart(px, solutions, names,
+                (int)flowpaneOscillatorAnimation.getWidth(),(int)flowpaneOscillatorAnimation.getHeight());
+        //chartSolutions.setTitle(plotTypePlotName.get(pt));
+
+        SwingNode swingNode = new SwingNode();
+        swingNode.setContent(new XChartPanel(chartSolutions));
+        flowpaneOscillatorAnimation.getChildren().add(swingNode);
     }
 
     private void setParameters(ObjectFallingProcess equation) {

@@ -14,7 +14,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("../GUI/Oscillator_1D.fxml"));
         primaryStage.setTitle("Математическое и компьютерное моделирование");
-        Scene scene = new Scene(root, 919, 451);
+        Scene scene = new Scene(root, 919, 551);
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setOnCloseRequest(e -> Platform.exit());
