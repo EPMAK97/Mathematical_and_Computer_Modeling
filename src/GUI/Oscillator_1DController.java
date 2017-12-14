@@ -87,7 +87,6 @@ public class Oscillator_1DController implements Initializable {
 
         btnDrawModels.getItems().add(new MenuItem("Сводная таблица"));
         btnDrawModels.getItems().get(btnDrawModels.getItems().size() - 1).setOnAction(f -> {createSummaryTable();});
-        setParameters(new Oscillator_1D());
     }
 
     public void drawPlot(PlotType pt) {
@@ -147,12 +146,10 @@ public class Oscillator_1DController implements Initializable {
         columns.get(2).setCellValueFactory(
                 new PropertyValueFactory<Equation, Double>("v0"));
         columns.get(3).setCellValueFactory(
-                new PropertyValueFactory<Equation, Double>("radius"));
-        columns.get(4).setCellValueFactory(
                 new PropertyValueFactory<Equation, String>("m"));
-        columns.get(5).setCellValueFactory(
+        columns.get(4).setCellValueFactory(
                 new PropertyValueFactory<Equation, String>("k"));
-        columns.get(6).setCellValueFactory(
+        columns.get(5).setCellValueFactory(
                 new PropertyValueFactory<Equation, String>("gamma"));
         modelsData.add(cur);
         tableModels.setItems(modelsData);
@@ -182,4 +179,5 @@ public class Oscillator_1DController implements Initializable {
 //        frame.setSize(table.getColumnModel().getTotalColumnWidth() + 20, 500);
 //        frame.setVisible(true);
     }
+
 }
