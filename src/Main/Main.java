@@ -1,28 +1,18 @@
 package Main;
 
-import Equation.CoffeeCoolingProcess;
-import Graphics.MatlabChart;
-import Graphics.SomeChart;
-import NumericalMethods.Adam_BashforthMethod;
-import NumericalMethods.Adam_MoultonMethod;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.knowm.xchart.SwingWrapper;
-import org.knowm.xchart.XYChart;
-
-import javax.swing.*;
-import java.util.ArrayList;
 
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("../GUI/FallingBodies2D.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("GUI/Oscillator_1D.fxml"));
         primaryStage.setTitle("Математическое и компьютерное моделирование");
         Scene scene = new Scene(root, 919, 451);
         primaryStage.setScene(scene);
