@@ -72,7 +72,6 @@ public class Oscillator_1DController implements Initializable {
 
     private enum PlotType {PT_COORDINATE, PT_VELOCITY, PT_ENERGY, PT_PHASE_PORTRET};
     private static HashMap<PlotType, String> plotTypePlotName;
-    //private static Oscillator_1D oscillator1D;
 
     static {
         plotTypePlotName = new HashMap<PlotType, String>() {{
@@ -101,7 +100,7 @@ public class Oscillator_1DController implements Initializable {
 
     public void drawPlot(PlotType pt) {
 
-//        if () return;
+        if (modelsData.isEmpty()) return;
 
         ArrayList<ArrayList<Double>> solutions = new ArrayList();
         ArrayList<String> names = new ArrayList();
