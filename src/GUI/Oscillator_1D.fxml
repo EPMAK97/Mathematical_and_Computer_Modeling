@@ -45,8 +45,8 @@
                   <TableColumn prefWidth="84.0" text="К. трения" />
               </columns>
             </TableView>
-            <Button fx:id="btnAddModel" layoutX="493.0" layoutY="12.0" mnemonicParsing="false" text="Добавить модель" />
-            <Button fx:id="btnDeleteModel" layoutX="612.0" layoutY="12.0" mnemonicParsing="false" text="Удалить модель" />
+            <Button fx:id="btnAddModel" layoutX="493.0" layoutY="12.0" mnemonicParsing="false" text="Добавить модель" onAction="#addModel" />
+            <Button fx:id="btnDeleteModel" layoutX="612.0" layoutY="12.0" mnemonicParsing="false" text="Удалить модель" onAction="#deleteFromTable" />
 
 
          </children>
