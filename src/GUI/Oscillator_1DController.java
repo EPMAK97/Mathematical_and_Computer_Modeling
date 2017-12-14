@@ -5,6 +5,7 @@ import Equation.ObjectFallingProcess;
 import Graphics.MatlabChart;
 import Graphics.SomeChart;
 import NumericalMethods.Euler_KromerMethod;
+import NumericalMethods.Euler_KromerMethodOscillator;
 import ResultsTable.FallingBodiesTable;
 import Models.Oscillator_1D;
 
@@ -102,45 +103,65 @@ public class Oscillator_1DController implements Initializable {
 
         if (modelsData.isEmpty()) return;
 
-        ArrayList<ArrayList<Double>> solutions = new ArrayList();
         ArrayList<String> names = new ArrayList();
         ArrayList<ArrayList<Double>> px = new ArrayList<>();
+        ArrayList<ArrayList<Double>> py = new ArrayList<>();
 
-//        for (int i = 0; i < data.size(); ++i) {
-//            Euler_KromerMethod.Solve(data.get(i), data.get(i).getN(),
-//                    data.get(i).getXStart(), data.get(i).getXFinish(), data.get(i).getY0());
-//
-//            px.add(data.get(i).getX());
-//            names.add(String.format("Model № %d", data.get(i).getNumber()));
-//            if (pt == PlotType.PT_COORDINATE) {
-//                solutions.add(data.get(i).getY());
-//            }
-//            else if (pt == PlotType.PT_VELOCITY) {
-//                solutions.add(data.get(i).getNumericalVelocity());
-//            }
-//            else if (pt == PlotType.PT_ACCELERATION) {
-//                solutions.add(data.get(i).getNumericalAcceleration());
-//            }
-//        }
+        for (int i = 0; i < modelsData.size(); ++i) {
+            Oscillator_1D cur = modelsData.get(i).clone();
+            ArrayList<Double> t_arr = new ArrayList<>();
+            ArrayList<Double> x_arr = new ArrayList<>();
+            ArrayList<Double> v_arr = new ArrayList<>();
+            ArrayList<Double> e_arr = new ArrayList<>();
 
-        px.add(new ArrayList<Double>(){{add(1.0); add(2.0); add(3.0);}});
-        solutions.add(new ArrayList<Double>(){{add(10.0); add(2.0); add(6.0);}});
-        names.add("Example");
+            for (int j = 0; j <= modelsData.get(i).getN(); ++j) {
+                t_arr.add(cur.getT0());
+                x_arr.add(cur.getX0());
+                v_arr.add(cur.getV0());
+                e_arr.add(cur.getEnergy());
+                Euler_KromerMethodOscillator.NextValues(cur);
+            }
+
+            names.add(String.format("Model № %d", cur.getNumber()));
+            if (pt == PlotType.PT_COORDINATE) {
+                px.add(t_arr);
+                py.add(x_arr);
+            }
+            else if (pt == PlotType.PT_VELOCITY) {
+                px.add(t_arr);
+                py.add(v_arr);
+            }
+            else if (pt == PlotType.PT_ENERGY) {
+                px.add(t_arr);
+                py.add(e_arr);
+            }
+            else if (pt == PlotType.PT_PHASE_PORTRET) {
+                px.add(x_arr);
+                py.add(v_arr);
+            }
+        }
+
+//        px.add(new ArrayList<Double>(){{add(1.0); add(2.0); add(3.0);}});
+//        solutions.add(new ArrayList<Double>(){{add(10.0); add(2.0); add(6.0);}});
+//        names.add("Example");
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
-        XYChart chartSolutions = chartMatlab.getSizedChart(px, solutions, names,
-                (int)flowpaneOscillatorAnimation.getWidth(),(int)flowpaneOscillatorAnimation.getHeight());
-        //chartSolutions.setTitle(plotTypePlotName.get(pt));
+//        XYChart chartSolutions = chartMatlab.getSizedChart(px, solutions, names,
+//                (int)flowpaneOscillatorAnimation.getWidth(),(int)flowpaneOscillatorAnimation.getHeight());
+//
+//        SwingNode swingNode = new SwingNode();
+//        swingNode.setContent(new XChartPanel(chartSolutions));
+//        flowpaneOscillatorAnimation.getChildren().add(swingNode);
 
-        SwingNode swingNode = new SwingNode();
-        swingNode.setContent(new XChartPanel(chartSolutions));
-        flowpaneOscillatorAnimation.getChildren().add(swingNode);
+        XYChart chartSolutions = chartMatlab.getChart(px, py, names);
+        chartSolutions.setTitle(plotTypePlotName.get(pt));
+        new SwingWrapper(chartSolutions).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }
 
     private void setParameters(Oscillator_1D oscillator1D) {
         oscillator1D.setGamma(Double.parseDouble(editFrictionCoeff.getText()) * 9.8); // gamma * g
         oscillator1D.setM(Double.parseDouble(editBodyMass.getText()));
-        oscillator1D.setN(Double.parseDouble(editNumberOfCounts.getText()));
+        oscillator1D.setN(Integer.parseInt(editNumberOfCounts.getText()));
         oscillator1D.setT0(Double.parseDouble(editStartTime.getText()));
         oscillator1D.setT1(Double.parseDouble(editFinishTime.getText()));
         oscillator1D.setX0(Double.parseDouble(editStartX.getText()));

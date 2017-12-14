@@ -3,10 +3,15 @@ package NumericalMethods;
 import Models.Oscillator_1D;
 
 public class Euler_KromerMethodOscillator {
-    // CAUTIOUS: this function changes fields X and V in argument 'osc'
+    // CAUTIOUS: this function changes fields X0, T0, V0 and N in argument 'osc'
     public static Boolean NextValues(Oscillator_1D osc, double f_impulse, double f_period) {
         try {
+            if (osc.getN() == 0) return true;
+
             double deltaT = (osc.getT1() - osc.getT0()) / osc.getN();
+            osc.setT0(osc.getT0() + deltaT);
+            osc.setN(osc.getN() - 1);
+
             double w_0 = Math.sqrt(osc.getK() / osc.getM());
             double a = -w_0 * w_0 * osc.getX0() - osc.getGamma() * osc.getV0() + f_impulse + f_period;
 
@@ -20,7 +25,7 @@ public class Euler_KromerMethodOscillator {
         return true;
     }
 
-    // CAUTIOUS: this function changes fields X and V in argument 'osc'
+    // CAUTIOUS: this function changes fields X0, T0, V0 and N in argument 'osc'
     public static Boolean NextValues(Oscillator_1D osc) {
         return NextValues(osc, 0, 0);
     }

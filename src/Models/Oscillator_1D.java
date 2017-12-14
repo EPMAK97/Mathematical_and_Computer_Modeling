@@ -1,7 +1,8 @@
 package Models;
 
 public class Oscillator_1D {
-    private Double t0, t1, N;
+    private Double t0, t1;
+    private Integer N;
     private Double x0, v0;
     private Double m, k, gamma;
     private int number;
@@ -9,11 +10,29 @@ public class Oscillator_1D {
 
     public Oscillator_1D() { this.number = modelCounter++; }
 
+    public Oscillator_1D(double t0, double t1, int N, double x0, double v0, double m, double k, double gamma, int number) {
+        this.t0 = t0;
+        this.t1 = t1;
+        this.N = N;
+        this.x0 = x0;
+        this.v0 = v0;
+        this.m = m;
+        this.k = k;
+        this.gamma = gamma;
+        this.number = number;
+    }
+
+    public Oscillator_1D clone() {
+        return new Oscillator_1D(t0, t1, N, x0, v0, m, k, gamma, number);
+    }
+
+    public Double getEnergy() { return 0.5 * m * Math.pow(v0, 2) + 0.5 * k * Math.pow(x0, 2); }
+
     public void setT0(Double t0) { this.t0 = t0; }
 
     public void setT1(Double t1) { this.t1 = t1; }
 
-    public void setN(Double n) { N = n; }
+    public void setN(Integer n) { N = n; }
 
     public void setX0(Double x0) { this.x0 = x0; }
 
@@ -29,7 +48,7 @@ public class Oscillator_1D {
 
     public Double getT1() { return t1; }
 
-    public Double getN() { return N; }
+    public Integer getN() { return N; }
 
     public Double getX0() { return x0; }
 
