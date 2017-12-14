@@ -62,6 +62,7 @@ public class Oscillator_1DController implements Initializable {
 
     private enum PlotType {PT_COORDINATE, PT_VELOCITY, PT_ENERGY, PT_PHASE_PORTRET};
     private static HashMap<PlotType, String> plotTypePlotName;
+    //private static Oscillator_1D oscillator1D;
 
     static {
         plotTypePlotName = new HashMap<PlotType, String>() {{
@@ -78,7 +79,7 @@ public class Oscillator_1DController implements Initializable {
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources) throws NumberFormatException {
         addItemToMenu(btnDrawModels.getItems(), PlotType.PT_COORDINATE);
         addItemToMenu(btnDrawModels.getItems(), PlotType.PT_VELOCITY);
         addItemToMenu(btnDrawModels.getItems(), PlotType.PT_ENERGY);
@@ -86,6 +87,7 @@ public class Oscillator_1DController implements Initializable {
 
         btnDrawModels.getItems().add(new MenuItem("Сводная таблица"));
         btnDrawModels.getItems().get(btnDrawModels.getItems().size() - 1).setOnAction(f -> {createSummaryTable();});
+        setParameters(new Oscillator_1D());
     }
 
     public void drawPlot(PlotType pt) {
@@ -120,60 +122,60 @@ public class Oscillator_1DController implements Initializable {
 
     }
 
-    private void setParameters(ObjectFallingProcess equation) {
-//        equation.setY0(Double.parseDouble(heightBody.getText()));
-//        equation.setV0(Double.parseDouble(speedBody.getText()));
-//        equation.setXStart(Double.parseDouble(startTime.getText()));
-//        equation.setXFinish(Double.parseDouble(finishTime.getText()));
-//        equation.setN(Integer.parseInt(numberCounts.getText()));
-//
-//        equation.setEnvironment(environment.getValue());
-//        equation.setMaterialBody(materialBody.getValue());
-//        equation.setRadius(Double.parseDouble(radiusBody.getText()));
+    private void setParameters(Oscillator_1D oscillator1D) {
+        oscillator1D.setGamma(Double.parseDouble(editFrictionCoeff.getText()) * 9.8); // gamma * g
+        oscillator1D.setM(Double.parseDouble(editBodyMass.getText()));
+        oscillator1D.setN(Double.parseDouble(editNumberOfCounts.getText()));
+        oscillator1D.setT0(Double.parseDouble(editStartTime.getText()));
+        oscillator1D.setT1(Double.parseDouble(editFinishTime.getText()));
+        oscillator1D.setX0(Double.parseDouble(editStartX.getText()));
+        oscillator1D.setV0(Double.parseDouble(editStartVelocity.getText()));
+        oscillator1D.setK(Double.parseDouble(editRestitutionCoeff.getText()));
     }
 
     public void addModel() {
         // Read fields and add it to the table
-//        Oscillator_1D cur = new Oscillator_1D();
-//        setParameters(cur);
-//
-//        ObservableList<TableColumn> columns = table.getColumns();
-//
-//        columns.get(0).setCellValueFactory(
-//                new PropertyValueFactory<Equation, String>("number"));
-//        columns.get(1).setCellValueFactory(
-//                new PropertyValueFactory<Equation, Double>("y0"));
-//        columns.get(2).setCellValueFactory(
-//                new PropertyValueFactory<Equation, Double>("v0"));
-//        columns.get(3).setCellValueFactory(
-//                new PropertyValueFactory<Equation, Double>("radius"));
-//        columns.get(4).setCellValueFactory(
-//                new PropertyValueFactory<Equation, String>("environment"));
-//        columns.get(5).setCellValueFactory(
-//                new PropertyValueFactory<Equation, String>("materialBody"));
-//
-//        ObservableList<TableColumn> forceColumns = columns.get(6).getColumns();
-//
-//        forceColumns.get(0).setCellValueFactory(
-//                new PropertyValueFactory<Equation, String>("constGravity"));
-//        forceColumns.get(1).setCellValueFactory(
-//                new PropertyValueFactory<Equation, String>("F_A"));
-//        forceColumns.get(2).setCellValueFactory(
-//                new PropertyValueFactory<Equation, String>("F_C1"));
-//
-//        data.add(equation);
-//        table.setItems(data);
+        Oscillator_1D cur = new Oscillator_1D();
+        setParameters(cur);
+
+        ObservableList<TableColumn> columns = tableModels.getColumns();
+
+        columns.get(0).setCellValueFactory(
+                new PropertyValueFactory<Oscillator_1D, String>("number"));
+        columns.get(1).setCellValueFactory(
+                new PropertyValueFactory<Equation, Double>("x0"));
+        columns.get(2).setCellValueFactory(
+                new PropertyValueFactory<Equation, Double>("v0"));
+        columns.get(3).setCellValueFactory(
+                new PropertyValueFactory<Equation, Double>("radius"));
+        columns.get(4).setCellValueFactory(
+                new PropertyValueFactory<Equation, String>("m"));
+        columns.get(5).setCellValueFactory(
+                new PropertyValueFactory<Equation, String>("k"));
+        columns.get(6).setCellValueFactory(
+                new PropertyValueFactory<Equation, String>("gamma"));
+        modelsData.add(cur);
+        tableModels.setItems(modelsData);
+    }
+
+    public void deleteFromTable() {
+        Integer idx = tableModels.getSelectionModel().getSelectedIndex();
+        if (idx >= 0) {
+            modelsData.remove(idx, idx + 1);
+            tableModels.setItems(modelsData);
+        }
     }
 
     public void createSummaryTable() {
-//        if (data.isEmpty()) return;
-//
+        if (modelsData.isEmpty()) return;
+
 //        for (int i = 0; i < data.size(); ++i) {
 //            Euler_KromerMethod.Solve(data.get(i), data.get(i).getN(),
 //                    data.get(i).getXStart(), data.get(i).getXFinish(), data.get(i).getY0());
 //
 //        }
 //
+
 //        JTable table = FallingBodiesTable.GetTable(new ArrayList<ObjectFallingProcess>(data));
 //        JFrame frame = new JFrame("Table");
 //        frame.add(new JScrollPane(table));
