@@ -4,10 +4,12 @@ import Equation.Equation;
 import Equation.ObjectFallingProcess;
 import Graphics.MatlabChart;
 import Graphics.SomeChart;
+import Graphics.AnimationOscillator_1D;
 import NumericalMethods.Euler_KromerMethod;
 import NumericalMethods.Euler_KromerMethodOscillator;
 import ResultsTable.FallingBodiesTable;
 import Models.Oscillator_1D;
+
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -49,6 +51,7 @@ public class Oscillator_1DController implements Initializable {
     public TextField editPeriodicAmplitute;
     public TextField editPeriodicPeriod;
     public Button btnToogleAnimation;
+    public Button btnStopAnimation;
     public Button btnImpulse;
     public Button btnPeriodic;
 
@@ -64,12 +67,21 @@ public class Oscillator_1DController implements Initializable {
 
     // animation plots
     public TabPane tabPaneAnimationPlots;
+
     public Tab tabAnimationCoordinates;
     public Tab tabAnimationVelocity;
     public Tab tabAnimationEnergy;
     public Tab tabAnimationPhasePortret;
 
+    public AnchorPane paneAnimationCoordinates;
+    public AnchorPane paneAnimationVelocity;
+    public AnchorPane paneAnimationEnergy;
+    public AnchorPane paneAnimationPhasePortret;
+
+    XYChart chart_XT, chart_VT, chart_ET, chart_VX;
+
     public FlowPane flowpaneOscillatorAnimation;
+    public AnimationOscillator_1D animationOscillator_1D;
 
     private enum PlotType {PT_COORDINATE, PT_VELOCITY, PT_ENERGY, PT_PHASE_PORTRET};
     private static HashMap<PlotType, String> plotTypePlotName;
@@ -88,6 +100,24 @@ public class Oscillator_1DController implements Initializable {
         items.get(items.size() - 1).setOnAction(f -> {drawPlot(pt);});
     }
 
+    public void createAndAddChartToTab(XYChart chart, AnchorPane tab) {
+        SomeChart<XYChart> chartMatlab = new MatlabChart();
+        chart = chartMatlab.getSizedChart(new ArrayList<ArrayList<Double>>(), new ArrayList<ArrayList<Double>>(), new ArrayList<String>(),
+                (int)tab.getMinWidth(),(int)tab.getMinHeight());
+
+        SwingNode swingNode = new SwingNode();
+        swingNode.setContent(new XChartPanel(chart));
+        tab.getChildren().add(swingNode);
+    }
+
+    public ArrayList<Oscillator_1D> GetSelectedModels()
+    {
+        ObservableList<Oscillator_1D> obs = tableModels.getSelectionModel().getSelectedItems();
+        ArrayList<Oscillator_1D> res = new ArrayList<>();
+        for (int i = 0; i < obs.size(); ++i) res.add(obs.get(i));
+        return res;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) throws NumberFormatException {
         addItemToMenu(btnDrawModels.getItems(), PlotType.PT_COORDINATE);
@@ -97,6 +127,15 @@ public class Oscillator_1DController implements Initializable {
 
         btnDrawModels.getItems().add(new MenuItem("Сводная таблица"));
         btnDrawModels.getItems().get(btnDrawModels.getItems().size() - 1).setOnAction(f -> {createSummaryTable();});
+
+        tableModels.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        createAndAddChartToTab(chart_XT, paneAnimationCoordinates);
+        createAndAddChartToTab(chart_VT, paneAnimationVelocity);
+        createAndAddChartToTab(chart_ET, paneAnimationEnergy);
+        createAndAddChartToTab(chart_VX, paneAnimationPhasePortret);
+
+        animationOscillator_1D = new AnimationOscillator_1D(btnToogleAnimation, btnStopAnimation,
+                    ()->this.GetSelectedModels(), chart_XT, chart_VT, chart_ET, chart_VX, tabPaneAnimationPlots);
     }
 
     public void drawPlot(PlotType pt) {
@@ -106,6 +145,8 @@ public class Oscillator_1DController implements Initializable {
         ArrayList<String> names = new ArrayList();
         ArrayList<ArrayList<Double>> px = new ArrayList<>();
         ArrayList<ArrayList<Double>> py = new ArrayList<>();
+
+//        paneMainMenu.setDisable(true);
 
         for (int i = 0; i < modelsData.size(); ++i) {
             Oscillator_1D cur = modelsData.get(i).clone();
@@ -142,14 +183,15 @@ public class Oscillator_1DController implements Initializable {
         }
 
 //        px.add(new ArrayList<Double>(){{add(1.0); add(2.0); add(3.0);}});
-//        solutions.add(new ArrayList<Double>(){{add(10.0); add(2.0); add(6.0);}});
+//        py.add(new ArrayList<Double>(){{add(10.0); add(2.0); add(6.0);}});
 //        names.add("Example");
 
         SomeChart<XYChart> chartMatlab = new MatlabChart();
-//        XYChart chartSolutions = chartMatlab.getSizedChart(px, solutions, names,
+//        XYChart chartSolutions = chartMatlab.getSizedChart(px, py, names,
 //                (int)flowpaneOscillatorAnimation.getWidth(),(int)flowpaneOscillatorAnimation.getHeight());
-//
+
 //        SwingNode swingNode = new SwingNode();
+//        SwingWrapper<XYChart> swingWrapper = new SwingWrapper(chartSolutions);
 //        swingNode.setContent(new XChartPanel(chartSolutions));
 //        flowpaneOscillatorAnimation.getChildren().add(swingNode);
 
@@ -198,6 +240,15 @@ public class Oscillator_1DController implements Initializable {
             modelsData.remove(idx, idx + 1);
             tableModels.setItems(modelsData);
         }
+    }
+
+    public Oscillator_1D GetCurrentModel()
+    {
+        return modelsData.get(0);
+    }
+
+    public void StartAnimation() {
+        animationOscillator_1D.OnStartBtnClick();
     }
 
     public void createSummaryTable() {
