@@ -23,28 +23,33 @@ public class AnimationOscillator_1D {
 
     public enum AnimationState {AS_IDLE, AS_ACTIVE, AS_PAUSE};
     private AnimationState state;
-    private FunctionGetModels<ArrayList<Oscillator_1D>> functionCurrentModel;
+    private FunctionGetModels<ArrayList<Oscillator_1D>> functionGetModels;
     private Button btnToogle, btnStop;
     private ArrayList<Oscillator_1D> models, curs;
 
     private ArrayList<ArrayList<Double>> px, pt, pv, pe;
     XYChart chart_XT, chart_VT, chart_ET, chart_VX;
+    SwingWrapper<XYChart> swXT, swVT, swET, swVX;
     TabPane tabPaneAnimationPlots;
 
-    AnimationOscillator_1D(Button btnToogle, Button btnStop, FunctionGetModels<ArrayList<Oscillator_1D>> f,
+    public AnimationOscillator_1D(Button btnToogle, Button btnStop, FunctionGetModels<ArrayList<Oscillator_1D>> f,
                            XYChart chart_XT, XYChart chart_VT, XYChart chart_ET, XYChart chart_VX,
-                           TabPane tabPaneAnimationPlots)
+                           SwingWrapper<XYChart> swXT, SwingWrapper<XYChart> swVT, SwingWrapper<XYChart> swET, SwingWrapper<XYChart> swVX)
     {
         this.chart_XT = chart_XT;
         this.chart_VT = chart_VT;
         this.chart_ET = chart_ET;
         this.chart_VX = chart_VX;
-        this.tabPaneAnimationPlots = tabPaneAnimationPlots;
+
+        this.swXT = swXT;
+        this.swVT = swVT;
+        this.swET = swET;
+        this.swVX = swVX;
 
         this.btnToogle = btnToogle;
         this.btnStop = btnStop;
         state = AnimationState.AS_IDLE;
-        functionCurrentModel = f;
+        functionGetModels = f;
     }
 
     public void OnStartBtnClick() {
@@ -54,9 +59,14 @@ public class AnimationOscillator_1D {
             pv = new ArrayList<>();
             pe = new ArrayList<>();
 
-            models = functionCurrentModel.GetModels();
+            models = functionGetModels.GetModels();
+            curs = new ArrayList<Oscillator_1D>();
             for (int i = 0; i < models.size(); ++i) {
                 curs.add(models.get(i).clone());
+                px.add(new ArrayList<>());
+                pt.add(new ArrayList<>());
+                pv.add(new ArrayList<>());
+                pe.add(new ArrayList<>());
             }
 
             btnToogle.setText("Пауза");
@@ -87,6 +97,7 @@ public class AnimationOscillator_1D {
     }
 
     private void StartAnimation() {
+        models = functionGetModels.GetModels();
         MySwingWorker mySwingWorker = new AnimationOscillator_1D.MySwingWorker();
         mySwingWorker.execute();
     }
@@ -130,10 +141,10 @@ public class AnimationOscillator_1D {
                 chart_VX.getSeriesMap().clear();
 
                 for (int i = 0; i < models.size(); ++i) {
-                    chart_XT.addSeries("", pt.get(i), px.get(i));
-                    chart_VT.addSeries("", pt.get(i), pv.get(i));
-                    chart_ET.addSeries("", pt.get(i), pe.get(i));
-                    chart_VX.addSeries("", px.get(i), pv.get(i));
+                    chart_XT.addSeries("1", pt.get(i), px.get(i));
+                    chart_VT.addSeries("1", pt.get(i), pv.get(i));
+                    chart_ET.addSeries("1", pt.get(i), pe.get(i));
+                    chart_VX.addSeries("1", px.get(i), pv.get(i));
                 }
 
                 process(null);
@@ -163,7 +174,11 @@ public class AnimationOscillator_1D {
 
 //            SwingWrapper<XYChart> tmp;
 
-            tabPaneAnimationPlots.requestLayout();
+            // TODO: optimize it in four times
+            swXT.repaintChart();
+            swVT.repaintChart();
+            swET.repaintChart();
+            swVX.repaintChart();
 //            sw.repaintChart();
 
             long duration = System.currentTimeMillis() - start;
