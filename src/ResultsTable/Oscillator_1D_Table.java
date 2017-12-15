@@ -14,21 +14,21 @@ public class Oscillator_1D_Table {
         columns.add("Time");
 
         for (int i = 0; i < d.size(); i++) {
-            columns.add(String.format("x_%d", i + 1));
-            columns.add(String.format("v_%d", i + 1));
-            columns.add(String.format("E_%d", i + 1));
+            columns.add(String.format("x_%d", i + 1).replaceAll(",", "."));
+            columns.add(String.format("v_%d", i + 1).replaceAll(",", "."));
+            columns.add(String.format("E_%d", i + 1).replaceAll(",", "."));
         }
 
         int rows = d.get(0).size();
         Object[][] data = new Object[rows / 4][d.size() * 3 + 2];
         for (int i = 0, index = 0; i < rows; i += 4, index++) {
             data[index][0] = index;
-            data[index][1] = String.format("%.3f", d.get(0).get(i));
+            data[index][1] = String.format("%.3f", d.get(0).get(i)).replaceAll(",", ".");
 
             for (int j = 0; j < d.size(); j++) {
-                data[index][2 + 3 * j] = String.format("%.3f", d.get(j).get(i == 0 ? 1 : i + 1));
-                data[index][3 + 3 * j] = String.format("%.3f", d.get(j).get(i == 0 ? 2 : i + 2));
-                data[index][4 + 3 * j] = String.format("%.3f", d.get(j).get(i == 0 ? 3 : i + 3));
+                data[index][2 + 3 * j] = String.format("%.3f", d.get(j).get(i == 0 ? 1 : i + 1)).replaceAll(",", ".");
+                data[index][3 + 3 * j] = String.format("%.3f", d.get(j).get(i == 0 ? 2 : i + 2)).replaceAll(",", ".");
+                data[index][4 + 3 * j] = String.format("%.3f", d.get(j).get(i == 0 ? 3 : i + 3)).replaceAll(",", ".");
             }
         }
 
@@ -46,14 +46,14 @@ public class Oscillator_1D_Table {
 
         for (int i = 0, index = 0; i < infoRows; i++, index++) {
             infoData[index][0] = index;
-            infoData[index][1] = String.format("%.3f", d.get(i).get(0));
-            infoData[index][2] = String.format("%.3f", d.get(i).get(1));
-            infoData[index][3] = String.format("%.3f", d.get(i).get(2));
-            infoData[index][4] = String.format("%.3f", d.get(i).get(3));
-            infoData[index][5] = String.format("%.3f", d.get(i).get(4));
+            infoData[index][1] = String.format("%.3f", d.get(i).get(0)).replaceAll(",", ".");
+            infoData[index][2] = String.format("%.3f", d.get(i).get(1)).replaceAll(",", ".");
+            infoData[index][3] = String.format("%.3f", d.get(i).get(2)).replaceAll(",", ".");
+            infoData[index][4] = String.format("%.3f", d.get(i).get(3)).replaceAll(",", ".");
+            infoData[index][5] = String.format("%.3f", d.get(i).get(4)).replaceAll(",", ".");
 
         }
-
+        System.out.println(String.format("%.3f", d.get(0).get(4)));
         ArrayList<JTable> tables = new ArrayList<>();
         tables.add(exportToCSV(columns, data, "results"));
         tables.add(exportToCSV(infoColumns, infoData, "models_info"));
@@ -79,7 +79,7 @@ public class Oscillator_1D_Table {
             csv.write("\n");
 
             for (int i = 0; i < model.getRowCount(); i++) {
-                for (int j = 0; j < model.getColumnCount() - 3; j++) {
+                for (int j = 0; j < model.getColumnCount(); j++) {
                     csv.write(model.getValueAt(i, j).toString() + ",");
                 }
                 csv.write("\n");

@@ -31,7 +31,7 @@ public class AnimationOscillator_1D {
     XYChart chart_XT, chart_VT, chart_ET, chart_VX;
     TabPane tabPaneAnimationPlots;
 
-    AnimationOscillator_1D(Button btnToogle, Button btnStop, FunctionGetModels<ArrayList<Oscillator_1D>> f,
+    public AnimationOscillator_1D(Button btnToogle, Button btnStop, FunctionGetModels<ArrayList<Oscillator_1D>> f,
                            XYChart chart_XT, XYChart chart_VT, XYChart chart_ET, XYChart chart_VX,
                            TabPane tabPaneAnimationPlots)
     {
