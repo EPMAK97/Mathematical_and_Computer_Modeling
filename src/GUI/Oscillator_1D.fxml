@@ -40,7 +40,7 @@
               <columns>
                 <TableColumn prefWidth="52.0" text="Модель" />
                 <TableColumn prefWidth="83.0" text="Отклонение" />
-                  <TableColumn prefWidth="59.0" text="Скорость" />
+                  <TableColumn  prefWidth="59.0" text="Скорость" />
                   <TableColumn prefWidth="61.0" text="Масса" />
                   <TableColumn prefWidth="75.0" text="К. пружины" />
                   <TableColumn prefWidth="84.0" text="К. трения" />

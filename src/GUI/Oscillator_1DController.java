@@ -9,7 +9,7 @@ import NumericalMethods.Euler_KromerMethod;
 import NumericalMethods.Euler_KromerMethodOscillator;
 import ResultsTable.FallingBodiesTable;
 import Models.Oscillator_1D;
-
+import ResultsTable.Oscillator_1D_Table;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -142,6 +142,8 @@ public class Oscillator_1DController implements Initializable {
 
         if (modelsData.isEmpty()) return;
 
+        setStartTimes();
+
         ArrayList<String> names = new ArrayList();
         ArrayList<ArrayList<Double>> px = new ArrayList<>();
         ArrayList<ArrayList<Double>> py = new ArrayList<>();
@@ -253,19 +255,41 @@ public class Oscillator_1DController implements Initializable {
 
     public void createSummaryTable() {
         if (modelsData.isEmpty()) return;
+        setStartTimes();
+        ArrayList<ArrayList<Double>> data = new ArrayList<>();
+        ArrayList<ArrayList<Double>> modelInfo = new ArrayList<>();
+        for (int i = 0; i < modelsData.size(); ++i) {
+            Oscillator_1D cur = modelsData.get(i).clone();
+            data.add(new ArrayList<>());
+            modelInfo.add(new ArrayList<>());
+            modelInfo.get(i).add(modelsData.get(i).getX0());
+            modelInfo.get(i).add(modelsData.get(i).getV0());
+            modelInfo.get(i).add(modelsData.get(i).getM());
+            modelInfo.get(i).add(modelsData.get(i).getK());
+            modelInfo.get(i).add(modelsData.get(i).getGamma());
+            for (int j = 0; j <= modelsData.get(i).getN(); ++j) {
+                data.get(i).add(cur.getT0());
+                data.get(i).add(cur.getX0());
+                data.get(i).add(cur.getV0());
+                data.get(i).add(cur.getEnergy());
+                Euler_KromerMethodOscillator.NextValues(cur);
+            }
+        }
+        ArrayList<JTable> tables = Oscillator_1D_Table.GetTable(data, modelInfo);
+        for (JTable jtable: tables) {
+            JFrame frame = new JFrame("Table");
+            frame.add(new JScrollPane(jtable));
+            frame.setSize(jtable.getColumnModel().getTotalColumnWidth() + 20, 500);
+            frame.setVisible(true);
+        }
+    }
 
-//        for (int i = 0; i < data.size(); ++i) {
-//            Euler_KromerMethod.Solve(data.get(i), data.get(i).getN(),
-//                    data.get(i).getXStart(), data.get(i).getXFinish(), data.get(i).getY0());
-//
-//        }
-//
-
-//        JTable table = FallingBodiesTable.GetTable(new ArrayList<ObjectFallingProcess>(data));
-//        JFrame frame = new JFrame("Table");
-//        frame.add(new JScrollPane(table));
-//        frame.setSize(table.getColumnModel().getTotalColumnWidth() + 20, 500);
-//        frame.setVisible(true);
+    public void setStartTimes() throws NumberFormatException {
+        for (Oscillator_1D oscillator : modelsData) {
+            oscillator.setT0(Double.parseDouble(editStartTime.getText()));
+            oscillator.setT1(Double.parseDouble(editFinishTime.getText()));
+            oscillator.setN(Integer.parseInt(editNumberOfCounts.getText()));
+        }
     }
 
 }
