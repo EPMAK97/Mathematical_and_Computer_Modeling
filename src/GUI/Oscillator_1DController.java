@@ -78,7 +78,7 @@ public class Oscillator_1DController implements Initializable {
     public AnchorPane paneAnimationEnergy;
     public AnchorPane paneAnimationPhasePortret;
 
-    XYChart chart_XT, chart_VT, chart_ET, chart_VX;
+    XChartPanel<XYChart> chartPanel_XT, chartPanel_VT, chartPanel_ET, chartPanel_VX;
 
     public FlowPane flowpaneOscillatorAnimation;
     public AnimationOscillator_1D animationOscillator_1D;
@@ -100,21 +100,16 @@ public class Oscillator_1DController implements Initializable {
         items.get(items.size() - 1).setOnAction(f -> {drawPlot(pt);});
     }
 
-    public XYChart createAndAddChartToTab(AnchorPane tab) {
+    public XChartPanel<XYChart> createAndAddChartToTab(AnchorPane tab) {
         SomeChart<XYChart> chartMatlab = new MatlabChart();
         XYChart chart = chartMatlab.getSizedChart(new ArrayList<ArrayList<Double>>(), new ArrayList<ArrayList<Double>>(), new ArrayList<String>(),
                 (int)tab.getMinWidth(),(int)tab.getMinHeight());
 
-        XChartPanel tmp;
-        SwingWrapper<XYChart> tmp1 = new SwingWrapper<XYChart>(chart);
-
+        XChartPanel<XYChart> pnl = new XChartPanel(chart);
         SwingNode swingNode = new SwingNode();
-
-        //swingNode.setContent(tmp1);
-
-        swingNode.setContent(new XChartPanel(chart));
+        swingNode.setContent(pnl);
         tab.getChildren().add(swingNode);
-        return chart;
+        return pnl;
     }
 
     public ArrayList<Oscillator_1D> GetSelectedModels()
@@ -136,13 +131,16 @@ public class Oscillator_1DController implements Initializable {
         btnDrawModels.getItems().get(btnDrawModels.getItems().size() - 1).setOnAction(f -> {createSummaryTable();});
 
         tableModels.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        chart_XT = createAndAddChartToTab(paneAnimationCoordinates);
-        chart_VT = createAndAddChartToTab(paneAnimationVelocity);
-        chart_ET = createAndAddChartToTab(paneAnimationEnergy);
-        chart_VX = createAndAddChartToTab(paneAnimationPhasePortret);
+        chartPanel_XT = createAndAddChartToTab(paneAnimationCoordinates);
+        chartPanel_VT = createAndAddChartToTab(paneAnimationVelocity);
+        chartPanel_ET = createAndAddChartToTab(paneAnimationEnergy);
+        chartPanel_VX = createAndAddChartToTab(paneAnimationPhasePortret);
+
+        chartPanel_XT.getChart().getStyler().setYAxisMin(-10.0);
+        chartPanel_XT.getChart().getStyler().setYAxisMax(10.0);
 
         animationOscillator_1D = new AnimationOscillator_1D(btnToogleAnimation, btnStopAnimation,
-                    ()->this.GetSelectedModels(), chart_XT, chart_VT, chart_ET, chart_VX, tabPaneAnimationPlots);
+                ()->this.GetSelectedModels(), chartPanel_XT, chartPanel_VT, chartPanel_ET, chartPanel_VX);
     }
 
     public void drawPlot(PlotType pt) {
@@ -154,8 +152,6 @@ public class Oscillator_1DController implements Initializable {
         ArrayList<String> names = new ArrayList();
         ArrayList<ArrayList<Double>> px = new ArrayList<>();
         ArrayList<ArrayList<Double>> py = new ArrayList<>();
-
-//        paneMainMenu.setDisable(true);
 
         for (int i = 0; i < modelsData.size(); ++i) {
             Oscillator_1D cur = modelsData.get(i).clone();

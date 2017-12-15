@@ -19,7 +19,7 @@ public class AnimationOscillator_1D {
         public T GetModels();
     }
 
-    private static Integer slidingWindowWidth = 60;
+    private static Integer slidingWindowWidth = 250;
 
     public enum AnimationState {AS_IDLE, AS_ACTIVE, AS_PAUSE};
     private AnimationState state;
@@ -28,23 +28,16 @@ public class AnimationOscillator_1D {
     private ArrayList<Oscillator_1D> models, curs;
 
     private ArrayList<ArrayList<Double>> px, pt, pv, pe;
-    XYChart chart_XT, chart_VT, chart_ET, chart_VX;
-    SwingWrapper<XYChart> swXT, swVT, swET, swVX;
-    TabPane tabPaneAnimationPlots;
+    XChartPanel<XYChart> chartPanel_XT, chartPanel_VT, chartPanel_ET, chartPanel_VX;
 
     public AnimationOscillator_1D(Button btnToogle, Button btnStop, FunctionGetModels<ArrayList<Oscillator_1D>> f,
-                           XYChart chart_XT, XYChart chart_VT, XYChart chart_ET, XYChart chart_VX,
-                           SwingWrapper<XYChart> swXT, SwingWrapper<XYChart> swVT, SwingWrapper<XYChart> swET, SwingWrapper<XYChart> swVX)
+                           XChartPanel<XYChart> chartPanel_XT, XChartPanel<XYChart> chartPanel_VT,
+                                  XChartPanel<XYChart> chartPanel_ET, XChartPanel chartPanel_VX)
     {
-        this.chart_XT = chart_XT;
-        this.chart_VT = chart_VT;
-        this.chart_ET = chart_ET;
-        this.chart_VX = chart_VX;
-
-        this.swXT = swXT;
-        this.swVT = swVT;
-        this.swET = swET;
-        this.swVX = swVX;
+        this.chartPanel_XT = chartPanel_XT;
+        this.chartPanel_VT = chartPanel_VT;
+        this.chartPanel_ET = chartPanel_ET;
+        this.chartPanel_VX = chartPanel_VX;
 
         this.btnToogle = btnToogle;
         this.btnStop = btnStop;
@@ -135,22 +128,22 @@ public class AnimationOscillator_1D {
                     }
                 }
 
-                chart_XT.getSeriesMap().clear();
-                chart_VT.getSeriesMap().clear();
-                chart_ET.getSeriesMap().clear();
-                chart_VX.getSeriesMap().clear();
+                chartPanel_XT.getChart().getSeriesMap().clear();
+                chartPanel_VT.getChart().getSeriesMap().clear();
+                chartPanel_ET.getChart().getSeriesMap().clear();
+                chartPanel_VX.getChart().getSeriesMap().clear();
 
                 for (int i = 0; i < models.size(); ++i) {
-                    chart_XT.addSeries("1", pt.get(i), px.get(i));
-                    chart_VT.addSeries("1", pt.get(i), pv.get(i));
-                    chart_ET.addSeries("1", pt.get(i), pe.get(i));
-                    chart_VX.addSeries("1", px.get(i), pv.get(i));
+                    chartPanel_XT.getChart().addSeries("1", pt.get(i), px.get(i));
+                    chartPanel_VT.getChart().addSeries("1", pt.get(i), pv.get(i));
+                    chartPanel_ET.getChart().addSeries("1", pt.get(i), pe.get(i));
+                    chartPanel_VX.getChart().addSeries("1", px.get(i), pv.get(i));
                 }
 
                 process(null);
 
                 try {
-                    Thread.sleep(25);
+                    Thread.sleep(15);
                 } catch (InterruptedException e) {
                     // eat it. caught when interrupt is called
                     System.out.println("MySwingWorker shut down.");
@@ -172,18 +165,15 @@ public class AnimationOscillator_1D {
 
             long start = System.currentTimeMillis();
 
-//            SwingWrapper<XYChart> tmp;
-
             // TODO: optimize it in four times
-            swXT.repaintChart();
-            swVT.repaintChart();
-            swET.repaintChart();
-            swVX.repaintChart();
-//            sw.repaintChart();
+            chartPanel_XT.repaint();
+            chartPanel_VT.repaint();
+            chartPanel_ET.repaint();
+            chartPanel_VX.repaint();
 
             long duration = System.currentTimeMillis() - start;
             try {
-                Thread.sleep(80 - duration); // 40 ms ==> 25fps
+                Thread.sleep(40 - duration); // 40 ms ==> 25fps
                 // Thread.sleep(400 - duration); // 40 ms ==> 2.5fps
             } catch (InterruptedException e) {
             }
