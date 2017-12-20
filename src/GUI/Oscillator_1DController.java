@@ -27,11 +27,16 @@ import javafx.scene.layout.VBox;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
+import java.util.IntSummaryStatistics;
+import java.util.Arrays;
 
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 import java.util.*;
+import java.util.stream.DoubleStream;
+
+import static java.lang.Math.min;
 
 public class Oscillator_1DController implements Initializable {
     // model parameters
@@ -48,8 +53,10 @@ public class Oscillator_1DController implements Initializable {
 
     // animation parameters
     public TextField editImpulse;
-    public TextField editPeriodicAmplitute;
+    public TextField editPeriodicAmplitude;
     public TextField editPeriodicPeriod;
+    public TextField editAnimationRate;
+
     public Button btnToogleAnimation;
     public Button btnStopAnimation;
     public Button btnImpulse;
@@ -83,7 +90,9 @@ public class Oscillator_1DController implements Initializable {
     public FlowPane flowpaneOscillatorAnimation;
     public AnimationOscillator_1D animationOscillator_1D;
 
-    private enum PlotType {PT_COORDINATE, PT_VELOCITY, PT_ENERGY, PT_PHASE_PORTRET};
+    private enum PlotType {PT_COORDINATE, PT_VELOCITY, PT_ENERGY, PT_PHASE_PORTRET}
+
+    ;
     private static HashMap<PlotType, String> plotTypePlotName;
 
     static {
@@ -95,15 +104,71 @@ public class Oscillator_1DController implements Initializable {
         }};
     }
 
+    private class ExperimentResult {
+        public ArrayList<String> names;
+        public ArrayList<ArrayList<Double>> px, pv, pt, pe;
+        public Double minX, maxX;
+        public Double minV, maxV;
+        public Double minT, maxT;
+        public Double minE, maxE;
+
+        ExperimentResult() {
+            names = new ArrayList();
+            px = new ArrayList<>();
+            pv = new ArrayList<>();
+            pt = new ArrayList<>();
+            pe = new ArrayList<>();
+
+            minX = minV = minT = minE = 1e10;
+            maxX = maxV = maxT = maxE = -1e10;
+
+            for (int i = 0; i < modelsData.size(); ++i) {
+                Oscillator_1D cur = modelsData.get(i).clone();
+                ArrayList<Double> t_arr = new ArrayList<>();
+                ArrayList<Double> x_arr = new ArrayList<>();
+                ArrayList<Double> v_arr = new ArrayList<>();
+                ArrayList<Double> e_arr = new ArrayList<>();
+
+                for (int j = 0; j <= modelsData.get(i).getN(); ++j) {
+                    t_arr.add(cur.getT0());
+                    x_arr.add(cur.getX0());
+                    v_arr.add(cur.getV0());
+                    e_arr.add(cur.getEnergy());
+                    Euler_KromerMethodOscillator.NextValues(cur);
+                }
+
+                names.add(String.format("Model № %d", cur.getNumber()));
+                px.add(x_arr);
+                pv.add(v_arr);
+                pt.add(t_arr);
+                pe.add(e_arr);
+
+                minX = Math.min(minX, Collections.min(px.get(i)));
+                maxX = Math.max(maxX, Collections.max(px.get(i)));
+
+                minV = Math.min(minV, Collections.min(pv.get(i)));
+                maxV = Math.max(maxV, Collections.max(pv.get(i)));
+
+                minT = Math.min(minT, Collections.min(pt.get(i)));
+                maxT = Math.max(maxT, Collections.max(pt.get(i)));
+
+                minE = Math.min(minE, Collections.min(pe.get(i)));
+                maxE = Math.max(maxE, Collections.max(pe.get(i)));
+            }
+        }
+    }
+
     public void addItemToMenu(ObservableList<MenuItem> items, PlotType pt) {
         items.add(new MenuItem(plotTypePlotName.get(pt)));
-        items.get(items.size() - 1).setOnAction(f -> {drawPlot(pt);});
+        items.get(items.size() - 1).setOnAction(f -> {
+            drawPlot(pt);
+        });
     }
 
     public XChartPanel<XYChart> createAndAddChartToTab(AnchorPane tab) {
         SomeChart<XYChart> chartMatlab = new MatlabChart();
         XYChart chart = chartMatlab.getSizedChart(new ArrayList<ArrayList<Double>>(), new ArrayList<ArrayList<Double>>(), new ArrayList<String>(),
-                (int)tab.getMinWidth(),(int)tab.getMinHeight());
+                (int) tab.getMinWidth(), (int) tab.getMinHeight());
 
         XChartPanel<XYChart> pnl = new XChartPanel(chart);
         SwingNode swingNode = new SwingNode();
@@ -112,8 +177,7 @@ public class Oscillator_1DController implements Initializable {
         return pnl;
     }
 
-    public ArrayList<Oscillator_1D> GetSelectedModels()
-    {
+    public ArrayList<Oscillator_1D> GetSelectedModels() {
         ObservableList<Oscillator_1D> obs = tableModels.getSelectionModel().getSelectedItems();
         ArrayList<Oscillator_1D> res = new ArrayList<>();
         for (int i = 0; i < obs.size(); ++i) res.add(obs.get(i));
@@ -128,7 +192,9 @@ public class Oscillator_1DController implements Initializable {
         addItemToMenu(btnDrawModels.getItems(), PlotType.PT_PHASE_PORTRET);
 
         btnDrawModels.getItems().add(new MenuItem("Сводная таблица"));
-        btnDrawModels.getItems().get(btnDrawModels.getItems().size() - 1).setOnAction(f -> {createSummaryTable();});
+        btnDrawModels.getItems().get(btnDrawModels.getItems().size() - 1).setOnAction(f -> {
+            createSummaryTable();
+        });
 
         tableModels.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         chartPanel_XT = createAndAddChartToTab(paneAnimationCoordinates);
@@ -136,11 +202,9 @@ public class Oscillator_1DController implements Initializable {
         chartPanel_ET = createAndAddChartToTab(paneAnimationEnergy);
         chartPanel_VX = createAndAddChartToTab(paneAnimationPhasePortret);
 
-        chartPanel_XT.getChart().getStyler().setYAxisMin(-10.0);
-        chartPanel_XT.getChart().getStyler().setYAxisMax(10.0);
-
         animationOscillator_1D = new AnimationOscillator_1D(btnToogleAnimation, btnStopAnimation,
-                ()->this.GetSelectedModels(), chartPanel_XT, chartPanel_VT, chartPanel_ET, chartPanel_VX);
+                () -> this.GetSelectedModels(), chartPanel_XT, chartPanel_VT, chartPanel_ET, chartPanel_VX,
+                new Runnable(){ public void run() {UpdateCharts();}});
     }
 
     public void drawPlot(PlotType pt) {
@@ -149,49 +213,24 @@ public class Oscillator_1DController implements Initializable {
 
         setStartTimes();
 
-        ArrayList<String> names = new ArrayList();
         ArrayList<ArrayList<Double>> px = new ArrayList<>();
         ArrayList<ArrayList<Double>> py = new ArrayList<>();
+        ExperimentResult result = new ExperimentResult();
 
-        for (int i = 0; i < modelsData.size(); ++i) {
-            Oscillator_1D cur = modelsData.get(i).clone();
-            ArrayList<Double> t_arr = new ArrayList<>();
-            ArrayList<Double> x_arr = new ArrayList<>();
-            ArrayList<Double> v_arr = new ArrayList<>();
-            ArrayList<Double> e_arr = new ArrayList<>();
-
-            for (int j = 0; j <= modelsData.get(i).getN(); ++j) {
-                t_arr.add(cur.getT0());
-                x_arr.add(cur.getX0());
-                v_arr.add(cur.getV0());
-                e_arr.add(cur.getEnergy());
-                Euler_KromerMethodOscillator.NextValues(cur);
-            }
-
-            names.add(String.format("Model № %d", cur.getNumber()));
-            if (pt == PlotType.PT_COORDINATE) {
-                px.add(t_arr);
-                py.add(x_arr);
-            }
-            else if (pt == PlotType.PT_VELOCITY) {
-                px.add(t_arr);
-                py.add(v_arr);
-            }
-            else if (pt == PlotType.PT_ENERGY) {
-                px.add(t_arr);
-                py.add(e_arr);
-            }
-            else if (pt == PlotType.PT_PHASE_PORTRET) {
-                px.add(x_arr);
-                py.add(v_arr);
-            }
+        if (pt == PlotType.PT_COORDINATE) {
+            px = result.pt;
+            py = result.px;
+        } else if (pt == PlotType.PT_VELOCITY) {
+            px = result.pt;
+            py = result.pv;
+        } else if (pt == PlotType.PT_ENERGY) {
+            px = result.pt;
+            py = result.pe;
+        } else if (pt == PlotType.PT_PHASE_PORTRET) {
+            px = result.px;
+            py = result.pv;
         }
 
-//        px.add(new ArrayList<Double>(){{add(1.0); add(2.0); add(3.0);}});
-//        py.add(new ArrayList<Double>(){{add(10.0); add(2.0); add(6.0);}});
-//        names.add("Example");
-
-        SomeChart<XYChart> chartMatlab = new MatlabChart();
 //        XYChart chartSolutions = chartMatlab.getSizedChart(px, py, names,
 //                (int)flowpaneOscillatorAnimation.getWidth(),(int)flowpaneOscillatorAnimation.getHeight());
 
@@ -200,7 +239,8 @@ public class Oscillator_1DController implements Initializable {
 //        swingNode.setContent(new XChartPanel(chartSolutions));
 //        flowpaneOscillatorAnimation.getChildren().add(swingNode);
 
-        XYChart chartSolutions = chartMatlab.getChart(px, py, names);
+        SomeChart<XYChart> chartMatlab = new MatlabChart();
+        XYChart chartSolutions = chartMatlab.getChart(px, py, result.names);
         chartSolutions.setTitle(plotTypePlotName.get(pt));
         new SwingWrapper(chartSolutions).displayChart().setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
     }
@@ -247,8 +287,60 @@ public class Oscillator_1DController implements Initializable {
         }
     }
 
+    private void SetChartMinMaxAxis(XYChart chart, Double minX, Double maxX, Double minY, Double maxY) {
+        chart.getStyler().setXAxisMin(minX);
+        chart.getStyler().setXAxisMax(maxX);
+        chart.getStyler().setYAxisMin(minY);
+        chart.getStyler().setYAxisMax(maxY);
+    }
+
     public void StartAnimation() {
-        animationOscillator_1D.OnStartBtnClick();
+        setStartTimes();
+        ExperimentResult res = new ExperimentResult();
+
+        Double minT = res.minT;
+        Double maxT = res.maxT;
+
+        // TODO : read this speed from the edit field
+        Integer viewSpeed = Integer.parseInt(editAnimationRate.getText());
+        Double wholeTime = maxT - minT;
+        Integer wholePoints = res.pt.get(0).size();
+        Double screens = (double)wholePoints / AnimationOscillator_1D.maxPointsOnChart;
+        Double timeAxisWidth = wholeTime / screens;
+        Integer pointsPerTick = viewSpeed;
+
+        maxT = minT + timeAxisWidth;
+
+        SetChartMinMaxAxis(chartPanel_XT.getChart(), minT, maxT, res.minX, res.maxX);
+        SetChartMinMaxAxis(chartPanel_VT.getChart(), minT, maxT, res.minV, res.maxV);
+        SetChartMinMaxAxis(chartPanel_ET.getChart(), minT, maxT, res.minE, res.maxE);
+        SetChartMinMaxAxis(chartPanel_VX.getChart(), res.minX, res.maxX, res.minV, res.maxV);
+
+        animationOscillator_1D.Start(timeAxisWidth, pointsPerTick);
+    }
+
+    public void StopAnimation() {
+        animationOscillator_1D.Stop();
+    }
+
+    public void OnBtnImpulseClick() {
+        animationOscillator_1D.AddImpulseForce(Double.parseDouble(editImpulse.getText()));
+    }
+
+    public void OnBtnPeriodicClick() {
+        animationOscillator_1D.AddPeriodicForce(Double.parseDouble(editPeriodicAmplitude.getText()),
+                Double.parseDouble(editPeriodicPeriod.getText()));
+    }
+
+    public void UpdateCharts() {
+        if (tabAnimationCoordinates.isSelected())
+            chartPanel_XT.repaint();
+        else if (tabAnimationVelocity.isSelected())
+            chartPanel_VT.repaint();
+        else if (tabAnimationEnergy.isSelected())
+            chartPanel_ET.repaint();
+        else
+            chartPanel_VX.repaint();
     }
 
     public void createSummaryTable() {
@@ -289,5 +381,4 @@ public class Oscillator_1DController implements Initializable {
             oscillator.setN(Integer.parseInt(editNumberOfCounts.getText()));
         }
     }
-
 }

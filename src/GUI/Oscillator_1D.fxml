@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
@@ -13,9 +16,9 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="579.0" prefWidth="919.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Oscillator_1DController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="929.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Oscillator_1DController">
    <children>
-      <AnchorPane fx:id="paneMainMenu" prefHeight="451.0" prefWidth="824.0">
+      <AnchorPane fx:id="paneMainMenu" prefHeight="235.0" prefWidth="919.0">
          <children>
             <TextField fx:id="editStartX" layoutX="409.0" layoutY="24.0" prefHeight="27.0" prefWidth="62.0" text="10" />
             <TextField fx:id="editStartVelocity" layoutX="409.0" layoutY="67.0" prefHeight="27.0" prefWidth="62.0" text="0" />
@@ -29,66 +32,68 @@
             <Label layoutX="19.0" layoutY="116.0" prefHeight="17.0" prefWidth="102.0" text="Число отсчетов" />
             <Label layoutX="211.0" layoutY="153.0" text="Коэф. жесткости пружины, г / с^2" AnchorPane.leftAnchor="211.0" />
             <TextField fx:id="editRestitutionCoeff" layoutX="409.0" layoutY="148.0" prefHeight="27.0" prefWidth="62.0" text="60" />
-            <SplitMenuButton fx:id="btnDrawModels" layoutX="757.0" layoutY="11.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="148.0" text="Отрисовать" AnchorPane.leftAnchor="757.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="11.0" />
+            <SplitMenuButton fx:id="btnDrawModels" layoutX="798.0" layoutY="11.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="117.0" text="Отрисовать" />
             <Separator layoutX="198.0" layoutY="11.0" orientation="VERTICAL" prefHeight="210.0" prefWidth="13.0" />
             <Separator layoutX="480.0" layoutY="11.0" orientation="VERTICAL" prefHeight="210.0" prefWidth="3.0" />
             <TextField fx:id="editBodyMass" layoutX="409.0" layoutY="111.0" prefHeight="27.0" prefWidth="62.0" text="100" />
             <Label layoutX="211.0" layoutY="116.0" prefHeight="17.0" prefWidth="92.0" text="Масса тела, г" />
             <TextField fx:id="editFrictionCoeff" layoutX="409.0" layoutY="189.0" prefHeight="27.0" prefWidth="62.0" text="0.01" />
             <Label layoutX="211.0" layoutY="194.0" text="Коэф. трения скольжения, с / см" />
-            <TableView fx:id="tableModels" layoutX="493.0" layoutY="43.0" prefHeight="180.0" prefWidth="415.0">
+            <TableView fx:id="tableModels" layoutX="493.0" layoutY="43.0" prefHeight="180.0" prefWidth="423.0">
               <columns>
                 <TableColumn prefWidth="52.0" text="Модель" />
                 <TableColumn prefWidth="83.0" text="Отклонение" />
-                  <TableColumn  prefWidth="59.0" text="Скорость" />
-                  <TableColumn prefWidth="61.0" text="Масса" />
-                  <TableColumn prefWidth="75.0" text="К. пружины" />
-                  <TableColumn prefWidth="84.0" text="К. трения" />
+                  <TableColumn prefWidth="64.0" text="Скорость" />
+                  <TableColumn prefWidth="56.0" text="Масса" />
+                  <TableColumn prefWidth="85.0" text="К. пружины" />
+                  <TableColumn prefWidth="74.0" text="К. трения" />
               </columns>
             </TableView>
             <Button fx:id="btnAddModel" layoutX="493.0" layoutY="12.0" mnemonicParsing="false" onAction="#addModel" text="Добавить модель" />
-            <Button fx:id="btnDeleteModel" layoutX="612.0" layoutY="12.0" mnemonicParsing="false" onAction="#deleteFromTable" text="Удалить модель" />
+            <Button fx:id="btnDeleteModel" layoutX="613.0" layoutY="12.0" mnemonicParsing="false" onAction="#deleteFromTable" text="Удалить модель" />
 
 
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="paneAnimation" prefHeight="543.0" prefWidth="919.0">
+      <AnchorPane fx:id="paneAnimation" prefHeight="376.0" prefWidth="919.0">
          <children>
             <Label layoutX="22.0" layoutY="14.0" prefHeight="17.0" prefWidth="148.0" text="Импульсное воздействие" />
             <TextField fx:id="editImpulse" layoutX="197.0" layoutY="9.0" prefHeight="27.0" prefWidth="106.0" text="5" />
-            <TextField fx:id="editPeriodicAmplitute" layoutX="197.0" layoutY="44.0" prefHeight="27.0" prefWidth="106.0" text="5" />
+            <TextField fx:id="editPeriodicAmplitude" layoutX="197.0" layoutY="44.0" prefHeight="27.0" prefWidth="106.0" text="5" />
             <Label layoutX="22.0" layoutY="49.0" prefHeight="17.0" prefWidth="167.0" text="Амплитуда периодич. возд." />
             <Label layoutX="22.0" layoutY="84.0" prefHeight="17.0" prefWidth="167.0" text="Период периодич. возд." />
             <TextField fx:id="editPeriodicPeriod" layoutX="197.0" layoutY="79.0" prefHeight="27.0" prefWidth="106.0" text="3" />
-            <Button fx:id="btnToogleAnimation" layoutX="22.0" layoutY="117.0" mnemonicParsing="false" onAction="#StartAnimation" text="Старт" />
-            <Button fx:id="btnImpulse" layoutX="84.0" layoutY="117.0" mnemonicParsing="false" text="Импульс. возд." />
-            <Button fx:id="btnPeriodic" layoutX="197.0" layoutY="117.0" mnemonicParsing="false" text="Периодич. возд." />
-            <TabPane fx:id="tabPaneAnimationPlots" layoutX="321.0" layoutY="9.0" prefHeight="304.0" prefWidth="581.0" tabClosingPolicy="UNAVAILABLE">
+            <Button fx:id="btnToogleAnimation" layoutX="24.0" layoutY="152.0" mnemonicParsing="false" onAction="#StartAnimation" text="Старт" />
+            <Button fx:id="btnImpulse" layoutX="85.0" layoutY="152.0" mnemonicParsing="false" onAction="#OnBtnImpulseClick" text="Импульсное воздействие" />
+            <Button fx:id="btnPeriodic" layoutX="85.0" layoutY="188.0" mnemonicParsing="false" onAction="#OnBtnPeriodicClick" text="Периодическое воздйствие" />
+            <TabPane fx:id="tabPaneAnimationPlots" layoutX="321.0" layoutY="9.0" prefHeight="360.0" prefWidth="596.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab fx:id="tabAnimationCoordinates" text="X(t)">
+                <Tab fx:id="tabAnimationCoordinates" onSelectionChanged="#UpdateCharts" text="X(t)">
                   <content>
                     <AnchorPane fx:id="paneAnimationCoordinates" minHeight="250.0" minWidth="500.0" prefHeight="180.0" prefWidth="200.0" />
                   </content>
                 </Tab>
-                <Tab fx:id="tabAnimationVelocity" text="V(t)">
+                <Tab fx:id="tabAnimationVelocity" onSelectionChanged="#UpdateCharts" text="V(t)">
                   <content>
                     <AnchorPane fx:id="paneAnimationVelocity" minHeight="250.0" minWidth="500.0" prefHeight="258.0" prefWidth="515.0" />
                   </content>
                 </Tab>
-                  <Tab fx:id="tabAnimationEnergy" text="E(t)">
+                  <Tab fx:id="tabAnimationEnergy" onSelectionChanged="#UpdateCharts" text="E(t)">
                     <content>
                       <AnchorPane fx:id="paneAnimationEnergy" minHeight="250.0" minWidth="500.0" prefHeight="180.0" prefWidth="200.0" />
                     </content>
                   </Tab>
-                  <Tab fx:id="tabAnimationPhasePortret" text="V(x)">
+                  <Tab fx:id="tabAnimationPhasePortret" onSelectionChanged="#UpdateCharts" text="V(x)">
                     <content>
                       <AnchorPane fx:id="paneAnimationPhasePortret" minHeight="250.0" minWidth="500.0" prefHeight="180.0" prefWidth="200.0" />
                     </content>
                   </Tab>
               </tabs>
             </TabPane>
-            <FlowPane fx:id="flowpaneOscillatorAnimation" layoutX="21.0" layoutY="161.0" prefHeight="154.0" prefWidth="289.0" />
-            <Button fx:id="btnStopAnimation" layoutX="20.0" layoutY="142.0" mnemonicParsing="false" text="Стоп" />
+            <FlowPane fx:id="flowpaneOscillatorAnimation" layoutX="20.0" layoutY="208.0" prefHeight="154.0" prefWidth="289.0" />
+            <Button fx:id="btnStopAnimation" disable="true" layoutX="24.0" layoutY="188.0" mnemonicParsing="false" onAction="#StopAnimation" text="Стоп" />
+            <TextField fx:id="editAnimationRate" layoutX="197.0" layoutY="113.0" prefHeight="27.0" prefWidth="106.0" text="1" />
+            <Label layoutX="22.0" layoutY="118.0" prefHeight="17.0" prefWidth="167.0" text="Скорость анимации" />
          </children></AnchorPane>
    </children>
 </VBox>
