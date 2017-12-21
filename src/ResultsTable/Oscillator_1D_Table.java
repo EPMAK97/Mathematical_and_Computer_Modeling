@@ -45,7 +45,7 @@ public class Oscillator_1D_Table {
         Object[][] infoData = new Object[infoRows][6];
 
         for (int i = 0, index = 0; i < infoRows; i++, index++) {
-            infoData[index][0] = index;
+            infoData[index][0] = index + 1;
             infoData[index][1] = String.format("%.3f", d.get(i).get(0)).replaceAll(",", ".");
             infoData[index][2] = String.format("%.3f", d.get(i).get(1)).replaceAll(",", ".");
             infoData[index][3] = String.format("%.3f", d.get(i).get(2)).replaceAll(",", ".");
@@ -55,13 +55,13 @@ public class Oscillator_1D_Table {
         }
         System.out.println(String.format("%.3f", d.get(0).get(4)));
         ArrayList<JTable> tables = new ArrayList<>();
-        tables.add(exportToCSV(columns, data, "results"));
-        tables.add(exportToCSV(infoColumns, infoData, "models_info"));
+        tables.add(exportToCSV(infoColumns, infoData, "results", false));
+        tables.add(exportToCSV(columns, data, "results", true));
 
         return tables;
     }
 
-    private static JTable exportToCSV(ArrayList<String> columns, Object[][] data, String name) {
+    private static JTable exportToCSV(ArrayList<String> columns, Object[][] data, String name, boolean append) {
         String[] tmp = new String[columns.size()];
         tmp = columns.toArray(tmp);
 
@@ -70,7 +70,11 @@ public class Oscillator_1D_Table {
         try {
 
             TableModel model = table.getModel();
-            FileWriter csv = new FileWriter(new File(name + ".csv"));
+            FileWriter csv = new FileWriter(new File(name + ".csv"), append);
+
+            if (append) {
+                csv.write("\n");
+            }
 
             for (int i = 0; i < model.getColumnCount(); i++) {
                 csv.write(model.getColumnName(i) + ",");

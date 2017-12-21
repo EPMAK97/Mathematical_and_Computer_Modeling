@@ -1,32 +1,12 @@
 package NumericalMethods;
 
 import Models.Oscillator_1D;
+import Models.PeriodicForce;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class Euler_KromerMethodOscillator {
-
-    public static class PeriodicForce {
-        private Double A, startTime, period;
-
-        public PeriodicForce(Double A, Double startTime, Double period) {
-            this.A = A;
-            this.startTime = startTime;
-            this.period = period;
-        }
-
-        public Double Compute(Double t)
-        {
-            t -= startTime;
-            return A * (1 - Math.cos(2 * Math.PI * t / period)) / 2.0;
-        }
-
-        public boolean Finished(Double curTime) {
-            return curTime - startTime > period;
-        }
-    }
-
     // CAUTIOUS: this function changes fields X0, T0, V0 and N in argument 'osc'
     public static Boolean NextValues(Oscillator_1D osc, ArrayList<Double> impulseForces, ArrayList<PeriodicForce> periodicForces) {
         try {

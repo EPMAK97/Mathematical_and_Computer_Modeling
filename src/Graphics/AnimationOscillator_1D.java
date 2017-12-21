@@ -1,8 +1,11 @@
 package Graphics;
 
 import Models.Oscillator_1D;
+import Models.PeriodicForce;
 import NumericalMethods.Euler_KromerMethodOscillator;
+import javafx.application.Platform;
 import javafx.embed.swing.SwingNode;
+import javafx.event.EventDispatcher;
 import javafx.scene.control.TabPane;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XChartPanel;
@@ -11,6 +14,7 @@ import org.knowm.xchart.XYChart;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javafx.scene.control.Button;
 
@@ -21,14 +25,14 @@ public class AnimationOscillator_1D {
 
     public enum AnimationState {AS_IDLE, AS_ACTIVE, AS_PAUSE};
 
-    public static final Integer framesPerSec = 25;
+    public static final Integer framesPerSec = 35;
     public static final Integer maxPointsOnChart = 500;
 
     private Double timeAxisWidth;
     private Integer pointsPerTick;
 
     private ArrayList<Double> impulseForces;
-    private ArrayList<Euler_KromerMethodOscillator.PeriodicForce> periodicForces;
+    private ArrayList<PeriodicForce> periodicForces;
 
     private AnimationState state;
     private FunctionGetModels<ArrayList<Oscillator_1D>> functionGetModels;
@@ -38,24 +42,31 @@ public class AnimationOscillator_1D {
     private ArrayList<ArrayList<Double>> px, pt, pv, pe;
     private ArrayList<ArrayList<Double>> px_full, pv_full;
     XChartPanel<XYChart> chartPanel_XT, chartPanel_VT, chartPanel_ET, chartPanel_VX;
+    XChartPanel<XYChart> chartPanelOscillators;
     private boolean seriesAdded;
     Runnable functionUpdateCharts;
 
     public AnimationOscillator_1D(Button btnToogle, Button btnStop, FunctionGetModels<ArrayList<Oscillator_1D>> f,
                            XChartPanel<XYChart> chartPanel_XT, XChartPanel<XYChart> chartPanel_VT,
                                   XChartPanel<XYChart> chartPanel_ET, XChartPanel chartPanel_VX,
+                                  XChartPanel<XYChart> chartPanelOscillators,
                                   Runnable functionUpdateCharts)
     {
         this.chartPanel_XT = chartPanel_XT;
         this.chartPanel_VT = chartPanel_VT;
         this.chartPanel_ET = chartPanel_ET;
         this.chartPanel_VX = chartPanel_VX;
+        this.chartPanelOscillators = chartPanelOscillators;
 
         this.btnToogle = btnToogle;
         this.btnStop = btnStop;
         state = AnimationState.AS_IDLE;
         functionGetModels = f;
         this.functionUpdateCharts = functionUpdateCharts;
+    }
+
+    public boolean ProcessingExperiment() {
+        return state != AnimationState.AS_IDLE;
     }
 
     public void Start(Double timeAxisWidth, Integer pointsPerTick) {
@@ -79,6 +90,7 @@ public class AnimationOscillator_1D {
             chartPanel_VT.getChart().getSeriesMap().clear();
             chartPanel_ET.getChart().getSeriesMap().clear();
             chartPanel_VX.getChart().getSeriesMap().clear();
+            chartPanelOscillators.getChart().getSeriesMap().clear();
 
             models = functionGetModels.GetModels();
             curs = new ArrayList<Oscillator_1D>();
@@ -121,7 +133,6 @@ public class AnimationOscillator_1D {
     }
 
     private void StartAnimation() {
-        models = functionGetModels.GetModels();
         MySwingWorker mySwingWorker = new AnimationOscillator_1D.MySwingWorker();
         mySwingWorker.execute();
     }
@@ -131,7 +142,7 @@ public class AnimationOscillator_1D {
     }
 
     public void AddPeriodicForce(Double amplitude, Double period) {
-        periodicForces.add(new Euler_KromerMethodOscillator.PeriodicForce(amplitude, curs.get(0).getT0(), period));
+        periodicForces.add(new PeriodicForce(amplitude, curs.get(0).getT0(), period));
     }
 
     private class MySwingWorker extends SwingWorker<Boolean, double[]> {
@@ -155,10 +166,17 @@ public class AnimationOscillator_1D {
         @Override
         protected Boolean doInBackground() throws Exception {
 
-            while (state == AnimationState.AS_ACTIVE) {
+            while (!isCancelled() && state == AnimationState.AS_ACTIVE) {
 
                 if (curs.get(0).getN() == 0) {
-                    Stop();
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            Stop();
+                        }
+                    });
+                    cancel(true);
+                    break;
                 }
 
                 for (int z = 0; curs.get(0).getN() != 0 && z < pointsPerTick; ++z) {
@@ -181,6 +199,8 @@ public class AnimationOscillator_1D {
 
                         UpdateChartLimitX(chartPanel_VX, curs.get(i).getX0());
                         UpdateChartLimitY(chartPanel_VX, curs.get(i).getV0());
+
+                        UpdateChartLimitX(chartPanelOscillators, curs.get(i).getX0());
                     }
 
                     for (int i = 0; i < models.size(); ++i) {
@@ -189,7 +209,7 @@ public class AnimationOscillator_1D {
 
                     impulseForces.clear();
                     for (int i = 0; i < periodicForces.size(); ++i) {
-                        if (periodicForces.get(i).Finished(curs.get(i).getT0())) {
+                        if (periodicForces.get(i).Finished(curs.get(0).getT0())) {
                             periodicForces.remove(i);
                         }
                     }
@@ -224,6 +244,10 @@ public class AnimationOscillator_1D {
                     chartPanel_VT.getChart().addSeries(name, pt.get(i), pv.get(i));
                     chartPanel_ET.getChart().addSeries(name, pt.get(i), pe.get(i));
                     chartPanel_VX.getChart().addSeries(name, px_full.get(i), pv_full.get(i));
+
+                    double curx = px.get(i).get(px.get(i).size() - 1);
+                    double idx = models.size() - 1 - i;
+                    chartPanelOscillators.getChart().addSeries(name, Arrays.asList(0, curx), Arrays.asList(idx, idx));
                 }
             }
 
@@ -233,6 +257,10 @@ public class AnimationOscillator_1D {
                 chartPanel_VT.getChart().updateXYSeries(name, pt.get(i), pv.get(i), null);
                 chartPanel_ET.getChart().updateXYSeries(name, pt.get(i), pe.get(i), null);
                 chartPanel_VX.getChart().updateXYSeries(name, px_full.get(i), pv_full.get(i), null);
+
+                double curx = px.get(i).get(px.get(i).size() - 1);
+                double idx = models.size() - 1 - i;
+                chartPanelOscillators.getChart().updateXYSeries(name, Arrays.asList(0, curx), Arrays.asList(idx, idx), null);
             }
 
             functionUpdateCharts.run();
@@ -241,7 +269,6 @@ public class AnimationOscillator_1D {
                 Thread.sleep(1000 / framesPerSec);
             } catch (InterruptedException e) {
             }
-
         }
     }
 }

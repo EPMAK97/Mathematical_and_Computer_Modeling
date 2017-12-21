@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="929.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Oscillator_1DController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="646.0" prefWidth="929.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.Oscillator_1DController">
    <children>
       <AnchorPane fx:id="paneMainMenu" prefHeight="235.0" prefWidth="919.0">
          <children>
@@ -55,7 +55,7 @@
 
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="paneAnimation" prefHeight="376.0" prefWidth="919.0">
+      <AnchorPane fx:id="paneAnimation" prefHeight="406.0" prefWidth="929.0">
          <children>
             <Label layoutX="22.0" layoutY="14.0" prefHeight="17.0" prefWidth="148.0" text="Импульсное воздействие" />
             <TextField fx:id="editImpulse" layoutX="197.0" layoutY="9.0" prefHeight="27.0" prefWidth="106.0" text="5" />
@@ -66,34 +66,34 @@
             <Button fx:id="btnToogleAnimation" layoutX="24.0" layoutY="152.0" mnemonicParsing="false" onAction="#StartAnimation" text="Старт" />
             <Button fx:id="btnImpulse" layoutX="85.0" layoutY="152.0" mnemonicParsing="false" onAction="#OnBtnImpulseClick" text="Импульсное воздействие" />
             <Button fx:id="btnPeriodic" layoutX="85.0" layoutY="188.0" mnemonicParsing="false" onAction="#OnBtnPeriodicClick" text="Периодическое воздйствие" />
-            <TabPane fx:id="tabPaneAnimationPlots" layoutX="321.0" layoutY="9.0" prefHeight="360.0" prefWidth="596.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="tabPaneAnimationPlots" layoutX="321.0" layoutY="9.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="385.0" prefWidth="596.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="321.0" AnchorPane.rightAnchor="12.0">
               <tabs>
                 <Tab fx:id="tabAnimationCoordinates" onSelectionChanged="#UpdateCharts" text="X(t)">
                   <content>
-                    <AnchorPane fx:id="paneAnimationCoordinates" minHeight="250.0" minWidth="500.0" prefHeight="180.0" prefWidth="200.0" />
+                    <AnchorPane fx:id="paneAnimationCoordinates" minHeight="350.0" minWidth="600.0" prefHeight="180.0" prefWidth="200.0" />
                   </content>
                 </Tab>
                 <Tab fx:id="tabAnimationVelocity" onSelectionChanged="#UpdateCharts" text="V(t)">
                   <content>
-                    <AnchorPane fx:id="paneAnimationVelocity" minHeight="250.0" minWidth="500.0" prefHeight="258.0" prefWidth="515.0" />
+                    <AnchorPane fx:id="paneAnimationVelocity" minHeight="350.0" minWidth="600.0" prefHeight="258.0" prefWidth="515.0" />
                   </content>
                 </Tab>
                   <Tab fx:id="tabAnimationEnergy" onSelectionChanged="#UpdateCharts" text="E(t)">
                     <content>
-                      <AnchorPane fx:id="paneAnimationEnergy" minHeight="250.0" minWidth="500.0" prefHeight="180.0" prefWidth="200.0" />
+                      <AnchorPane fx:id="paneAnimationEnergy" minHeight="350.0" minWidth="600.0" prefHeight="180.0" prefWidth="200.0" />
                     </content>
                   </Tab>
-                  <Tab fx:id="tabAnimationPhasePortret" onSelectionChanged="#UpdateCharts" text="V(x)">
+                  <Tab fx:id="tabAnimationPhasePortret" closable="false" onSelectionChanged="#UpdateCharts" text="V(x)">
                     <content>
-                      <AnchorPane fx:id="paneAnimationPhasePortret" minHeight="250.0" minWidth="500.0" prefHeight="180.0" prefWidth="200.0" />
+                      <AnchorPane fx:id="paneAnimationPhasePortret" minHeight="350.0" minWidth="600.0" prefHeight="357.0" prefWidth="596.0" />
                     </content>
                   </Tab>
               </tabs>
             </TabPane>
-            <FlowPane fx:id="flowpaneOscillatorAnimation" layoutX="20.0" layoutY="208.0" prefHeight="154.0" prefWidth="289.0" />
             <Button fx:id="btnStopAnimation" disable="true" layoutX="24.0" layoutY="188.0" mnemonicParsing="false" onAction="#StopAnimation" text="Стоп" />
             <TextField fx:id="editAnimationRate" layoutX="197.0" layoutY="113.0" prefHeight="27.0" prefWidth="106.0" text="1" />
             <Label layoutX="22.0" layoutY="118.0" prefHeight="17.0" prefWidth="167.0" text="Скорость анимации" />
+            <AnchorPane fx:id="paneAnimationOscillators" layoutX="16.0" layoutY="224.0" minHeight="169.0" minWidth="290.0" prefHeight="169.0" prefWidth="293.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="12.0" />
          </children></AnchorPane>
    </children>
 </VBox>
