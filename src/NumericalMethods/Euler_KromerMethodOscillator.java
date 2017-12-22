@@ -17,16 +17,16 @@ public class Euler_KromerMethodOscillator {
             osc.setT0(osc.getT0() + deltaT);
             osc.setN(osc.getN() - 1);
 
-            double f_impulse = 0.0;
+            double a_impulse = 0.0;
             for (Double impulse : impulseForces)
-                f_impulse += impulse;
+                a_impulse += impulse / osc.getM();
 
-            double f_periodic = 0.0;
+            double a_periodic = 0.0;
             for (PeriodicForce force : periodicForces)
-                f_periodic += force.Compute(curTime);
+                a_periodic += force.Compute(curTime) / osc.getM();
 
             double w_0 = Math.sqrt(osc.getK() / osc.getM());
-            double a = -w_0 * w_0 * osc.getX0() - osc.getGamma() * osc.getV0() + f_impulse + f_periodic;
+            double a = -w_0 * w_0 * osc.getX0() - osc.getGamma() * osc.getV0() + a_impulse + a_periodic;
 
             osc.setV0(osc.getV0() + a * deltaT);
             osc.setX0(osc.getX0() + osc.getV0() * deltaT);
