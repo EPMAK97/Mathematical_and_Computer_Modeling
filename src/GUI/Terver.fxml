@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="427.0" prefWidth="597.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.TerverController">
+   <children>
+      <Label layoutX="48.0" layoutY="38.0" text="Число экспериментов" />
+      <TextField fx:id="countExperiments" layoutX="218.0" layoutY="33.0" prefHeight="27.0" prefWidth="122.0" />
+      <Button layoutX="48.0" layoutY="73.0" mnemonicParsing="false" onAction="#evaluateFirstTask" prefHeight="27.0" prefWidth="115.0" text="Задача № 1" />
+      <Button layoutX="173.0" layoutY="73.0" mnemonicParsing="false" onAction="#evaluateSecondTaskA" prefHeight="27.0" prefWidth="122.0" text="Задача № 2(A)" />
+      <SplitPane dividerPositions="0.6597938144329897" layoutX="42.0" layoutY="119.0" prefHeight="215.0" prefWidth="390.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="204.0" prefWidth="237.0">
+               <children>
+                  <Label layoutX="11.0" layoutY="42.0" text="Истинная вероятность" />
+                  <Label layoutX="10.0" layoutY="107.0" text="Ошибка оценки" />
+                  <Label layoutX="10.0" layoutY="76.0" text="Затраченное время" />
+                  <Label layoutX="10.0" layoutY="136.0" text="Среднее значение ошибки" />
+                  <Label layoutX="10.0" layoutY="164.0" text="Среднеквадратичное отклонение 1" />
+                  <Label layoutX="11.0" layoutY="14.0" text="Оценённая вероятность" />
+                  <Label layoutX="8.0" layoutY="191.0" text="Среднеквадратичное отклонение 2" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="213.0" prefWidth="125.0">
+               <children>
+                  <Separator layoutX="-43.0" layoutY="30.0" prefHeight="9.0" prefWidth="200.0" />
+                  <Separator layoutX="-32.0" layoutY="61.0" prefHeight="9.0" prefWidth="200.0" />
+                  <Separator layoutX="-12.0" layoutY="92.0" prefHeight="9.0" prefWidth="200.0" />
+                  <Separator layoutY="123.0" prefHeight="9.0" prefWidth="200.0" />
+                  <Label fx:id="trueProbability" layoutX="14.0" layoutY="45.0" text="0" />
+                  <Label fx:id="evaluationTime" layoutX="14.0" layoutY="70.0" text="0" />
+                  <Label fx:id="meanError" layoutX="14.0" layoutY="136.0" text="0" />
+                  <Label fx:id="standardDeviation1" layoutX="14.0" layoutY="166.0" text="0" />
+                  <Label fx:id="probabilityEvaluation" layoutX="14.0" layoutY="14.0" text="0" />
+                  <Label fx:id="evaluationError" layoutX="14.0" layoutY="101.0" text="0" />
+                  <Label fx:id="standardDeviation2" layoutX="14.0" layoutY="191.0" text="0" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+      <Button layoutX="305.0" layoutY="73.0" mnemonicParsing="false" onAction="#evaluateSecondTaskB" prefHeight="27.0" prefWidth="122.0" text="Задача № 2(B)" />
+   </children>
+</AnchorPane>
