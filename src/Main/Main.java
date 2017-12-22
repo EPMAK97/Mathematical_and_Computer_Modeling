@@ -12,7 +12,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("../GUI/Oscillator_1D.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../GUI/Terver.fxml"));
         primaryStage.setTitle("Математическое и компьютерное моделирование");
         Scene scene = new Scene(root, primaryStage.getWidth(), primaryStage.getHeight());
         primaryStage.setScene(scene);
