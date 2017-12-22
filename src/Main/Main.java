@@ -14,7 +14,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("../GUI/Terver.fxml"));
         primaryStage.setTitle("Математическое и компьютерное моделирование");
-        Scene scene = new Scene(root, 919, 551);
+        Scene scene = new Scene(root, primaryStage.getWidth(), primaryStage.getHeight());
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setOnCloseRequest(e -> Platform.exit());

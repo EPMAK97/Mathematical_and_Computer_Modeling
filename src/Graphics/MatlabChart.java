@@ -6,6 +6,7 @@ import org.knowm.xchart.XYSeries;
 import org.knowm.xchart.style.Styler;
 import org.knowm.xchart.style.markers.SeriesMarkers;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class MatlabChart implements SomeChart<XYChart> {
@@ -34,6 +35,9 @@ public class MatlabChart implements SomeChart<XYChart> {
 
         //chart.getStyler().setYAxisGroupPosition(1, Styler.YAxisPosition.Right);
         chart.getStyler().setLegendPosition(Styler.LegendPosition.OutsideE);
+
+        chart.getStyler().setMarkerSize(5);
+        chart.getStyler().setPlotBackgroundColor(Color.LIGHT_GRAY);
         //chart.getStyler().setYAxisDecimalPattern("0.0000");
         return chart;
     }
@@ -61,6 +65,9 @@ public class MatlabChart implements SomeChart<XYChart> {
             XYSeries series = chart.addSeries(names.get(i), px, py);
             //series.setMarker(SeriesMarkers.NONE);
         }
+
+        chart.getStyler().setMarkerSize(5);
+        chart.getStyler().setPlotBackgroundColor(Color.LIGHT_GRAY);
 
         //chart.getStyler().setYAxisGroupPosition(1, Styler.YAxisPosition.Right);
         //chart.getStyler().setLegendPosition(Styler.LegendPosition.OutsideE);
