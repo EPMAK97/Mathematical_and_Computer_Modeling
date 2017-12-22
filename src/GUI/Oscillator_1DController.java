@@ -268,7 +268,7 @@ public class Oscillator_1DController implements Initializable {
     }
 
     private void setParameters(Oscillator_1D oscillator1D) {
-        oscillator1D.setGamma(Double.parseDouble(editFrictionCoeff.getText()) * 9.8); // gamma * g
+        oscillator1D.setGamma(Double.parseDouble(editFrictionCoeff.getText()));
         oscillator1D.setM(Double.parseDouble(editBodyMass.getText()));
         oscillator1D.setN(Integer.parseInt(editNumberOfCounts.getText()));
         oscillator1D.setT0(Double.parseDouble(editStartTime.getText()));
@@ -381,17 +381,22 @@ public class Oscillator_1DController implements Initializable {
     public void createSummaryTable() {
         if (modelsData.isEmpty()) return;
         setStartTimes();
+        ExperimentResult experimentResult = new ExperimentResult(ExperimentDataType.EDT_FULL);
+
         ArrayList<ArrayList<Double>> data = new ArrayList<>();
         ArrayList<ArrayList<Double>> modelInfo = new ArrayList<>();
+
         for (int i = 0; i < modelsData.size(); ++i) {
             Oscillator_1D cur = modelsData.get(i).clone();
             data.add(new ArrayList<>());
+
             modelInfo.add(new ArrayList<>());
             modelInfo.get(i).add(modelsData.get(i).getX0());
             modelInfo.get(i).add(modelsData.get(i).getV0());
             modelInfo.get(i).add(modelsData.get(i).getM());
             modelInfo.get(i).add(modelsData.get(i).getK());
             modelInfo.get(i).add(modelsData.get(i).getGamma());
+
             for (int j = 0; j <= modelsData.get(i).getN(); ++j) {
                 data.get(i).add(cur.getT0());
                 data.get(i).add(cur.getX0());

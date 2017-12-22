@@ -37,8 +37,8 @@
             <Separator layoutX="480.0" layoutY="11.0" orientation="VERTICAL" prefHeight="210.0" prefWidth="3.0" />
             <TextField fx:id="editBodyMass" layoutX="409.0" layoutY="111.0" prefHeight="27.0" prefWidth="62.0" text="100" />
             <Label layoutX="211.0" layoutY="116.0" prefHeight="17.0" prefWidth="92.0" text="Масса тела, г" />
-            <TextField fx:id="editFrictionCoeff" layoutX="409.0" layoutY="189.0" prefHeight="27.0" prefWidth="62.0" text="0.01" />
-            <Label layoutX="211.0" layoutY="194.0" text="Коэф. трения скольжения, с / см" />
+            <TextField fx:id="editFrictionCoeff" layoutX="409.0" layoutY="189.0" prefHeight="27.0" prefWidth="62.0" text="0.1" />
+            <Label layoutX="211.0" layoutY="194.0" text="Коэффициент трения, c^-1" />
             <TableView fx:id="tableModels" layoutX="493.0" layoutY="43.0" prefHeight="180.0" prefWidth="423.0">
               <columns>
                 <TableColumn prefWidth="52.0" text="Модель" />
